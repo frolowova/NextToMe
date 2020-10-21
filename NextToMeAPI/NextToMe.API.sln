@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextToMe.API", "NextToMe.API\NextToMe.API.csproj", "{DF34CB49-8E31-48F8-99C3-A0040A291384}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD423085-C3EC-408F-90EF-6646E71E40E6} = {FD423085-C3EC-408F-90EF-6646E71E40E6}
+		{B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70} = {B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextToMe.Common", "NextToMe.Common\NextToMe.Common.csproj", "{FD423085-C3EC-408F-90EF-6646E71E40E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextToMe.Database", "NextToMe.Database\NextToMe.Database.csproj", "{78423272-05D7-484D-9E8D-43888998BCE3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FD423085-C3EC-408F-90EF-6646E71E40E6} = {FD423085-C3EC-408F-90EF-6646E71E40E6}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextToMe.Services", "NextToMe.Services\NextToMe.Services.csproj", "{B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70}"
+	ProjectSection(ProjectDependencies) = postProject
+		{78423272-05D7-484D-9E8D-43888998BCE3} = {78423272-05D7-484D-9E8D-43888998BCE3}
+		{FD423085-C3EC-408F-90EF-6646E71E40E6} = {FD423085-C3EC-408F-90EF-6646E71E40E6}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DF34CB49-8E31-48F8-99C3-A0040A291384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF34CB49-8E31-48F8-99C3-A0040A291384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF34CB49-8E31-48F8-99C3-A0040A291384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF34CB49-8E31-48F8-99C3-A0040A291384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD423085-C3EC-408F-90EF-6646E71E40E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD423085-C3EC-408F-90EF-6646E71E40E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD423085-C3EC-408F-90EF-6646E71E40E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD423085-C3EC-408F-90EF-6646E71E40E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78423272-05D7-484D-9E8D-43888998BCE3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78423272-05D7-484D-9E8D-43888998BCE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78423272-05D7-484D-9E8D-43888998BCE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78423272-05D7-484D-9E8D-43888998BCE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2E3BBF4-DEAA-4EEC-A8F7-6AB9FDDA2D70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {00D05CCC-C6B4-4207-B0D6-02D3AA9BD258}
+	EndGlobalSection
+EndGlobal
