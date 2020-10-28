@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NextToMe.Database;
+using NextToMe.Database.Entities;
 using System;
 using System.Linq;
 using System.Threading;
@@ -10,10 +11,12 @@ namespace NextToMe.Services
 {
     public class MessageDeleteService : BackgroundService
     {
-        private readonly IServiceProvider _serviceProvider;
-        public MessageDeleteService(IServiceProvider serviceProvider)
+        private static readonly TimeSpan _delayTime = TimeSpan.FromMinutes(1);
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+
+        public MessageDeleteService(IServiceScopeFactory serviceScopeFactory)
         {
-            _serviceProvider = serviceProvider;
+            _serviceScopeFactory = serviceScopeFactory;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -21,21 +24,21 @@ namespace NextToMe.Services
             while (!stoppingToken.IsCancellationRequested)
             {
                 DeleteOldMessagesFromDb();
-                await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
+                await Task.Delay(_delayTime, stoppingToken);
             }
         }
 
-        private void DeleteOldMessagesFromDb()
+        private async void DeleteOldMessagesFromDb()
         {
-            using (var scope = _serviceProvider.CreateScope())
+            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var currentTime = DateTime.UtcNow;
 
-                var messages = context.Messages.Where(x => x.DeleteAt != null && x.DeleteAt < currentTime);
+                IQueryable<Message> messages = context.Messages.Where(x => x.DeleteAt != null && x.DeleteAt < currentTime);
 
                 context.RemoveRange(messages);
-                context.SaveChanges();
+                await context.SaveChangesAsync();
             }
         }
     }

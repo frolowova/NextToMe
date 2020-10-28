@@ -7,8 +7,6 @@ namespace NextToMe.Common.DTOs
     {
         [Required]
         public string Text { get; set; }
-
-        [Required]
         public DateTime? DeleteAt { get; set; }
     }
 }
