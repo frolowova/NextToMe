@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace NextToMe.Common.DTOs
 {
@@ -9,5 +7,8 @@ namespace NextToMe.Common.DTOs
     {
         [Required]
         public string Text { get; set; }
+
+        [Required]
+        public DateTime? DeleteAt { get; set; }
     }
 }

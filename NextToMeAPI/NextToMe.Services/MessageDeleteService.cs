@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NextToMe.Database;
 using System;
@@ -11,7 +10,6 @@ namespace NextToMe.Services
 {
     public class MessageDeleteService : BackgroundService
     {
-        private readonly int _secondsToDelete = 60;
         private readonly IServiceProvider _serviceProvider;
         public MessageDeleteService(IServiceProvider serviceProvider)
         {
@@ -34,8 +32,7 @@ namespace NextToMe.Services
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var currentTime = DateTime.UtcNow;
 
-                var messages = context.Messages.Where(x =>
-                    MySqlDbFunctionsExtensions.DateDiffSecond(null, x.CreatedAt, currentTime) > _secondsToDelete);
+                var messages = context.Messages.Where(x => x.DeleteAt != null && x.DeleteAt < currentTime);
 
                 context.RemoveRange(messages);
                 context.SaveChanges();
