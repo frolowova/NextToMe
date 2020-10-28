@@ -23,12 +23,12 @@ namespace NextToMe.Services
 
             while (!stoppingToken.IsCancellationRequested)
             {
-                DeleteOldMessagesFromDb();
+                await DeleteOldMessagesFromDb();
                 await Task.Delay(_delayTime, stoppingToken);
             }
         }
 
-        private async void DeleteOldMessagesFromDb()
+        private async Task DeleteOldMessagesFromDb()
         {
             using (IServiceScope scope = _serviceScopeFactory.CreateScope())
             {
