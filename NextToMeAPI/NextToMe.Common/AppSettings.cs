@@ -11,5 +11,7 @@ namespace NextToMe.Common
         public int RefreshTokenValidInDays { get; set; }
         public string TokenIssuer { get; set; }
         public string TokenAudience { get; set; }
+
+        public int DeleteMessageServiceDelayInSeconds { get; set; }
     }
 }

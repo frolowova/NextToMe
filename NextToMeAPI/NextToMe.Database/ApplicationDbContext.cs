@@ -18,7 +18,14 @@ namespace NextToMe.Database
             if (!_checkedForMigrations)
             {
                 _checkedForMigrations = true;
-                this.Database.Migrate();
+                try
+                {
+                    this.Database.Migrate();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
         }
 
