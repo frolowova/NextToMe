@@ -12,7 +12,7 @@ namespace NextToMe.Services.Mappings
         public MappingProfile()
         {
             CreateMap<AddMessageRequest, Message>().ReverseMap();
-            CreateMap<Message, AddMessageResponse>()
+            CreateMap<Message, MessageResponse>()
                 .ForMember(x => x.From, opt => opt.MapFrom(y => y.User.UserName))
                 .ReverseMap();
 

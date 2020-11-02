@@ -25,7 +25,7 @@ namespace NextToMe.API.Controllers
 
         [HttpPost]
         [Route("send")]
-        public async Task<AddMessageResponse> SendMessage(AddMessageRequest request)
+        public async Task<MessageResponse> SendMessage(AddMessageRequest request)
         {
             return await _messageService.SendMessage(request);
         }
@@ -35,7 +35,7 @@ namespace NextToMe.API.Controllers
         /// </summary>
         [HttpGet]
         [Route("get")]
-        public async Task<List<AddMessageResponse>> GetMessages(int skip = 0, int take = int.MaxValue)
+        public async Task<List<MessageResponse>> GetMessages(int skip = 0, int take = int.MaxValue)
         {
             return await _messageService.GetMessages(skip, take);
         }
