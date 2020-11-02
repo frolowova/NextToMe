@@ -6,21 +6,24 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
+using NextToMe.Common;
 
 namespace NextToMe.Services
 {
     public class MessageDeleteService : BackgroundService
     {
-        private static readonly TimeSpan _delayTime = TimeSpan.FromMinutes(1);
+        private readonly TimeSpan _delayTime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        public MessageDeleteService(IServiceScopeFactory serviceScopeFactory)
+        public MessageDeleteService(IServiceScopeFactory serviceScopeFactory, IOptions<AppSettings> settings)
         {
             _serviceScopeFactory = serviceScopeFactory;
+            _delayTime = TimeSpan.FromSeconds(settings.Value.DeleteMessageServiceDelayInSeconds);
         }
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             while (!stoppingToken.IsCancellationRequested)
             {
                 await DeleteOldMessagesFromDb();
