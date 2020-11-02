@@ -34,7 +34,7 @@ namespace NextToMe.Services
 
         public Task<List<MessageResponse>> GetMessages(int skip, int take)
         {
-            return Task.FromResult(_dbContext.Messages.OrderBy(x => x.Location).Skip(skip).Take(take).ProjectTo<MessageResponse>(_mapper.ConfigurationProvider).ToList());
+            return Task.FromResult(_dbContext.Messages.OrderBy(x => x.CreatedAt).Skip(skip).Take(take).ProjectTo<MessageResponse>(_mapper.ConfigurationProvider).ToList());
         }
 
         public async Task<MessageResponse> SendMessage(AddMessageRequest request)
