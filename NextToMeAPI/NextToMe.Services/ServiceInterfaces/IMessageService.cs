@@ -8,7 +8,7 @@ namespace NextToMe.Services.ServiceInterfaces
 {
     public interface IMessageService
     {
-        public Task<AddMessageResponse> SendMessage(AddMessageRequest request);
-        public Task<List<AddMessageResponse>> GetMessages(int skip, int take);
+        public Task<MessageResponse> SendMessage(AddMessageRequest request);
+        public Task<List<MessageResponse>> GetMessages(int skip, int take);
     }
 }

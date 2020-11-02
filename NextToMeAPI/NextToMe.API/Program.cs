@@ -43,6 +43,7 @@ namespace NextToMe.API
                 {
                     logging.ClearProviders();
                     logging.AddConsole();
+                    logging.AddAzureWebAppDiagnostics();
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

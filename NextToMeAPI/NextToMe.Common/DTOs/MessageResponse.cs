@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NextToMe.Common.DTOs
 {
-    public class AddMessageResponse : AddMessageRequest
+    public class MessageResponse : AddMessageRequest
     {
         public DateTime CreatedAt { get; set; }
         

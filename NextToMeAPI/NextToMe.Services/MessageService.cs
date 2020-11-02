@@ -32,12 +32,12 @@ namespace NextToMe.Services
             _userManager = userManager;
         }
 
-        public Task<List<AddMessageResponse>> GetMessages(int skip, int take)
+        public Task<List<MessageResponse>> GetMessages(int skip, int take)
         {
-            return Task.FromResult(_dbContext.Messages.OrderBy(x => x.CreatedAt).Skip(skip).Take(take).ProjectTo<AddMessageResponse>(_mapper.ConfigurationProvider).ToList());
+            return Task.FromResult(_dbContext.Messages.OrderBy(x => x.CreatedAt).Skip(skip).Take(take).ProjectTo<MessageResponse>(_mapper.ConfigurationProvider).ToList());
         }
 
-        public async Task<AddMessageResponse> SendMessage(AddMessageRequest request)
+        public async Task<MessageResponse> SendMessage(AddMessageRequest request)
         {
             User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
             var newMessage = _mapper.Map<Message>(request);
@@ -45,7 +45,7 @@ namespace NextToMe.Services
             newMessage.CreatedAt = DateTime.UtcNow;
             _dbContext.Add(newMessage);
             await _dbContext.SaveChangesAsync();
-            return _mapper.Map<AddMessageResponse>(newMessage);
+            return _mapper.Map<MessageResponse>(newMessage);
         }
     }
 }
