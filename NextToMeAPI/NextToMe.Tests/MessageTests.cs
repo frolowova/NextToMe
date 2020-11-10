@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using NextToMe.API.Controllers;
 using NextToMe.Common.DTOs;
+using NextToMe.Common.Models;
 using NextToMe.Tests.Helpers;
 using NUnit.Framework;
 
@@ -12,6 +13,35 @@ namespace NextToMe.Tests
     {
         private const string _defaultMessageText = "Test Text";
         private const string _secondMessageText = "Test Text 2";
+
+        [Test]
+        public async Task MessageAndUserLocationAreEqual()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = new Location(0, 0)
+            });
+
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: new Location(0, 0));
+            Assert.AreEqual(1, messages.Count);
+        }
+
+        [Test]
+        public async Task MessageLocationMoreThanGettingMessageRadius()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = new Location(0, 0.005)
+            });
+
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: new Location(0, 0));
+            Assert.AreEqual(0, messages.Count);
+        }
+
 
         [Test]
         public async Task OneMessageTest()
