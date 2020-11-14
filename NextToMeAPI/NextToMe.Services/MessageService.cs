@@ -11,8 +11,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.XPath;
-using NextToMe.Common;
 using Location = NextToMe.Common.Models.Location;
 
 namespace NextToMe.Services
@@ -38,12 +36,10 @@ namespace NextToMe.Services
 
         public Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500)
         {
-            var userLocation = new Point(currentLocation.Latitude, currentLocation.Longitude);
-
-            var distance = DistanceConverter.DistanceInMeters(_dbContext.Messages.ToList()[0].Location, userLocation);
+            var userLocation = new Point(currentLocation.Latitude, currentLocation.Longitude) { SRID = 4326 };
 
             return Task.FromResult(_dbContext.Messages
-                .Where(x => DistanceConverter.DistanceInMeters(x.Location, userLocation) <= gettingMessagesRadiusInMeters)
+                .Where(x => x.Location.Distance(userLocation) <= gettingMessagesRadiusInMeters)
                 .OrderBy(x => x.CreatedAt)
                 .Skip(skip)
                 .Take(take)
