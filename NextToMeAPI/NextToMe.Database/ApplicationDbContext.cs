@@ -33,6 +33,8 @@ namespace NextToMe.Database
 
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
+        public virtual DbSet<MessageComment> MessageComments { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

@@ -34,7 +34,13 @@ namespace NextToMe.Services
 
         public Task<List<MessageResponse>> GetMessages(int skip, int take)
         {
-            return Task.FromResult(_dbContext.Messages.OrderBy(x => x.CreatedAt).Skip(skip).Take(take).ProjectTo<MessageResponse>(_mapper.ConfigurationProvider).ToList());
+            return Task.FromResult(
+                _dbContext.Messages
+                    .OrderBy(x => x.CreatedAt)
+                    .Skip(skip)
+                    .Take(take)
+                    .ProjectTo<MessageResponse>(_mapper.ConfigurationProvider)
+                    .ToList());
         }
 
         public async Task<MessageResponse> SendMessage(AddMessageRequest request)
@@ -46,6 +52,17 @@ namespace NextToMe.Services
             _dbContext.Add(newMessage);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<MessageResponse>(newMessage);
+        }
+
+        public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
+        {
+            request.MessageId ??= _dbContext.MessageComments.First(x => x.Id == request.CommentId).MessageId;
+
+            var newComment = _mapper.Map<MessageComment>(request);
+            newComment.CreatedAt = DateTime.UtcNow;
+            _dbContext.Add(newComment);
+            await _dbContext.SaveChangesAsync();
+            return _mapper.Map<MessageCommentResponse>(newComment);
         }
     }
 }
