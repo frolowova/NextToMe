@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using NetTopologySuite.Geometries;
@@ -43,7 +42,15 @@ namespace NextToMe.Services
                 .OrderBy(x => x.CreatedAt)
                 .Skip(skip)
                 .Take(take)
-                .ProjectTo<MessageResponse>(_mapper.ConfigurationProvider)
+                .Select(x => new MessageResponse()
+                {
+                    DistanceToUser = x.Location.Distance(userLocation),
+                    CreatedAt = x.CreatedAt,
+                    From = x.User.UserName,
+                    Text = x.Text,
+                    Location = new Location(x.Location.X, x.Location.Y),
+                    DeleteAt = x.DeleteAt
+                })
                 .ToList());
         }
 
