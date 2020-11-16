@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace NextToMe.Database.Entities
 {
@@ -12,6 +13,7 @@ namespace NextToMe.Database.Entities
 
         public string UserName => Message.User.UserName;
 
+        [Required]
         public  string MessageId { get; set; }
 
         public virtual Message Message { get; set; }

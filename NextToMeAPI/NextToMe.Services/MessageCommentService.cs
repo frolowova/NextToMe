@@ -6,6 +6,7 @@ using NextToMe.Services.ServiceInterfaces;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using NextToMe.Common.Exceptions;
 
 namespace NextToMe.Services
 {
@@ -24,7 +25,24 @@ namespace NextToMe.Services
 
         public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
         {
-            request.MessageId ??= _dbContext.MessageComments.First(x => x.Id == request.CommentId).MessageId;
+            if (request.MessageId != null)
+            {
+                if (_dbContext.Messages.Any(x => x.Id == request.MessageId == false))
+                {
+                    throw new BadRequestException($"MessageId = {request.MessageId} does not exists");
+                }
+            }
+            else
+            {
+                if (_dbContext.MessageComments.Any(x => x.Id == request.CommentId))
+                {
+                    request.MessageId = _dbContext.MessageComments.First(x => x.Id == request.CommentId).MessageId;
+                }
+                else
+                {
+                    throw new BadRequestException($"MessageId = {request.MessageId} does not exists");
+                }
+            }
 
             var newComment = _mapper.Map<MessageComment>(request);
             newComment.CreatedAt = DateTime.UtcNow;
