@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Models;
 using NextToMe.Services.ServiceInterfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NextToMe.API.Controllers
 {

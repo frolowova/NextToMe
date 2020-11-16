@@ -53,16 +53,5 @@ namespace NextToMe.Services
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<MessageResponse>(newMessage);
         }
-
-        public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
-        {
-            request.MessageId ??= _dbContext.MessageComments.First(x => x.Id == request.CommentId).MessageId;
-
-            var newComment = _mapper.Map<MessageComment>(request);
-            newComment.CreatedAt = DateTime.UtcNow;
-            _dbContext.Add(newComment);
-            await _dbContext.SaveChangesAsync();
-            return _mapper.Map<MessageCommentResponse>(newComment);
-        }
     }
 }
