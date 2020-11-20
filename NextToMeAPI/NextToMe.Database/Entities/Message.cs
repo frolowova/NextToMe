@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using NetTopologySuite.Geometries;
 
 namespace NextToMe.Database.Entities
 {
@@ -15,6 +16,8 @@ namespace NextToMe.Database.Entities
         public DateTime CreatedAt { get; set; }
 
         public DateTime? DeleteAt { get; set; }
+
+        public Point Location { get; set; }
 
         public Guid UserId { get; set; }
 
