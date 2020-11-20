@@ -5,6 +5,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using NextToMe.Common.Models;
 
 namespace NextToMe.Tests
 {
@@ -12,6 +13,7 @@ namespace NextToMe.Tests
     {
         private const string _defaultMessageText = "Test Text";
         private const string _secondMessageText = "Test Text 2";
+        private readonly Location _zeroLocation = new Location(0, 0);
 
         [Test]
         public async Task OneMessageTest()
@@ -19,9 +21,10 @@ namespace NextToMe.Tests
             MessagesController controller = GetMessagesController();
             await controller.SendMessage(new AddMessageRequest
             {
-                Text = _defaultMessageText
+                Text = _defaultMessageText,
+                Location = _zeroLocation
             });
-            List<MessageResponse> messages = await controller.GetMessages();
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: _zeroLocation);
             Assert.AreEqual(1, messages.Count);
             Assert.AreEqual(_defaultMessageText, messages[0].Text);
             Assert.AreEqual(TestUserName, messages[0].From);
@@ -31,7 +34,7 @@ namespace NextToMe.Tests
         public async Task EmptyMessageCollectionTest()
         {
             MessagesController controller = GetMessagesController();
-            List<MessageResponse> messages = await controller.GetMessages();
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: _zeroLocation);
             Assert.IsEmpty(messages);
         }
 
@@ -42,7 +45,7 @@ namespace NextToMe.Tests
             MessagesController controller = GetMessagesController();
             await SendMessagesWithNumbers(controller, messagesCount);
 
-            List<MessageResponse> messages = await controller.GetMessages();
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: _zeroLocation);
             Assert.AreEqual(messagesCount, messages.Count);
             for (var i = 0; i < messagesCount; ++i)
             {
@@ -58,7 +61,7 @@ namespace NextToMe.Tests
             MessagesController controller = GetMessagesController();
             await SendMessagesWithNumbers(controller, messagesCount);
 
-            var messages = await controller.GetMessages(skip: messagesToSkip);
+            var messages = await controller.GetMessages(skip: messagesToSkip, currentLocation: _zeroLocation);
             Assert.AreEqual(messagesCount - messagesToSkip, messages.Count);
         }
 
@@ -70,7 +73,7 @@ namespace NextToMe.Tests
             MessagesController controller = GetMessagesController();
             await SendMessagesWithNumbers(controller, messagesCount);
 
-            List<MessageResponse> messages = await controller.GetMessages(take: messagesToTake);
+            List<MessageResponse> messages = await controller.GetMessages(take: messagesToTake, currentLocation: _zeroLocation);
             Assert.AreEqual(messagesToTake, messages.Count);
         }
 
@@ -83,7 +86,7 @@ namespace NextToMe.Tests
             MessagesController controller = GetMessagesController();
             await SendMessagesWithNumbers(controller, messagesCount);
 
-            List<MessageResponse> messages = await controller.GetMessages(messagesToSkip, messagesToTake);
+            List<MessageResponse> messages = await controller.GetMessages(messagesToSkip, messagesToTake, currentLocation: _zeroLocation);
             Assert.AreEqual(messagesToTake, messages.Count);
             for (int i = 0; i < messagesToTake; ++i)
             { 
@@ -102,7 +105,7 @@ namespace NextToMe.Tests
                 DeleteAt = deleteDate
             });
             await Task.Delay(TimeSpan.FromSeconds(DeleteMessageDelayInSeconds * 2));
-            List<MessageResponse> messages = await controller.GetMessages();
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: _zeroLocation);
             Assert.IsEmpty(messages);
         }
 
@@ -114,14 +117,16 @@ namespace NextToMe.Tests
             await controller.SendMessage(new AddMessageRequest
             {
                 Text = _defaultMessageText,
-                DeleteAt = deleteDate
+                DeleteAt = deleteDate,
+                Location = _zeroLocation
             });
             await controller.SendMessage(new AddMessageRequest
             {
-                Text = _secondMessageText
+                Text = _secondMessageText,
+                Location = _zeroLocation
             });
             await Task.Delay(TimeSpan.FromSeconds(DeleteMessageDelayInSeconds * 2));
-            List<MessageResponse> messages = await controller.GetMessages();
+            List<MessageResponse> messages = await controller.GetMessages(currentLocation: _zeroLocation);
             Assert.AreEqual(1, messages.Count);
             Assert.AreEqual(_secondMessageText, messages[0].Text);
         }
@@ -132,7 +137,8 @@ namespace NextToMe.Tests
             {
                 await controller.SendMessage(new AddMessageRequest
                 {
-                    Text = i.ToString()
+                    Text = i.ToString(),
+                    Location = _zeroLocation
                 });
             }
         }
