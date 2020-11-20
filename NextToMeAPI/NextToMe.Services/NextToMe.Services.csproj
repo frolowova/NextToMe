@@ -12,12 +12,19 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="3.1.9" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\NextToMe.Common\NextToMe.Common.csproj" />
     <ProjectReference Include="..\NextToMe.Database\NextToMe.Database.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="emailTemplates\invitation.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
 </Project>
