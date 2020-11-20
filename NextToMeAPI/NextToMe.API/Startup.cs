@@ -82,6 +82,7 @@ namespace NextToMe.API
                     .UseMySql(
                         Configuration.GetConnectionString("ApplicationDbContext"),
                         mySqlOptions => mySqlOptions
+                            .UseNetTopologySuite()
                             .ServerVersion(new Version(8, 0, 21), ServerType.MySql)));
 
             services.AddAuthorization();
