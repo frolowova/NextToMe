@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using NextToMe.Database;
@@ -9,9 +10,10 @@ using NextToMe.Database;
 namespace NextToMe.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201109204249_Add_Location")]
+    partial class AddLocation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -172,29 +174,6 @@ namespace NextToMe.Database.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("NextToMe.Database.Entities.MessageComment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("MessageId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
-
-                    b.ToTable("MessageComments");
-                });
-
             modelBuilder.Entity("NextToMe.Database.Entities.RefreshToken", b =>
                 {
                     b.Property<string>("Token")
@@ -334,15 +313,6 @@ namespace NextToMe.Database.Migrations
                     b.HasOne("NextToMe.Database.Entities.User", "User")
                         .WithMany("Messages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("NextToMe.Database.Entities.MessageComment", b =>
-                {
-                    b.HasOne("NextToMe.Database.Entities.Message", "Message")
-                        .WithMany("Comments")
-                        .HasForeignKey("MessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
