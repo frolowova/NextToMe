@@ -18,51 +18,114 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace NextToMe.Services
 {
     public class AuthService : IAuthService
     {
+        private const string _emailConfirmationSubject = "NextToMe: Email confirmation";
+
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly AppSettings _settings;
         private readonly UserManager<User> _userManager;
+        private readonly IEmailService _emailService;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public AuthService(
             ApplicationDbContext dbContext,
             UserManager<User> userManager,
             ILogger<AuthService> logger,
             IMapper mapper,
-            IOptions<AppSettings> settings)
+            IOptions<AppSettings> settings,
+            IEmailService emailService,
+            IHttpContextAccessor contextAccessor)
         {
             _dbContext = dbContext;
             _mapper = mapper;
             _settings = settings.Value;
             _userManager = userManager;
+            _emailService = emailService;
+            _contextAccessor = contextAccessor;
         }
 
-        public async Task<LoginResponse> Register(LoginRequest request)
+        public async Task Register(RegisterRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.Login);
+            User user = await _userManager.FindByNameAsync(request.Login);
             if (user != null)
             {
-                throw new BadRequestException("Login is already taken");
-            }
-
-            user = new User { Email = request.Login, UserName = request.Login };
-            IdentityResult result = await _userManager.CreateAsync(user, request.Password);
-
-            if (result.Succeeded)
-            {
-                await _userManager.AddToRoleAsync(user, Roles.User);
+                if (user.EmailConfirmed)
+                {
+                    throw new BadRequestException("Login is already taken");
+                }
             }
             else
             {
-                await _userManager.DeleteAsync(user);
-                throw new AuthException(result.Errors);
+                user = new User { Email = request.Login, UserName = request.Login };
+                IdentityResult result = await _userManager.CreateAsync(user);
+                if (!result.Succeeded)
+                {
+                    throw new AuthException(result.Errors);
+                }
             }
 
-            return await GenerateLoginResponse(user);
+            var queryParams = new Dictionary<string, string>
+            {
+                { "userId", user.Id.ToString() },
+                { "code", await _userManager.GenerateEmailConfirmationTokenAsync(user) }
+            };
+            string redirectUrl = QueryHelpers.AddQueryString(request.RedirectUrl, queryParams);
+
+            string messageBody = _emailService.GetInvitationMessage(redirectUrl);
+            await _emailService.SendEmailAsync(request.Login, _emailConfirmationSubject, messageBody);
+        }
+
+        public async Task ConfirmEmail(EmailConfirmRequest request)
+        {
+            if (request?.Code == null)
+            {
+                throw new AuthException("No code provided");
+            }
+
+            IdentityResult passwordValidationResult = await ValidatePassword(request.Password);
+            if (!passwordValidationResult.Succeeded)
+            {
+                throw new AuthException(passwordValidationResult.Errors);
+            }
+
+            User user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+            if (user == null)
+            {
+                throw new AuthException("Incorrect user ID ");
+            }
+
+            bool isEmailTokenValid = await _userManager.VerifyUserTokenAsync(
+                user,
+                _userManager.Options.Tokens.EmailConfirmationTokenProvider,
+                UserManager<User>.ConfirmEmailTokenPurpose,
+                request.Code);
+
+            if (!isEmailTokenValid)
+            {
+                throw new AuthException("Incorrect code", $"Email token is not valid for user {user}");
+            }
+
+            await _userManager.RemovePasswordAsync(user);
+            IdentityResult passwordResult = await _userManager.AddPasswordAsync(user, request.Password);
+            if (!passwordResult.Succeeded)
+            {
+                throw new AuthException(passwordResult.Errors);
+            }
+
+            user.EmailConfirmed = true;
+            IdentityResult confirmEmailResult = await _userManager.UpdateAsync(user);
+            if (!confirmEmailResult.Succeeded)
+            {
+                throw new AuthException(confirmEmailResult.Errors);
+            }
         }
 
         public async Task<LoginResponse> Login(LoginRequest request)
@@ -71,6 +134,10 @@ namespace NextToMe.Services
             if (user == null)
             {
                 throw new AuthException("Incorrect user login or password");
+            }
+            if (!user.EmailConfirmed)
+            {
+                throw new AuthException("Email is not confirmed");
             }
             var result = await _userManager.CheckPasswordAsync(user, request.Password);
             if (!result)
@@ -171,6 +238,29 @@ namespace NextToMe.Services
                     ClaimsIdentity.DefaultRoleClaimType);
             return claimsIdentity;
         }
+        
+        private async Task<IdentityResult> ValidatePassword(string newPassword)
+        {
+            List<IdentityError> errors = new List<IdentityError>();
 
+            IList<IPasswordValidator<User>> validators = _userManager.PasswordValidators;
+
+            foreach (IPasswordValidator<User> validator in validators)
+            {
+                IdentityResult result = await validator.ValidateAsync(_userManager, null, newPassword);
+
+                if (!result.Succeeded)
+                {
+                    errors.AddRange(result.Errors);
+                }
+            }
+
+            if (errors.Count > 0)
+            {
+                return IdentityResult.Failed(errors.ToArray());
+            }
+
+            return IdentityResult.Success;
+        }
     }
 }

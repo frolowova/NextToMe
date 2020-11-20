@@ -32,9 +32,16 @@ namespace NextToMe.API.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<LoginResponse> Register(LoginRequest request)
+        public async Task Register(RegisterRequest request)
         {
-            return await _authService.Register(request);
+            await _authService.Register(request);
+        }
+
+        [HttpPost]
+        [Route("confirm")]
+        public async Task ConfirmEmail(EmailConfirmRequest request)
+        {
+            await _authService.ConfirmEmail(request);
         }
 
         [HttpPost]
