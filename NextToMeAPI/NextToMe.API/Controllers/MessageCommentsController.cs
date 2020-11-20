@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Models;
@@ -24,6 +25,13 @@ namespace NextToMe.API.Controllers
         public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
         {
             return await _messageCommentService.SendComment(request);
+        }
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<List<MessageCommentResponse>> GetComments(string messageId, int skip = 0, int take = int.MaxValue)
+        {
+            return await _messageCommentService.GetComments(skip, take, messageId);
         }
     }
 }

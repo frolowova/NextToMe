@@ -4,8 +4,10 @@ using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
 using NextToMe.Common.Exceptions;
 
 namespace NextToMe.Services
@@ -21,6 +23,16 @@ namespace NextToMe.Services
         {
             _dbContext = dbContext;
             _mapper = mapper;
+        }
+
+        public Task<List<MessageCommentResponse>> GetComments(int skip, int take, string messageId)
+        {
+            return Task.FromResult(_dbContext.MessageComments
+                .Where(x => x.MessageId == messageId)
+                .Skip(skip)
+                .Take(take)
+                .ProjectTo<MessageCommentResponse>(_mapper.ConfigurationProvider)
+                .ToList());
         }
 
         public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
