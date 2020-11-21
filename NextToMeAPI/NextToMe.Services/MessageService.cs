@@ -50,7 +50,8 @@ namespace NextToMe.Services
                     From = x.User.UserName,
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
-                    DeleteAt = x.DeleteAt
+                    DeleteAt = x.DeleteAt,
+                    Id = x.Id
                 })
                 .ToList());
         }

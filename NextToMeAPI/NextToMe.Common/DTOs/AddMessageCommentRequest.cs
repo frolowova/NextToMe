@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace NextToMe.Common.DTOs
 {
@@ -12,7 +10,6 @@ namespace NextToMe.Common.DTOs
 
         public string MessageId { get; set; }
 
-        public Guid CommentId { get; set; }
-
+        public string CommentId { get; set; }
     }
 }

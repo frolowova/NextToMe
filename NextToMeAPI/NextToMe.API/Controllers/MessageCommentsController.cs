@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextToMe.Common.DTOs;
@@ -11,7 +12,7 @@ namespace NextToMe.API.Controllers
     [ApiController]
     [Authorize(Roles = Roles.User)]
     [Route("api/message/comments")]
-    public class MessageCommentsController
+    public class MessageCommentsController : ControllerBase
     {
         private readonly IMessageCommentService _messageCommentService;
 

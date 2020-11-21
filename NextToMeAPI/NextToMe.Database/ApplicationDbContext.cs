@@ -48,6 +48,11 @@ namespace NextToMe.Database
                .HasMany(x => x.Messages)
                .WithOne(x => x.User)
                .HasForeignKey(x => x.UserId);
+
+            modelBuilder.Entity<Message>()
+                .HasMany(x => x.Comments)
+                .WithOne(x => x.Message)
+                .HasForeignKey(x => x.MessageId);
         }
 
     }

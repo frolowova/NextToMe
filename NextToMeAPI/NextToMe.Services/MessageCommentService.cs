@@ -29,6 +29,7 @@ namespace NextToMe.Services
         {
             return Task.FromResult(_dbContext.MessageComments
                 .Where(x => x.MessageId == messageId)
+                .OrderBy(x => x.CreatedAt)
                 .Skip(skip)
                 .Take(take)
                 .ProjectTo<MessageCommentResponse>(_mapper.ConfigurationProvider)
@@ -46,9 +47,9 @@ namespace NextToMe.Services
             }
             else
             {
-                if (_dbContext.MessageComments.Any(x => x.Id == request.CommentId))
+                if (_dbContext.MessageComments.Any(x => x.MessageId == request.CommentId))
                 {
-                    request.MessageId = _dbContext.MessageComments.First(x => x.Id == request.CommentId).MessageId;
+                    request.MessageId = _dbContext.MessageComments.First(x => x.MessageId == request.CommentId).MessageId;
                 }
                 else
                 {

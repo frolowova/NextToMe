@@ -21,7 +21,8 @@ namespace NextToMe.Database.Entities
         public Point Location { get; set; }
 
         public Guid UserId { get; set; }
-
+        
+        [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
         public virtual ICollection<MessageComment> Comments { get; set; } = new HashSet<MessageComment>();

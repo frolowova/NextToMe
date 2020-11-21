@@ -1,4 +1,5 @@
-﻿using NextToMe.Common.DTOs;
+﻿using System;
+using NextToMe.Common.DTOs;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
