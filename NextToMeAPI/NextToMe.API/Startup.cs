@@ -110,6 +110,7 @@ namespace NextToMe.API
             services.AddTransient<IMessageService, MessageService>();
             services.AddTransient<IMessageCommentService, MessageCommentService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddHostedService<MessageDeleteService>();
 
             services.AddControllers();

@@ -8,7 +8,8 @@ namespace NextToMe.Services.ServiceInterfaces
 {
     public interface IAuthService
     {
-        public Task<LoginResponse> Register(LoginRequest request);
+        public Task Register(RegisterRequest request);
+        public Task ConfirmEmail(EmailConfirmRequest request);
         public Task<LoginResponse> Login(LoginRequest request);
         public Task<LoginResponse> RefreshToken(RefreshTokenRequest request);
     }

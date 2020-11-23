@@ -30,11 +30,11 @@ namespace NextToMe.API.Controllers
         /// <summary>
         /// Get Messages ordered by created date
         /// </summary>
-        [HttpGet]
+        [HttpPost]
         [Route("get")]
-        public async Task<List<MessageResponse>> GetMessages(int skip = 0, int take = int.MaxValue, Location currentLocation = null,  int gettingMessagesRadiusInMeters = 500)
+        public async Task<List<MessageResponse>> GetMessages(GetMessageRequest request)
         {
-            return await _messageService.GetMessages(skip, take, currentLocation, gettingMessagesRadiusInMeters);
+            return await _messageService.GetMessages(request.Skip, request.Take, request.CurrentLocation, request.GettingMessagesRadiusInMeters);
         }
     }
 }
