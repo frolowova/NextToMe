@@ -30,7 +30,7 @@ namespace NextToMe.API.Controllers
 
         [HttpGet]
         [Route("get")]
-        public async Task<List<MessageCommentResponse>> GetComments(string messageId, int skip = 0, int take = int.MaxValue)
+        public async Task<List<MessageCommentResponse>> GetComments(Guid messageId, int skip = 0, int take = int.MaxValue)
         {
             return await _messageCommentService.GetComments(skip, take, messageId);
         }

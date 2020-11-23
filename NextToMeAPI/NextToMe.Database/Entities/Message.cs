@@ -10,7 +10,7 @@ namespace NextToMe.Database.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Text { get; set; }
 
