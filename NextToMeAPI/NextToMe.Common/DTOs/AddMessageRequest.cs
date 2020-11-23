@@ -11,6 +11,6 @@ namespace NextToMe.Common.DTOs
 
         public Location Location { get; set; }
 
-        public DateTime? DeleteAt { get; set; }
+        public string Place { get; set; }
     }
 }

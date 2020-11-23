@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using NextToMe.Database;
@@ -9,9 +10,10 @@ using NextToMe.Database;
 namespace NextToMe.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201123082550_MessagePlace")]
+    partial class MessagePlace
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -191,14 +193,9 @@ namespace NextToMe.Database.Migrations
                     b.Property<string>("Text")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MessageId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("MessageComments");
                 });
@@ -351,12 +348,6 @@ namespace NextToMe.Database.Migrations
                     b.HasOne("NextToMe.Database.Entities.Message", "Message")
                         .WithMany("Comments")
                         .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NextToMe.Database.Entities.User", "User")
-                        .WithMany("MessageComments")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

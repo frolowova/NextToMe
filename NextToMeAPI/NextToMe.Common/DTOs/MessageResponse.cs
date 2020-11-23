@@ -11,5 +11,7 @@ namespace NextToMe.Common.DTOs
         public string From { get; set; }
 
         public double DistanceToUser { get; set; }
+
+        public DateTime? DeleteAt { get; set; }
     }
 }
