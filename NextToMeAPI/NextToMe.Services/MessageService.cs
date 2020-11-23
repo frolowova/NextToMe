@@ -16,6 +16,8 @@ namespace NextToMe.Services
 {
     public class MessageService : IMessageService
     {
+        private TimeSpan _messageDefaultLifetime = TimeSpan.FromDays(1);
+
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
         private readonly IHttpContextAccessor _contextAccessor;
@@ -51,7 +53,8 @@ namespace NextToMe.Services
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
                     DeleteAt = x.DeleteAt,
-                    Id = x.Id
+                    Id = x.Id,
+                    Place = x.Place
                 })
                 .ToList());
         }
@@ -62,6 +65,7 @@ namespace NextToMe.Services
             var newMessage = _mapper.Map<Message>(request);
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;
+            newMessage.DeleteAt = DateTime.UtcNow.Add(_messageDefaultLifetime);
             _dbContext.Add(newMessage);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<MessageResponse>(newMessage);

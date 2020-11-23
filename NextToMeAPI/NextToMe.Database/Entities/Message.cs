@@ -20,6 +20,8 @@ namespace NextToMe.Database.Entities
 
         public Point Location { get; set; }
 
+        public string Place { get; set; }
+
         public Guid UserId { get; set; }
         
         [ForeignKey("UserId")]

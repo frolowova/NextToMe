@@ -9,6 +9,9 @@ namespace NextToMe.Database.Entities
     {
         public virtual ICollection<Message> Messages { get; set; } = new HashSet<Message>();
 
+
+        public virtual ICollection<MessageComment> MessageComments { get; set; } = new HashSet<MessageComment>();
+
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
     }
 }

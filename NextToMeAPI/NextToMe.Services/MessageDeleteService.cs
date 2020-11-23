@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NextToMe.Common;
 
@@ -13,6 +14,7 @@ namespace NextToMe.Services
 {
     public class MessageDeleteService : BackgroundService
     {
+        private readonly TimeSpan _messageMaxLifetime = TimeSpan.FromDays(2);
         private readonly TimeSpan _delayTime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
@@ -37,8 +39,8 @@ namespace NextToMe.Services
             {
                 var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var currentTime = DateTime.UtcNow;
-
-                IQueryable<Message> messages = context.Messages.Where(x => x.DeleteAt != null && x.DeleteAt < currentTime);
+                DateTime minCreatedDate = currentTime.Subtract(_messageMaxLifetime);
+                IQueryable<Message> messages = context.Messages.Where(x => (x.DeleteAt != null && x.DeleteAt < currentTime) || x.CreatedAt < minCreatedDate);
 
                 context.RemoveRange(messages);
                 await context.SaveChangesAsync();

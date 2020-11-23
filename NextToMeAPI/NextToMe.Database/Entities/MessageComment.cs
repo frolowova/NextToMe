@@ -13,13 +13,15 @@ namespace NextToMe.Database.Entities
         public string Text { get; set; }
 
         public DateTime CreatedAt { get; set; }
-
-        public string UserName => Message.User.UserName;
-
+        
         [Required]
         public string MessageId { get; set; }
-        
+
+        public Guid UserId { get; set; }
+
         [ForeignKey("MessageId")]
         public virtual Message Message { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

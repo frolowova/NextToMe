@@ -85,7 +85,7 @@ namespace NextToMe.Tests
             await messageCommentsController.SendComment(new AddMessageCommentRequest
             {
                 Text = _defaultCommentsText,
-                CommentId = comments[0].MessageId
+                MessageId = comments[0].MessageId
             });
             comments = await messageCommentsController.GetComments(messages[0].Id);
 

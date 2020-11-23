@@ -93,45 +93,7 @@ namespace NextToMe.Tests
                 Assert.AreEqual((messagesToSkip + i).ToString(), messages[i].Text);
             }
         }
-
-        [Test]
-        public async Task DeleteMessageTest()
-        {
-            var deleteDate = DateTime.UtcNow.AddSeconds(DeleteMessageDelayInSeconds);
-            MessagesController controller = GetMessagesController();
-            await controller.SendMessage(new AddMessageRequest
-            {
-                Text = _defaultMessageText,
-                Location = _zeroLocation,
-                DeleteAt = deleteDate
-            });
-            await Task.Delay(TimeSpan.FromSeconds(DeleteMessageDelayInSeconds * 2));
-            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
-            Assert.IsEmpty(messages);
-        }
-
-        [Test]
-        public async Task DeleteOneOfTwoMessagesTest()
-        {
-            var deleteDate = DateTime.UtcNow.AddSeconds(DeleteMessageDelayInSeconds);
-            MessagesController controller = GetMessagesController();
-            await controller.SendMessage(new AddMessageRequest
-            {
-                Text = _defaultMessageText,
-                DeleteAt = deleteDate,
-                Location = _zeroLocation
-            });
-            await controller.SendMessage(new AddMessageRequest
-            {
-                Text = _secondMessageText,
-                Location = _zeroLocation
-            });
-            await Task.Delay(TimeSpan.FromSeconds(DeleteMessageDelayInSeconds * 2));
-            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
-            Assert.AreEqual(1, messages.Count);
-            Assert.AreEqual(_secondMessageText, messages[0].Text);
-        }
-
+        
         private async Task SendMessagesWithNumbers(MessagesController controller, int count)
         {
             for (var i = 0; i < count; ++i)
