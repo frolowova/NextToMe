@@ -8,6 +8,6 @@ namespace NextToMe.Common.DTOs
         [Required]
         public string Text { get; set; }
 
-        public string MessageId { get; set; }
+        public Guid MessageId { get; set; }
     }
 }

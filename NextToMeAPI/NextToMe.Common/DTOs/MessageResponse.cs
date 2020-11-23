@@ -4,7 +4,7 @@ namespace NextToMe.Common.DTOs
 {
     public class MessageResponse : AddMessageRequest
     {
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
