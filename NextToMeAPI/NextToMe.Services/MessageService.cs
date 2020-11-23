@@ -35,6 +35,7 @@ namespace NextToMe.Services
 
         public Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500)
         {
+
             var userLocation = new Point(currentLocation.Latitude, currentLocation.Longitude) { SRID = 4326 };
 
             return Task.FromResult(_dbContext.Messages
@@ -49,7 +50,8 @@ namespace NextToMe.Services
                     From = x.User.UserName,
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
-                    DeleteAt = x.DeleteAt
+                    DeleteAt = x.DeleteAt,
+                    Id = x.Id
                 })
                 .ToList());
         }

@@ -18,6 +18,11 @@ namespace NextToMe.Services.Mappings
                 .ForMember(x => x.Location, opt => opt.MapFrom(y => new Common.Models.Location(y.Location.X, y.Location.Y)))
                 .ReverseMap();
 
+            CreateMap<AddMessageCommentRequest, MessageComment>().ReverseMap();
+            CreateMap<MessageComment, MessageCommentResponse>()
+                .ForMember(x => x.From, opt => opt.MapFrom(y => y.UserName))
+                .ReverseMap();
+
             CreateMap<User, LoginResponse>().ReverseMap();
         }
     }

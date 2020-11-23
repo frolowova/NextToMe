@@ -102,6 +102,7 @@ namespace NextToMe.Tests
             await controller.SendMessage(new AddMessageRequest
             {
                 Text = _defaultMessageText,
+                Location = _zeroLocation,
                 DeleteAt = deleteDate
             });
             await Task.Delay(TimeSpan.FromSeconds(DeleteMessageDelayInSeconds * 2));

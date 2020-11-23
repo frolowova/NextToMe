@@ -30,6 +30,9 @@ namespace NextToMe.Tests.Helpers
         protected MessagesController GetMessagesController()
             => _host.Services.GetRequiredService<MessagesController>();
 
+        protected MessageCommentsController GetMessageCommentsController()
+            => _host.Services.GetRequiredService<MessageCommentsController>();
+
         [OneTimeSetUp]
         public async Task Init()
         {
@@ -58,6 +61,7 @@ namespace NextToMe.Tests.Helpers
             {
                 var dbContext = _host.Services.GetRequiredService<ApplicationDbContext>();
                 dbContext.Messages.RemoveRange(dbContext.Messages);
+                dbContext.MessageComments.RemoveRange(dbContext.MessageComments);
                 await dbContext.SaveChangesAsync();
             }
         }

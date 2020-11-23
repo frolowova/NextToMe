@@ -2,16 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using NetTopologySuite.Geometries;
 using NextToMe.Database;
 
 namespace NextToMe.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201115233118_AddMessageComment")]
+    partial class AddMessageComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,9 +157,6 @@ namespace NextToMe.Database.Migrations
                     b.Property<DateTime?>("DeleteAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<Point>("Location")
-                        .HasColumnType("point");
-
                     b.Property<string>("Text")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -174,15 +172,14 @@ namespace NextToMe.Database.Migrations
 
             modelBuilder.Entity("NextToMe.Database.Entities.MessageComment", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("MessageId")
-                        .IsRequired()
                         .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("Text")
@@ -192,7 +189,7 @@ namespace NextToMe.Database.Migrations
 
                     b.HasIndex("MessageId");
 
-                    b.ToTable("MessageComments");
+                    b.ToTable("MessageComment");
                 });
 
             modelBuilder.Entity("NextToMe.Database.Entities.RefreshToken", b =>
@@ -342,9 +339,7 @@ namespace NextToMe.Database.Migrations
                 {
                     b.HasOne("NextToMe.Database.Entities.Message", "Message")
                         .WithMany("Comments")
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MessageId");
                 });
 
             modelBuilder.Entity("NextToMe.Database.Entities.RefreshToken", b =>
