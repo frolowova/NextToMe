@@ -1,11 +1,14 @@
 <template>
   <div>
-    <h1>Hello NextToMe</h1>
+    <page-message />
   </div>
 </template>
 
 <script>
+import PageMessage from "../components/PageMessage.vue";
 export default {
-  components: {},
+  components: {
+    PageMessage,
+  },
 };
 </script>
