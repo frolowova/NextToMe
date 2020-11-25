@@ -9,6 +9,7 @@ namespace NextToMe.Services.ServiceInterfaces
     public interface IEmailService
     {
         public string GetInvitationMessage(string redirectUrl);
+        public string GetResetMessage(string redirectUrl);
         public Task SendEmailAsync(string to, string subject, string body);
     }
 }

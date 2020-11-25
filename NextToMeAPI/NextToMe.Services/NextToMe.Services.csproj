@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="emailTemplates\reseting.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="emailTemplates\invitation.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

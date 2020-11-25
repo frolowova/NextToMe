@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using NextToMe.Common;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Exceptions;
-using NextToMe.Common.Models;
 using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
@@ -18,15 +20,13 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 
 namespace NextToMe.Services
 {
     public class AuthService : IAuthService
     {
         private const string _emailConfirmationSubject = "NextToMe: Email confirmation";
+        private const string _emailResetSubject = "NextToMe: Password Change";
 
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -146,6 +146,69 @@ namespace NextToMe.Services
             }
 
             return await GenerateLoginResponse(user);
+        }
+
+        public async Task ResetPassword(ResetPasswordRequest request)
+        {
+            User user = await _userManager.FindByNameAsync(request.Login);
+            if (user == null)
+            {
+                throw new AuthException("Incorrect user login or password");
+            }
+            if (!user.EmailConfirmed)
+            {
+                throw new AuthException("Email is not confirmed");
+            }
+
+            var queryParams = new Dictionary<string, string>
+            {
+                { "userId", user.Id.ToString() },
+                { "code", await _userManager.GeneratePasswordResetTokenAsync(user)}
+            };
+
+            string redirectUrl = QueryHelpers.AddQueryString(request.RedirectUrl, queryParams);
+            string messageBody = _emailService.GetResetMessage(redirectUrl);
+            await _emailService.SendEmailAsync(request.Login, _emailResetSubject, messageBody);
+        }
+
+
+        public async Task SetNewPassword(SetNewPasswordRequest request)
+        {
+            if (request?.Code == null)
+            {
+                throw new AuthException("No code provided");
+            }
+
+            IdentityResult passwordValidationResult = await ValidatePassword(request.NewPassword);
+            if (!passwordValidationResult.Succeeded)
+            {
+                throw new AuthException(passwordValidationResult.Errors);
+            }
+
+            User user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
+            if (user == null)
+            {
+                throw new AuthException("Incorrect user ID ");
+            }
+
+            bool isEmailTokenValid = await _userManager.VerifyUserTokenAsync(
+                user,
+                _userManager.Options.Tokens.PasswordResetTokenProvider,
+                UserManager<User>.ResetPasswordTokenPurpose,
+                request.Code);
+
+            if (!isEmailTokenValid)
+            {
+                throw new AuthException("Incorrect code", $"Email token is not valid for user {user}");
+            }
+
+            await _userManager.RemovePasswordAsync(user);
+            IdentityResult passwordResult = await _userManager.AddPasswordAsync(user, request.NewPassword);
+            if (!passwordResult.Succeeded)
+            {
+                throw new AuthException(passwordResult.Errors);
+            }
+
         }
 
         public async Task<LoginResponse> RefreshToken(RefreshTokenRequest request)
