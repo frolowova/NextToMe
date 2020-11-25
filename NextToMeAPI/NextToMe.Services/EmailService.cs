@@ -18,8 +18,8 @@ namespace NextToMe.Services
 {
     public class EmailService : IEmailService
     {
-        private const string _emailConfirmTemplateFile = "../NextToMe.Services/emailTemplates/invitation.html";
-        private const string _emailResetPasswordTemplateFile = "../NextToMe.Services/emailTemplates/reseting.html";
+        private const string _emailConfirmTemplateFile = "emailTemplates/invitation.html";
+        private const string _emailResetPasswordTemplateFile = "emailTemplates/reseting.html";
         private const string _emailLinkToReplace = "-link-";
         private const string _senderEmail = "nexttome.noreply@gmail.com";
         private const string _senderName = "NextToMe NoReply";
