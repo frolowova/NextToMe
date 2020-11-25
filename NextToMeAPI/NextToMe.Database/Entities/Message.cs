@@ -22,6 +22,8 @@ namespace NextToMe.Database.Entities
 
         public string Place { get; set; }
 
+        public long Views { get; set; }
+
         public Guid UserId { get; set; }
         
         [ForeignKey("UserId")]
