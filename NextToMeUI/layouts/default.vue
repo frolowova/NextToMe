@@ -1,5 +1,5 @@
-<template class="template">
-  <v-app>
+<template>
+  <v-app dark>
     <v-container >
       <nuxt />
     </v-container>
@@ -8,7 +8,7 @@
   </v-app>
 </template>
 <script>
-  import FooterMenu from "@/components/FooterMenu";
+  import FooterMenu from "@/components/NavMenu/FooterMenu";
 
   export default {
   components: {
@@ -20,11 +20,4 @@
     },
   };
 </script>
-<style scoped>
-.container{
-  margin: 0 auto;
-  padding: 16px;
 
-}
-
-</style>
