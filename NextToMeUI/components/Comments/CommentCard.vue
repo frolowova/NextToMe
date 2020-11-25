@@ -30,11 +30,6 @@ export default {
     commentData: Object,
     index: Number
   }
-  //   computed: {
-  //     comments() {
-  //       return this.$store.state.comments;
-  //     }
-  //   }
 };
 </script>
 
