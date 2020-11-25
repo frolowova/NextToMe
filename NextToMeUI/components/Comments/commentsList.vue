@@ -17,12 +17,6 @@ import CommentCard from "@/components/comments/CommentCard";
 
 export default {
   components: { CommentCard },
-  // methods: {
-  //     getComments() {
-  //       this.$store.dispatch("addComments");
-  //     },
-
-  // },
 
   computed: {
     comments() {
@@ -30,9 +24,6 @@ export default {
     }
   },
 
-  mounted() {
-    // this.getComments()
-  }
 };
 </script>
 
@@ -44,9 +35,8 @@ export default {
 
 .comments-conteiner {
   border: 1px solid #ccc;
-  background-color: #3c3c3c;
+  background-color: #F9F9F9;
   padding: 1rem;
-  //   margin-bottom: 1rem;
 }
 .up-bar {
   display: flex;
