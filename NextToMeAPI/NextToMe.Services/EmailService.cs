@@ -18,7 +18,8 @@ namespace NextToMe.Services
 {
     public class EmailService : IEmailService
     {
-        private const string _emailTemplateFile = "emailTemplates/invitation.html";
+        private const string _emailConfirmTemplateFile = "emailTemplates/invitation.html";
+        private const string _emailResetPasswordTemplateFile = "emailTemplates/reseting.html";
         private const string _emailLinkToReplace = "-link-";
         private const string _senderEmail = "nexttome.noreply@gmail.com";
         private const string _senderName = "NextToMe NoReply";
@@ -44,7 +45,14 @@ namespace NextToMe.Services
 
         public string GetInvitationMessage(string redirectUrl)
         {
-            var htmlText = File.ReadAllText(_emailTemplateFile);
+            var htmlText = File.ReadAllText(_emailConfirmTemplateFile);
+            htmlText = htmlText.Replace(_emailLinkToReplace, redirectUrl);
+            return htmlText;
+        }
+
+        public string GetResetMessage(string redirectUrl)
+        {
+            var htmlText = File.ReadAllText(_emailResetPasswordTemplateFile);
             htmlText = htmlText.Replace(_emailLinkToReplace, redirectUrl);
             return htmlText;
         }
