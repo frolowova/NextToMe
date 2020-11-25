@@ -67,10 +67,13 @@ namespace NextToMe.Services
                 .ToList();
 
             List<Guid> messageIds = messages.Select(x => x.Id).ToList();
-            int updatedCount = await _dbContext.Messages
-                .Where(x => messageIds.Contains(x.Id))
-                .UpdateAsync(x => new Message { Views = x.Views + 1, DeleteAt = x.DeleteAt.Value.AddMinutes(_messageExtraLifeTimeMinutes) });
-            _logger.LogInformation($"Get Message: updated {updatedCount} messages");
+            if (!_dbContext.IsInMemory())
+            {
+                int updatedCount = await _dbContext.Messages
+                    .Where(x => messageIds.Contains(x.Id))
+                    .UpdateAsync(x => new Message { Views = x.Views + 1, DeleteAt = x.DeleteAt.Value.AddMinutes(_messageExtraLifeTimeMinutes) });
+                _logger.LogInformation($"Get Message: updated {updatedCount} messages");
+            }
 
             return messages;
         }
