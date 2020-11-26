@@ -17,7 +17,7 @@ namespace NextToMe.Services
 {
     public class MessageCommentService : IMessageCommentService
     {
-        private readonly TimeSpan _messageExtraLifeTime = TimeSpan.FromMinutes(10);
+        private static readonly TimeSpan _messageExtraLifeTime = TimeSpan.FromMinutes(10);
 
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;

@@ -1,15 +1,10 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using NextToMe.Common.DTOs;
 using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -18,7 +13,8 @@ namespace NextToMe.Services
 {
     public class EmailService : IEmailService
     {
-        private const string _emailTemplateFile = "emailTemplates/invitation.html";
+        private const string _emailConfirmTemplateFile = "../emailTemplates/invitation.html";
+        private const string _emailResetPasswordTemplateFile = "../emailTemplates/reseting.html";
         private const string _emailLinkToReplace = "-link-";
         private const string _senderEmail = "nexttome.noreply@gmail.com";
         private const string _senderName = "NextToMe NoReply";
@@ -44,7 +40,16 @@ namespace NextToMe.Services
 
         public string GetInvitationMessage(string redirectUrl)
         {
-            var htmlText = File.ReadAllText(_emailTemplateFile);
+            var pathToTemplate = Path.Combine(System.Reflection.Assembly.GetCallingAssembly().Location, _emailConfirmTemplateFile);
+            var htmlText = File.ReadAllText(pathToTemplate);
+            htmlText = htmlText.Replace(_emailLinkToReplace, redirectUrl);
+            return htmlText;
+        }
+
+        public string GetResetMessage(string redirectUrl)
+        {
+            var pathToTemplate = Path.Combine(System.Reflection.Assembly.GetCallingAssembly().Location, _emailResetPasswordTemplateFile);
+            var htmlText = File.ReadAllText(pathToTemplate);
             htmlText = htmlText.Replace(_emailLinkToReplace, redirectUrl);
             return htmlText;
         }
