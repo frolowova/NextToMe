@@ -1,22 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using NetTopologySuite.Geometries;
 
 namespace NextToMe.Database.Migrations
 {
-    public partial class AddLocation : Migration
+    public partial class MessageViews : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<Point>(
-                name: "Location",
+            migrationBuilder.AddColumn<long>(
+                name: "Views",
                 table: "Messages",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0L);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Location",
+                name: "Views",
                 table: "Messages");
         }
     }

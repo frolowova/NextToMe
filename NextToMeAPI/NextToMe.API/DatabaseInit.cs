@@ -21,7 +21,7 @@ namespace NextToMe.API
             var user1 = await userManager.FindByNameAsync(user1Email);
             if (user1 == null)
             {
-                user1 = new User { Email = user1Email, UserName = user1Email };
+                user1 = new User { Email = user1Email, UserName = user1Email, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(user1, password);
                 if (result.Succeeded)
                 {
@@ -31,7 +31,7 @@ namespace NextToMe.API
             var user2 = await userManager.FindByNameAsync(user2Email);
             if (user2 == null)
             {
-                user2 = new User { Email = user2Email, UserName = user2Email };
+                user2 = new User { Email = user2Email, UserName = user2Email, EmailConfirmed = true };
                 IdentityResult result = await userManager.CreateAsync(user2, password);
                 if (result.Succeeded)
                 {

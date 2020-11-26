@@ -4,13 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using NetTopologySuite.Geometries;
 using NextToMe.Database;
 
 namespace NextToMe.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201021060403_Initial")]
-    partial class Initial
+    [Migration("20201125184331_MessageViews")]
+    partial class MessageViews
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,12 +148,49 @@ namespace NextToMe.Database.Migrations
 
             modelBuilder.Entity("NextToMe.Database.Entities.Message", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DeleteAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Point>("Location")
+                        .HasColumnType("point");
+
+                    b.Property<string>("Place")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<long>("Views")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("NextToMe.Database.Entities.MessageComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Text")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
@@ -162,9 +200,11 @@ namespace NextToMe.Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("MessageId");
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("MessageComments");
                 });
 
             modelBuilder.Entity("NextToMe.Database.Entities.RefreshToken", b =>
@@ -305,6 +345,21 @@ namespace NextToMe.Database.Migrations
                 {
                     b.HasOne("NextToMe.Database.Entities.User", "User")
                         .WithMany("Messages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NextToMe.Database.Entities.MessageComment", b =>
+                {
+                    b.HasOne("NextToMe.Database.Entities.Message", "Message")
+                        .WithMany("Comments")
+                        .HasForeignKey("MessageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NextToMe.Database.Entities.User", "User")
+                        .WithMany("MessageComments")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
