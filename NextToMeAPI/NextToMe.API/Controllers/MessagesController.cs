@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Models;
 using NextToMe.Services.ServiceInterfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace NextToMe.API.Controllers
 {
@@ -33,11 +30,11 @@ namespace NextToMe.API.Controllers
         /// <summary>
         /// Get Messages ordered by created date
         /// </summary>
-        [HttpGet]
+        [HttpPost]
         [Route("get")]
-        public async Task<List<MessageResponse>> GetMessages(int skip = 0, int take = int.MaxValue)
+        public async Task<List<MessageResponse>> GetMessages(GetMessageRequest request)
         {
-            return await _messageService.GetMessages(skip, take);
+            return await _messageService.GetMessages(request.Skip, request.Take, request.CurrentLocation, request.GettingMessagesRadiusInMeters);
         }
     }
 }

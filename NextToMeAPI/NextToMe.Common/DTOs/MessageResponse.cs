@@ -1,14 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace NextToMe.Common.DTOs
 {
     public class MessageResponse : AddMessageRequest
     {
+        public Guid Id { get; set; }
+
         public DateTime CreatedAt { get; set; }
-        
+
         public string From { get; set; }
+
+        public double DistanceToUser { get; set; }
+
+        public DateTime? DeleteAt { get; set; }
+
+        public long Views { get; set; }
     }
 }

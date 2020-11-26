@@ -82,6 +82,7 @@ namespace NextToMe.API
                     .UseMySql(
                         Configuration.GetConnectionString("ApplicationDbContext"),
                         mySqlOptions => mySqlOptions
+                            .UseNetTopologySuite()
                             .ServerVersion(new Version(8, 0, 21), ServerType.MySql)));
 
             services.AddAuthorization();
@@ -107,7 +108,9 @@ namespace NextToMe.API
             services.AddHttpContextAccessor();
 
             services.AddTransient<IMessageService, MessageService>();
+            services.AddTransient<IMessageCommentService, MessageCommentService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddHostedService<MessageDeleteService>();
 
             services.AddControllers();

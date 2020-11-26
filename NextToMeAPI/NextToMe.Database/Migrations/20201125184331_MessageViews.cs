@@ -1,22 +1,22 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace NextToMe.Database.Migrations
 {
-    public partial class DeleteTimeInMessage : Migration
+    public partial class MessageViews : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DeleteAt",
+            migrationBuilder.AddColumn<long>(
+                name: "Views",
                 table: "Messages",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0L);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "DeleteAt",
+                name: "Views",
                 table: "Messages");
         }
     }
