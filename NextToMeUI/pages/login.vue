@@ -3,7 +3,7 @@
     <span class="auth__descr">Вход</span>
     <loginForm class="mb-6"/>
     <linkButton to='/signup' text='Зарегистрироваться' class="mb-4"/>
-    <nuxt-link class="login-page__link" to='/reset-password'>Забыли пароль</nuxt-link>
+    <nuxt-link class="login-page__link" to='/reset'>Забыли пароль</nuxt-link>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ import loginForm from "@/components/LoginForm";
 import linkButton from "@/components/LinkButton";
 
 export default {
-  middleware: [],
+  middleware: ['notAuth'],
   layout: "auth",
   components: {
     loginForm,

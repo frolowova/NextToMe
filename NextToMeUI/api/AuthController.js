@@ -8,7 +8,7 @@ class AuthController extends APIController {
   async login(user_info) {
     const loginResponse = await this.request("post", "/auth/login", user_info);
     this.updateAuthHeader(loginResponse.data.accessToken);
-    const {data} = loginResponse
+    const { data } = loginResponse;
     return data;
   }
 
@@ -28,6 +28,24 @@ class AuthController extends APIController {
       user_info
     );
     return confirmResponse;
+  }
+
+  async resetPassword(user_info) {
+    const resetStatus = await this.request(
+      "post",
+      "/auth/password/reset",
+      user_info
+    );
+    return resetStatus;
+  }
+
+  async setNewPassword(user_info) {
+    const setStatus = await this.request(
+      "post",
+      "/auth/password/set",
+      user_info
+    );
+    return setStatus;
   }
 }
 
