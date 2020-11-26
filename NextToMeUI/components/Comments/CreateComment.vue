@@ -14,8 +14,27 @@ export default {
   data: () => ({
     comment: ""
   })
+  methods: {
+     sendComment() {
+       const post = "/api/message/comments/send";
+       const dataComment = {
+        text: this.comment,
+       };
+
+       this.$axios
+         .$post(`${this.$store.state.url}${post}`, dataComment, {
+           headers: { Authorization: `Bearer ${this.$store.state.token}` },
+         })
+         .then((response) => {
+           this.$store.dispatch("addMessages");
+         this.message = "";
+         })
+         .catch((error) => {
+           console.log(error);
+         });
+    },
 };
-</script>>
+</script>
 
 
 
