@@ -1,7 +1,7 @@
 <template>
   <div class="create-comment-conteiner">
     <div class="create-comment">
-      <v-textarea class="new-comment-text" v-model="comment" rows="1"></v-textarea>
+      <v-textarea autofocus no-resize flat v-model="comment" rows="1"></v-textarea>
       <v-btn class="mx-2" fab dark large color="#F55454" @click="sendComment">
         <v-icon>mdi-telegram</v-icon>
       </v-btn>
@@ -14,25 +14,26 @@ export default {
   data: () => ({
     comment: ""
   })
-  methods: {
-     sendComment() {
-       const post = "/api/message/comments/send";
-       const dataComment = {
-        text: this.comment,
-       };
+  // methods: {
+  //    sendComment() {
+  //      const post = "/api/message/comments/send";
+  //      const dataComment = {
+  //       text: this.comment,
+  //      };
 
-       this.$axios
-         .$post(`${this.$store.state.url}${post}`, dataComment, {
-           headers: { Authorization: `Bearer ${this.$store.state.token}` },
-         })
-         .then((response) => {
-           this.$store.dispatch("addMessages");
-         this.message = "";
-         })
-         .catch((error) => {
-           console.log(error);
-         });
-    },
+  //      this.$axios
+  //        .$post(`${this.$store.state.url}${post}`, dataComment, {
+  //          headers: { Authorization: `Bearer ${this.$store.state.token}` },
+  //        })
+  //        .then((response) => {
+  //          this.$store.dispatch("addMessages");
+  //        this.message = "";
+  //        })
+  //        .catch((error) => {
+  //          console.log(error);
+  //        });
+  //   },
+  // },
 };
 </script>
 
@@ -43,7 +44,7 @@ export default {
   position: sticky;
   bottom: 0;
   width: 20.5rem;
-  background-color: inherit;
+  background-color: #3c3c3c;
 }
 .create-comment {
   border: 1px solid grey;
@@ -54,11 +55,7 @@ export default {
   justify-content: space-between;
   align-items: center;
 }
-.new-comment-text {
-  outline: none;
-  margin-bottom: 0px;
-  resize: none;
-}
+
 .mx-2 {
   margin-bottom: 0;
   width: 2.5rem;
