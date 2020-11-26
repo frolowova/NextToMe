@@ -1,30 +1,25 @@
 <template class="template">
   <v-app>
-    <v-container >
-      <nuxt />
-    </v-container>
-    <footer-menu />
-    
+    <v-container> </v-container>
+    <footer-menu></footer-menu>
   </v-app>
 </template>
 <script>
-  import FooterMenu from "@/components/FooterMenu";
+import FooterMenu from "@/components/FooterMenu";
 
-  export default {
+export default {
   components: {
     FooterMenu,
-    },
+  },
 
-    data() {
-      return {};
-    },
-  };
+  data() {
+    return {};
+  },
+};
 </script>
 <style scoped>
-.container{
+.container {
   margin: 0 auto;
   padding: 16px;
-
 }
-
 </style>

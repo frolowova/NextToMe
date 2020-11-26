@@ -6,29 +6,28 @@
       class="footer-menu_btns"
     >
       <v-btn>
-        <span>Главная</span>
+        <span class="text-caption">Главная</span>
 
         <v-icon>mdi-home</v-icon>
       </v-btn>
 
       <v-btn>
-        <span>Тегнуть</span>
+        <span class="text-caption">Тегнуть</span>
 
         <v-icon>mdi-pencil</v-icon>
       </v-btn>
 
       <v-btn>
-        <span>Мои Теги</span>
+        <span class="text-caption">Мои Теги</span>
 
         <v-icon>mdi-email</v-icon>
       </v-btn>
 
       <v-btn>
-        <span>Профиль</span>
+        <span class="text-caption">Профиль</span>
 
         <v-icon>mdi-account</v-icon>
       </v-btn>
-    
     </v-bottom-navigation>
   </div>
 </template>
@@ -40,7 +39,6 @@ export default {
 
 <style scoped>
 .footer-menu {
-  
   box-shadow: 8px 0 10px rgba(0, 0, 0, 0.5);
   position: relative;
   display: flex;
