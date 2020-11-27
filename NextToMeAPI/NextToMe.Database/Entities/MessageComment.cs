@@ -8,14 +8,14 @@ namespace NextToMe.Database.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Text { get; set; }
 
         public DateTime CreatedAt { get; set; }
         
         [Required]
-        public string MessageId { get; set; }
+        public Guid MessageId { get; set; }
 
         public Guid UserId { get; set; }
 

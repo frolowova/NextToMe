@@ -9,10 +9,12 @@
 </template>
 <script>
   import FooterMenu from "@/components/FooterMenu";
-  export default {
+
+ export default {
   components: {
     FooterMenu,
     },
+
     data() {
       return {};
     },

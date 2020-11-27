@@ -146,9 +146,9 @@ namespace NextToMe.Database.Migrations
 
             modelBuilder.Entity("NextToMe.Database.Entities.Message", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
@@ -168,6 +168,9 @@ namespace NextToMe.Database.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
+                    b.Property<long>("Views")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -177,16 +180,15 @@ namespace NextToMe.Database.Migrations
 
             modelBuilder.Entity("NextToMe.Database.Entities.MessageComment", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                        .HasColumnType("char(36)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("MessageId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("Text")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");

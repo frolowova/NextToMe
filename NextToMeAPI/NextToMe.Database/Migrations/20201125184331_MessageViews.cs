@@ -2,20 +2,21 @@
 
 namespace NextToMe.Database.Migrations
 {
-    public partial class MessagePlace : Migration
+    public partial class MessageViews : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Place",
+            migrationBuilder.AddColumn<long>(
+                name: "Views",
                 table: "Messages",
-                nullable: true);
+                nullable: false,
+                defaultValue: 0L);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Place",
+                name: "Views",
                 table: "Messages");
         }
     }
