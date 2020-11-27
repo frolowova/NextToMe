@@ -5,9 +5,7 @@
     v-model="valid"
     ref="form"
   >
-    <v-alert dense text type="error" v-if="error">{{
-      error
-    }}</v-alert>
+    <v-alert dense text type="error" v-if="error">{{ error }}</v-alert>
     <v-container class="mb-6">
       <v-text-field
         v-model="user.login"
@@ -21,7 +19,14 @@
         type="password"
       ></v-text-field>
     </v-container>
-    <v-btn type="submit" color="primary" x-large block>
+    <v-btn
+      :loading="loading"
+      :disabled="loading"
+      type="submit"
+      color="primary"
+      x-large
+      block
+    >
       Войти
     </v-btn>
   </v-form>
@@ -40,7 +45,8 @@ export default {
     },
     passwordRules: [p => !!p || "Обязательное поле"],
     loginRules: [l => !!l || "Обязательное поле"],
-    error: null
+    error: null,
+    loading: false
   }),
   computed: {
     errorMessage() {
@@ -54,10 +60,21 @@ export default {
     onLogin() {
       this.validate();
       if (this.valid) {
+        this.loading = true;
         this.$store
           .dispatch(AUTH_LOGIN, { ...this.user })
-          .then(res => this.$router.push("/home"))
-          .catch(err => this.error = "Ошибка авторизации");
+          .then(res => {
+            this.loading = false;
+            this.$router.push("/about");
+          })
+          .catch(err => {
+            if (err == 401) {
+              this.error = "Неверный логин или пароль";
+            } else {
+              this.error = "Ошибка авторизации";
+            }
+            this.loading = false;
+          });
       }
     }
   }

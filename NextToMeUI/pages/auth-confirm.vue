@@ -1,16 +1,22 @@
 <template>
   <div class="confirm-page">
     <span class="auth__descr">Придумайте пароль</span>
-    <confirmForm class="mb-6" />
+    <confirmForm :action="action" class="mb-6" />
   </div>
 </template>
 
 <script>
 import confirmForm from "@/components/confirmForm";
+import { SIGNUP_CONFIRM, RESET_PASSWORD_CONFIRM } from "@/store/actions/auth";
+
 export default {
+  middleware: ['notAuth'],
   components: {
     confirmForm
   },
+  data: () => ({
+    action: SIGNUP_CONFIRM
+  }),
   layout: "auth"
 };
 </script>
