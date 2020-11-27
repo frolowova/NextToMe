@@ -38,6 +38,20 @@ namespace NextToMe.API.Controllers
         }
 
         [HttpPost]
+        [Route("password/reset")]
+        public async Task ResetPassword(ResetPasswordRequest request)
+        {
+            await _authService.ResetPassword(request);
+        }
+
+        [HttpPost]
+        [Route("password/set")]
+        public async Task SetNewPassword(SetNewPasswordRequest request)
+        {
+            await _authService.SetNewPassword(request);
+        }
+
+        [HttpPost]
         [Route("confirm")]
         public async Task ConfirmEmail(EmailConfirmRequest request)
         {

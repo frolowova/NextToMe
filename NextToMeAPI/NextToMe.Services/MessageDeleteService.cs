@@ -14,7 +14,7 @@ namespace NextToMe.Services
 {
     public class MessageDeleteService : BackgroundService
     {
-        private readonly TimeSpan _messageMaxLifetime = TimeSpan.FromDays(2);
+        private static readonly TimeSpan _messageMaxLifetime = TimeSpan.FromDays(2);
         private readonly TimeSpan _delayTime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
