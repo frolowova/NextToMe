@@ -1,25 +1,22 @@
 <template>
   <v-form
     class="confirm-form"
-    @submit.prevent="onConfirm"
+    @submit.prevent="onReset"
     v-model="valid"
     ref="form"
   >
     <v-alert dense text type="error" v-if="errorMessage">{{
       errorMessage
     }}</v-alert>
+    <v-alert dense text type="success" v-if="successMessage">{{
+      successMessage
+    }}</v-alert>
     <v-container class="mb-6">
       <v-text-field
-        v-model="password"
-        label="Пароль"
-        type="password"
-        :rules="[rules.required, rules.min, rules.password]"
-      ></v-text-field>
-      <v-text-field
-        v-model="repeatPassword"
-        label="Подтвердите пароль"
-        type="password"
-        :rules="[rules.required, passwordsMatch]"
+        v-model="login"
+        label="E-mail"
+        type="text"
+        :rules="[rules.required]"
       ></v-text-field>
     </v-container>
     <v-btn
@@ -30,18 +27,19 @@
       x-large
       block
     >
-      Подтвердить
+      Сбросить пароль
     </v-btn>
   </v-form>
 </template>
 
 <script>
+import { RESET_PASSWORD_ATTEMPT } from "@/store/actions/auth";
+
 export default {
   layout: "auth",
   data: () => ({
     valid: true,
-    password: "",
-    repeatPassword: "",
+    login: "",
     rules: {
       required: v => !!v || "Обязательное поле",
       min: v => v.length >= 6 || "Пароль должен содержать > 6 символов",
@@ -49,43 +47,29 @@ export default {
         /((?=.*\d)(?=.*[A-Z]).{6,6})/.test(v) || "Невалидный пароль"
     },
     errorMessage: null,
+    successMessage: null,
     loading: false
   }),
-  computed: {
-    passwordsMatch() {
-      return this.password === this.repeatPassword || "Пароли не совпадают";
-    },
-    userId() {
-      return this.$route.query.userId;
-    },
-    code() {
-      return this.$route.query.code;
-    }
-  },
-  props: {
-    action: String
-  },
   methods: {
     validate() {
       this.$refs.form.validate();
     },
-    onConfirm() {
+    onReset() {
       this.validate();
       if (this.valid) {
         this.loading = true;
         this.$store
-          .dispatch(this.action, {
-            password: this.password,
-            code: this.code,
-            userId: this.userId
+          .dispatch(RESET_PASSWORD_ATTEMPT, {
+            login: this.login
           })
           .then(res => {
             this.loading = false;
-            this.$router.push("/login");
+            this.successMessage =
+              "Успешно. Вам на почту было отправлено письмо для сброса пароля";
           })
           .catch(err => {
             this.loading = false;
-            this.errorMessage = "Ошибка подтверждения";
+            this.errorMessage = "Проверьте правильность введенного логина";
           });
       }
     }
