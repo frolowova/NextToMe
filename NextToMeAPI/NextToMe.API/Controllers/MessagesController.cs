@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Models;
@@ -35,6 +36,27 @@ namespace NextToMe.API.Controllers
         public async Task<List<MessageResponse>> GetMessages(GetMessageRequest request)
         {
             return await _messageService.GetMessages(request.Skip, request.Take, request.CurrentLocation, request.GettingMessagesRadiusInMeters);
+        }
+
+        [HttpPost]
+        [Route("like")]
+        public async Task LikeMessage(Guid messageId)
+        {
+            await _messageService.LikeMessage(messageId);
+        }
+
+        [HttpPost]
+        [Route("like/remove")]
+        public async Task RemoveLike(Guid messageId)
+        {
+            await _messageService.RemoveLikeFromMessage(messageId);
+        }
+
+        [HttpPost]
+        [Route("like/count")]
+        public async Task<int> GetMessageLikesCount(Guid messageId)
+        {
+            return await _messageService.GetMessageLikesCount(messageId);
         }
     }
 }

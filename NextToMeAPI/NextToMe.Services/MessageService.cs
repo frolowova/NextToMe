@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
 using NextToMe.Common.DTOs;
+using NextToMe.Common.Exceptions;
 using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using NextToMe.Common.Exceptions;
 using Z.EntityFramework.Plus;
 using Location = NextToMe.Common.Models.Location;
 
@@ -98,18 +98,58 @@ namespace NextToMe.Services
             {
                 throw new BadRequestException("The message has already been liked");
             }
+
+            Message message = _dbContext.Messages.FirstOrDefault(x => x.Id == messageId);
+            if (message == null)
+            {
+                throw new BadRequestException("There is no message with this id");
+            }
+
+            UserLikedMessage userLikedMessage = new UserLikedMessage()
+            {
+                User = user,
+                Message = message
+            };
+
+            await _dbContext.UserLikedMessages.AddAsync(userLikedMessage);
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task RemoveLikeFromMessage(Guid messageId)
         {
             User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
 
+            if (user.UserLikedMessages.All(x => x.MessageId != messageId))
+            {
+                throw new BadRequestException("The message has not been liked");
+            }
+
+            Message message = _dbContext.Messages
+                .Include(x => x.UserLikedMessages)
+                .FirstOrDefault(x => x.Id == messageId);
+            if (message == null)
+            {
+                throw new BadRequestException("There is no message with this id");
+            }
+
+            UserLikedMessage userLikedMessage = _dbContext.UserLikedMessages
+                .Include(x => x.MessageId == messageId)
+                .First();
+
+            _dbContext.Remove(userLikedMessage);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task GetMessageLikesCount(Guid messageId)
+        public Task<int> GetMessageLikesCount(Guid messageId)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            Message message = _dbContext.Messages.FirstOrDefault(x => x.Id == messageId);
 
+            if (message == null)
+            {
+                throw new BadRequestException("There is no message with this id");
+            }
+
+            return Task.FromResult(_dbContext.UserLikedMessages.Count(x => x.MessageId == messageId));
         }
     }
 }
