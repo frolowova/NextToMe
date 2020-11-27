@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-container >
+    <v-container style="margin-bottom:100px">
       <nuxt />
     </v-container>
     <footer-menu />
@@ -21,9 +21,4 @@
   };
 </script>
 
-<style scoped>
-.container{
-  margin: 0 auto;
-  padding: 16px;
-}
-</style>
+

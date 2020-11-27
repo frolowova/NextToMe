@@ -30,7 +30,6 @@
 
 <style scoped>
 .footer-menu {
-  box-shadow: 8px 0 10px rgba(0, 0, 0, 0.5);
   position: relative;
   display: flex;
   overflow: hidden;
