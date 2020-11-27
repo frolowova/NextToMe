@@ -61,6 +61,16 @@ namespace NextToMe.Database
 
             modelBuilder.Entity<UserLikedMessage>()
                 .HasKey(x => new { x.UserId, x.MessageId });
+
+            modelBuilder.Entity<UserLikedMessage>()
+                .HasOne(x => x.Message)
+                .WithMany(x => x.UserLikedMessages)
+                .HasForeignKey(x => x.MessageId);
+
+            modelBuilder.Entity<UserLikedMessage>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserLikedMessages)
+                .HasForeignKey(x => x.UserId);
         }
     }
 }

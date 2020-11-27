@@ -12,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NextToMe.Common.Exceptions;
 using Z.EntityFramework.Plus;
 using Location = NextToMe.Common.Models.Location;
 
@@ -88,6 +89,27 @@ namespace NextToMe.Services
             _dbContext.Add(newMessage);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<MessageResponse>(newMessage);
+        }
+
+        public async Task LikeMessage(Guid messageId)
+        {
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            if (user.UserLikedMessages.Any(x => x.MessageId == messageId))
+            {
+                throw new BadRequestException("The message has already been liked");
+            }
+        }
+
+        public async Task RemoveLikeFromMessage(Guid messageId)
+        {
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+
+        }
+
+        public async Task GetMessageLikesCount(Guid messageId)
+        {
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+
         }
     }
 }

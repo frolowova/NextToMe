@@ -25,7 +25,7 @@ namespace NextToMe.Database.Entities
         public long Views { get; set; }
 
         public Guid UserId { get; set; }
-        
+
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
 
