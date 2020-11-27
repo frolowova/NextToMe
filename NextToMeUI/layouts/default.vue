@@ -10,7 +10,7 @@
 <script>
   import FooterMenu from "@/components/NavMenu/FooterMenu";
 
-  export default {
+ export default {
   components: {
     FooterMenu,
     },
@@ -21,3 +21,9 @@
   };
 </script>
 
+<style scoped>
+.container{
+  margin: 0 auto;
+  padding: 16px;
+}
+</style>

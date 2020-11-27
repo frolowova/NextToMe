@@ -1,27 +1,32 @@
 <template>
-  <v-card class="mx-auto" margin color="card" width="328">
-    <v-card-title>
-      <v-list-item-avatar color="grey darken-3" large left></v-list-item-avatar>
+  <div>
+    <v-card class="pa-md-4 mb-4 mx-lg-auto" color="card">
+      <div class="d-flex align-top justify-space-between">
+        <div class="d-flex align-center">
+          <v-avatar size="40px">
+            <img alt="Avatar" :src="src" />
+          </v-avatar>
+          <div class="mx-2">
+            <div>{{ commentData.from }}</div>
+          </div>
+        </div>
+        <v-btn icon>
+          <v-icon>mdi-dots-vertical</v-icon>
+        </v-btn>
+      </div>
 
-      <span class="title font-weight-light">{{commentData.from}}</span>
-    </v-card-title>
+      <v-card-text>{{commentData.text}}</v-card-text>
 
-    <v-card-text>{{commentData.text}}</v-card-text>
-
-    <v-card-actions>
-      <v-list-item class="grow">
-        <v-list-item-content></v-list-item-content>
-        <v-row align="center" justify="start">
-          <span>{{commentData.createdAt}}</span>
-        </v-row>
-
-        <v-row align="center" justify="end">
-          <v-icon class="mr-1">mdi-heart</v-icon>
-          <span class="subheading mr-2">256</span>
-        </v-row>
-      </v-list-item>
-    </v-card-actions>
-  </v-card>
+      <v-card-actions>
+        <v-list-item class="grow">
+          <v-list-item-content></v-list-item-content>
+          <v-container justify="start">
+            <span>{{commentData.createdAt}}</span>
+          </v-container>
+        </v-list-item>
+      </v-card-actions>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -30,11 +35,17 @@ export default {
     commentData: Object,
     index: Number
   }
+  //   computed: {
+  //     comments() {
+  //       return this.$store.state.comments;
+  //     }
+  //   }
 };
 </script>
 
 <style lang="scss" scoped>
 .mx-auto {
   margin-bottom: 1rem;
+  width: 20.5rem;
 }
 </style>
