@@ -4,7 +4,9 @@
       class="mx-1"
       lazy-src="https://picsum.photos/id/11/10/6"
       max-height="200px"
-      src="https://picsum.photos/id/11/500/300"
+      src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+    AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+        9TXL0Y4OHwAAAABJRU5ErkJggg=="
     ></v-img>
 
     <v-row class="mx-0">
@@ -22,6 +24,5 @@
         </v-img>
       </v-col>
     </v-row>
-    
   </div>
 </template>
