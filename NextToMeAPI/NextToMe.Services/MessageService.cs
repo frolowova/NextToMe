@@ -80,7 +80,7 @@ namespace NextToMe.Services
 
         public async Task<MessageResponse> SendMessage(AddMessageRequest request)
         {
-            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
             var newMessage = _mapper.Map<Message>(request);
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;
