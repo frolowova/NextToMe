@@ -1,15 +1,30 @@
 <template>
-  <v-app>
-    <div class="container">
-      <nuxt-link to="/">Home</nuxt-link>
-       <nuxt-link to="/profile">Профиль</nuxt-link>
-       <nuxt-link to="/settings">Настройки</nuxt-link>
-       <nuxt /> 
-    </div>
+
+  <v-app dark>
+    <v-container >
+      <nuxt />
+    </v-container>
+    <footer-menu />
+    
   </v-app>
 </template>
-
 <script>
-export default {
-};
+  import FooterMenu from "@/components/NavMenu/FooterMenu";
+
+ export default {
+  components: {
+    FooterMenu,
+    },
+
+    data() {
+      return {};
+    },
+  };
 </script>
+
+<style scoped>
+.container{
+  margin: 0 auto;
+  padding: 16px;
+}
+</style>

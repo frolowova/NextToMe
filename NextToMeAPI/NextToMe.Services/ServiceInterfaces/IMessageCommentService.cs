@@ -7,7 +7,7 @@ namespace NextToMe.Services.ServiceInterfaces
 {
     public interface IMessageCommentService
     {
-        public Task<List<MessageCommentResponse>> GetComments(int skip, int take, string messageId);
+        public Task<List<MessageCommentResponse>> GetComments(int skip, int take, Guid messageId);
         public Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request);
     }
 }

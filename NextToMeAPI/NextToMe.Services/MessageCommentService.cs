@@ -17,7 +17,7 @@ namespace NextToMe.Services
 {
     public class MessageCommentService : IMessageCommentService
     {
-        private readonly TimeSpan _messageExtraLifeTime = TimeSpan.FromMinutes(10);
+        private static readonly TimeSpan _messageExtraLifeTime = TimeSpan.FromMinutes(10);
 
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -36,7 +36,7 @@ namespace NextToMe.Services
             _userManager = userManager;
         }
 
-        public Task<List<MessageCommentResponse>> GetComments(int skip, int take, string messageId)
+        public Task<List<MessageCommentResponse>> GetComments(int skip, int take, Guid messageId)
         {
             return Task.FromResult(_dbContext.MessageComments
                 .Where(x => x.MessageId == messageId)

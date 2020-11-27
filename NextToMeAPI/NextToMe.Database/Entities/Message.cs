@@ -10,7 +10,7 @@ namespace NextToMe.Database.Entities
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Text { get; set; }
 
@@ -21,6 +21,8 @@ namespace NextToMe.Database.Entities
         public Point Location { get; set; }
 
         public string Place { get; set; }
+
+        public long Views { get; set; }
 
         public Guid UserId { get; set; }
         

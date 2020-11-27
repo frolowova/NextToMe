@@ -1,6 +1,5 @@
 ﻿using NextToMe.API.Controllers;
 using NextToMe.Common.DTOs;
-using NextToMe.Common.Exceptions;
 using NextToMe.Common.Models;
 using NextToMe.Tests.Helpers;
 using NUnit.Framework;
@@ -119,7 +118,7 @@ namespace NextToMe.Tests
         //    Assert.Throws<BadRequestException>(async () => await messageCommentsController.GetComments(messageId));
         //}
 
-        private static async Task SendCommentsWithNumbers(MessageCommentsController controller, int count, string messageId)
+        private static async Task SendCommentsWithNumbers(MessageCommentsController controller, int count, Guid messageId)
         {
             for (var i = 0; i < count; ++i)
             {
