@@ -133,8 +133,7 @@ namespace NextToMe.Services
             }
 
             UserLikedMessage userLikedMessage = _dbContext.UserLikedMessages
-                .Include(x => x.MessageId == messageId)
-                .First();
+                .Where(x => x.MessageId == messageId).First(x => x.UserId == user.Id);
 
             _dbContext.Remove(userLikedMessage);
             await _dbContext.SaveChangesAsync();
