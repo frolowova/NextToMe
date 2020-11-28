@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import signupForm from "@/components/SignupForm";
-import linkButton from "@/components/LinkButton";
+import signupForm from "@/components/Auth/SignupForm";
+import linkButton from "@/components/Auth/LinkButton";
 
 export default {
   middleware: ['notAuth'],

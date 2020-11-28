@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import loginForm from "@/components/LoginForm";
-import linkButton from "@/components/LinkButton";
+import loginForm from "@/components/Auth/LoginForm";
+import linkButton from "@/components/Auth/LinkButton";
 
 export default {
   middleware: ['notAuth'],

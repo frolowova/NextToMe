@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import resetForm from "@/components/ResetForm";
-import linkButton from "@/components/LinkButton";
+import resetForm from "@/components/Auth/ResetForm";
+import linkButton from "@/components/Auth/LinkButton";
 export default {
   layout: "auth",
   components: {
