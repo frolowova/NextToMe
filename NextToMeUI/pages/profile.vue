@@ -13,7 +13,7 @@
             <p class="ps-4 body-2">Tags N</p>
           </v-col>
         </v-col>
-        <v-btn text> <v-icon>{{ icons.mdiTuneVariant }}</v-icon> </v-btn>
+        <v-btn text @click="settingsGo"> <v-icon>{{ icons.mdiTuneVariant }}</v-icon> </v-btn>
       </v-row>
     </v-card>
   </v-row>
@@ -34,5 +34,10 @@ export default {
         mdiTuneVariant,
       },
   }),
+  methods:{
+    settingsGo() {
+      this.$router.push("/settings")
+    }
+  }
 }
 </script>

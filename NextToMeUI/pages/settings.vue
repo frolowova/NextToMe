@@ -45,7 +45,7 @@
             align="center"
             justify="space-around"
             >
-            <v-btn class="text-capitalize body-1" text>Выйти</v-btn>
+            <v-btn class="text-capitalize body-1" text @click="settingsOut">Выйти</v-btn>
           </v-row>
           
 
@@ -69,6 +69,11 @@ export default {
     btnPencilName: " ",
 
   }),
+  methods: {
+    settingsOut() {
+      this.$router.push({path:"/profile"})
+    }
+  }
 }
 
 </script>
