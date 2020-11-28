@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using NetTopologySuite.Geometries;
 using NextToMe.Common.DTOs;
 using NextToMe.Database;
@@ -9,9 +10,7 @@ using NextToMe.Services.ServiceInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Z.EntityFramework.Plus;
 using Location = NextToMe.Common.Models.Location;
 
@@ -56,7 +55,7 @@ namespace NextToMe.Services
                 {
                     DistanceToUser = x.Location.Distance(userLocation),
                     CreatedAt = x.CreatedAt,
-                    From = x.User.UserName,
+                    From = x.User.Id,
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
                     DeleteAt = x.DeleteAt,

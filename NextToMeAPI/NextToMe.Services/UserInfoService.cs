@@ -9,6 +9,7 @@ using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace NextToMe.Services
 {
@@ -16,21 +17,20 @@ namespace NextToMe.Services
     {
         private readonly ApplicationDbContext _dbContext;
         private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _contextAccessor;
 
         public UserInfoService(
             ApplicationDbContext dbContext,
-            UserManager<User> userManager)
+            UserManager<User> userManager,
+            IHttpContextAccessor contextAccessor)
         {
             _dbContext = dbContext;
             _userManager = userManager;
+            _contextAccessor = contextAccessor;
         }
         public async Task ChangeUserInfo(ChangeUserInfoRequest request)
         {
-            User user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.UserId);
-            if (user == null)
-            {
-                throw new AuthException("Incorrect user ID ");
-            }
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
 
             UserImage userImage = user.UserImage;
 
