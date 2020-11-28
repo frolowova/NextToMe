@@ -61,6 +61,7 @@ namespace NextToMe.Services
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
                     DeleteAt = x.DeleteAt,
+                    LikesCount = x.UserLikedMessages.ToList().Count,
                     Id = x.Id,
                     Place = x.Place,
                     Views = x.Views
@@ -137,18 +138,6 @@ namespace NextToMe.Services
 
             _dbContext.Remove(userLikedMessage);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public Task<int> GetMessageLikesCount(Guid messageId)
-        {
-            Message message = _dbContext.Messages.FirstOrDefault(x => x.Id == messageId);
-
-            if (message == null)
-            {
-                throw new BadRequestException("There is no message with this id");
-            }
-
-            return Task.FromResult(_dbContext.UserLikedMessages.Count(x => x.MessageId == messageId));
         }
     }
 }

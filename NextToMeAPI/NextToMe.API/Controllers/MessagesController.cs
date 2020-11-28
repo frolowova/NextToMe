@@ -51,12 +51,5 @@ namespace NextToMe.API.Controllers
         {
             await _messageService.RemoveLikeFromMessage(messageId);
         }
-
-        [HttpPost]
-        [Route("like/count")]
-        public async Task<int> GetMessageLikesCount(Guid messageId)
-        {
-            return await _messageService.GetMessageLikesCount(messageId);
-        }
     }
 }

@@ -106,8 +106,8 @@ namespace NextToMe.Tests
             });
             List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
             await controller.LikeMessage(messages[0].Id);
-            int messageLikesCount = await controller.GetMessageLikesCount(messages[0].Id);
-            Assert.AreEqual(1, messageLikesCount);
+            messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            Assert.AreEqual(1, messages[0].LikesCount);
         }
 
         [Test]
@@ -123,8 +123,8 @@ namespace NextToMe.Tests
             List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
             await controller.LikeMessage(messages[0].Id);
             await controller.RemoveLike(messages[0].Id);
-            int messageLikesCount = await controller.GetMessageLikesCount(messages[0].Id);
-            Assert.AreEqual(0, messageLikesCount);
+            messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            Assert.AreEqual(0, messages[0].LikesCount);
         }
 
         private async Task SendMessagesWithNumbers(MessagesController controller, int count)

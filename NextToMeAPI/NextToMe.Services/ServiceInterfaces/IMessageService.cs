@@ -13,6 +13,5 @@ namespace NextToMe.Services.ServiceInterfaces
         public Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500);
         public Task LikeMessage(Guid messageId);
         public Task RemoveLikeFromMessage(Guid messageId);
-        public Task<int> GetMessageLikesCount(Guid messageId);
     }
 }
