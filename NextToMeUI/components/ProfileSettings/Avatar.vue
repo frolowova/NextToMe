@@ -2,7 +2,7 @@
   <div>
     <v-avatar
       color="grey lighten-2"
-      :size=200>
+      :size = sizeC>
     </v-avatar>
   </div>
 </template>
@@ -10,7 +10,7 @@
 <script>
 export default {
   props: {
-    size: Number,
+    sizeC: Number,
   }
 }
 </script>

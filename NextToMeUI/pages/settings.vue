@@ -9,7 +9,7 @@
           <v-row
             class=" mb-10"
             justify="center">
-            <avatar></avatar>
+            <avatar :sizeC=200></avatar>
             <btn-pencil></btn-pencil>
           </v-row>
             
@@ -17,12 +17,12 @@
 
           <v-col class="d-flex align-start pa-2"> 
             <sub-title-input title = "Имя"></sub-title-input>
-            <settings-input></settings-input>
+            <settings-input labelC = "Введите новое имя"></settings-input>
           </v-col >
 
           <v-col class="d-flex align-start pa-2"> 
             <sub-title-input title = "Почта"></sub-title-input>
-            <settings-input></settings-input>
+            <settings-input labelC = "Введите новый e-mail"></settings-input>
           </v-col>
 
           <v-divider></v-divider>

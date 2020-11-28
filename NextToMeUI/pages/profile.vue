@@ -7,13 +7,17 @@
       elevation="0">
       <v-row class="d-flex justify-space-between pa-2 pr-0"> 
         <v-col class="d-flex align-center">
-          <avatar ></avatar>
+          <avatar :sizeC=100></avatar>
           <v-col>
             <p class="ps-4">Name</p>
             <p class="ps-4 body-2">Tags N</p>
           </v-col>
         </v-col>
-        <v-btn text @click="settingsGo"> <v-icon>{{ icons.mdiTuneVariant }}</v-icon> </v-btn>
+        <v-btn
+        text
+        icon 
+        @click="settingsGo">
+        <v-icon>mdi-tune-variant</v-icon> </v-btn>
       </v-row>
     </v-card>
   </v-row>
