@@ -93,7 +93,40 @@ namespace NextToMe.Tests
                 Assert.AreEqual((messagesToSkip + i).ToString(), messages[i].Text);
             }
         }
-        
+
+        [Test]
+
+        public async Task LikeOneMessage()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = _zeroLocation
+            });
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            await controller.LikeMessage(messages[0].Id);
+            int messageLikesCount = await controller.GetMessageLikesCount(messages[0].Id);
+            Assert.AreEqual(1, messageLikesCount);
+        }
+
+        [Test]
+
+        public async Task LikeThenRemoveLikeFromMessage()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = _zeroLocation
+            });
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            await controller.LikeMessage(messages[0].Id);
+            await controller.RemoveLike(messages[0].Id);
+            int messageLikesCount = await controller.GetMessageLikesCount(messages[0].Id);
+            Assert.AreEqual(0, messageLikesCount);
+        }
+
         private async Task SendMessagesWithNumbers(MessagesController controller, int count)
         {
             for (var i = 0; i < count; ++i)
