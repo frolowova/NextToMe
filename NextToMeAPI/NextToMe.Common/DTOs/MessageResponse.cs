@@ -8,7 +8,7 @@ namespace NextToMe.Common.DTOs
 
         public DateTime CreatedAt { get; set; }
 
-        public string From { get; set; }
+        public Guid From { get; set; }
 
         public double DistanceToUser { get; set; }
 

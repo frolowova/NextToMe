@@ -1,9 +1,6 @@
 <template>
   <div class="footer-menu">
-    <v-bottom-navigation
-      color="primary"
-      class="footer-menu_btns"
-    >
+    <v-bottom-navigation color="primary" class="footer-menu_btns">
       <div class="footer-menu_container">
         <v-btn to="/home" nuxt>
           <span>Главная</span>
@@ -19,18 +16,20 @@
           <span>Профиль</span>
           <v-icon>mdi-account</v-icon>
         </v-btn>
+       
+
+        <v-btn to="/tag-create" nuxt>
+          <span>Тегнуть</span>
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
       </div>
     </v-bottom-navigation>
-    <v-btn v-if="$nuxt.$route.path !== '/tag-create'" absolute right fab color="primary" to="/tag-create" nuxt>
-      <v-icon>mdi-pencil</v-icon>
-    </v-btn>
   </div>
 </template>
 
 
 <style scoped>
 .footer-menu {
-  box-shadow: 8px 0 10px rgba(0, 0, 0, 0.5);
   position: relative;
   display: flex;
   overflow: hidden;
