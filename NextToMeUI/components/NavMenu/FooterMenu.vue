@@ -6,7 +6,7 @@
       class="footer-menu_btns"
     >
       <div class="footer-menu_container">
-        <v-btn to="/" nuxt>
+        <v-btn to="/home" nuxt>
           <span>Главная</span>
           <v-icon>mdi-home</v-icon>
         </v-btn>
