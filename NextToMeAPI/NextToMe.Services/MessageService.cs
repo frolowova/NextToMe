@@ -61,7 +61,7 @@ namespace NextToMe.Services
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
                     DeleteAt = x.DeleteAt,
-                    LikesCount = x.UserLikedMessages.ToList().Count,
+                    LikesCount = x.UserLikedMessages.Count,
                     Id = x.Id,
                     Place = x.Place,
                     Views = x.Views
