@@ -76,11 +76,14 @@ namespace NextToMe.API
                    };
                });
 
+
+            string testConnectionString = Environment.GetEnvironmentVariable("Github") ?? string.Empty;
+            Console.WriteLine(testConnectionString + "!");
             services.AddDbContext<ApplicationDbContext>(options =>
                 options
                     .UseLazyLoadingProxies()
                     .UseMySql(
-                        Configuration.GetConnectionString("ApplicationDbContext"),
+                        Configuration.GetConnectionString($"ApplicationDbContext{testConnectionString}"),
                         mySqlOptions => mySqlOptions
                             .UseNetTopologySuite()
                             .ServerVersion(new Version(8, 0, 21), ServerType.MySql)));

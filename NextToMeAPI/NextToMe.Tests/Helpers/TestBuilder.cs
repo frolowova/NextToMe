@@ -23,12 +23,12 @@ namespace NextToMe.Tests.Helpers
         {
             return builder.ConfigureServices((context, services) =>
             {
-                ServiceDescriptor descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-                services.Remove(descriptor);
-                services.AddDbContext<ApplicationDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase(_testDbName);
-                });
+                //ServiceDescriptor descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
+                //services.Remove(descriptor);
+                //services.AddDbContext<ApplicationDbContext>(options =>
+                //{
+                //    options.UseInMemoryDatabase(_testDbName);
+                //});
 
                 Assembly assembly = Assembly.Load(_controllersAssembly);
                 services.AddMvc().AddApplicationPart(assembly).AddControllersAsServices();

@@ -28,5 +28,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
       working-directory: NextToMeAPI
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: |
+        Github=GitHub
+        dotnet test --no-restore --verbosity normal
       working-directory: NextToMeAPI
