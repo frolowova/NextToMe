@@ -18,7 +18,7 @@ namespace NextToMe.API
             {
                 await roleManager.CreateAsync(new IdentityRole<Guid>(Roles.User));
             }
-            var user1 = await userManager.FindByNameAsync(user1Email);
+            var user1 = await userManager.FindByEmailAsync(user1Email);
             if (user1 == null)
             {
                 user1 = new User { Email = user1Email, UserName = user1Email, EmailConfirmed = true };
@@ -28,7 +28,7 @@ namespace NextToMe.API
                     await userManager.AddToRoleAsync(user1, Roles.User);
                 }
             }
-            var user2 = await userManager.FindByNameAsync(user2Email);
+            var user2 = await userManager.FindByEmailAsync(user2Email);
             if (user2 == null)
             {
                 user2 = new User { Email = user2Email, UserName = user2Email, EmailConfirmed = true };

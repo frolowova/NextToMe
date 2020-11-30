@@ -54,7 +54,7 @@ namespace NextToMe.Services
 
         public async Task Register(RegisterRequest request)
         {
-            User user = await _userManager.FindByNameAsync(request.Login);
+            User user = await _userManager.FindByEmailAsync(request.Login);
             if (user != null)
             {
                 if (user.EmailConfirmed)
@@ -130,7 +130,7 @@ namespace NextToMe.Services
 
         public async Task<LoginResponse> Login(LoginRequest request)
         {
-            var user = await _userManager.FindByNameAsync(request.Login);
+            var user = await _userManager.FindByEmailAsync(request.Login);
             if (user == null)
             {
                 throw new AuthException("Incorrect user login or password");
@@ -150,7 +150,7 @@ namespace NextToMe.Services
 
         public async Task ResetPassword(ResetPasswordRequest request)
         {
-            User user = await _userManager.FindByNameAsync(request.Login);
+            User user = await _userManager.FindByEmailAsync(request.Login);
             if (user == null)
             {
                 throw new AuthException("Incorrect user login or password");
@@ -235,7 +235,7 @@ namespace NextToMe.Services
                 throw new AuthException("Invalid token", "Can't get user name from claims");
             }
 
-            var user = await _userManager.FindByNameAsync(nameClaim.Value);
+            var user = await _userManager.FindByEmailAsync(nameClaim.Value);
             if (user == null)
             {
                 throw new AuthException("Invalid token", $"User with name {nameClaim.Value} not found");

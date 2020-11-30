@@ -49,7 +49,7 @@ namespace NextToMe.Services
 
         public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
         {
-            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
             if (request.MessageId != null)
             {
                 MessageComment comment = _dbContext.MessageComments.FirstOrDefault(x => x.MessageId == request.MessageId);
