@@ -1,6 +1,10 @@
 <template>
   <div class="footer-menu">
-    <v-bottom-navigation color="primary" class="footer-menu_btns">
+    <v-bottom-navigation
+      color="primary"
+      :value="value"
+      class="footer-menu_btns"
+    >
       <div class="footer-menu_container">
         <v-btn to="/home" nuxt>
           <span>Главная</span>
@@ -16,7 +20,6 @@
           <span>Профиль</span>
           <v-icon>mdi-account</v-icon>
         </v-btn>
-       
 
         <v-btn to="/tag-create" nuxt>
           <span>Тегнуть</span>
@@ -27,6 +30,11 @@
   </div>
 </template>
 
+<script>
+export default {
+  data: () => ({ value: 0 }),
+};
+</script>
 
 <style scoped>
 .footer-menu {
