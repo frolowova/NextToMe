@@ -1,6 +1,6 @@
 <template>
   <div class="create-tag-form">
-    <v-form ref="form" v-model="valid" lazy-validation>
+    <v-form ref="form" v-model="valid">
       <span class="ml-6 font-weight-bold">Тег</span>
       <v-textarea
         solo
@@ -9,7 +9,7 @@
         class="rounded-lg"
         :rules="[rules.required]"
       ></v-textarea>
-      <div class="images-block d-flex flex-row flex-wrap">
+      <div class="images-block">
         <!--- HERE IS picturesOfMessage COMPONENT --->
       </div>
       <div class="input-file-btn">
@@ -40,6 +40,7 @@
         x-large
         @click.prevent="createTag"
         :disabled="loading"
+        :loading="loading"
         >Разместить</v-btn
       >
     </v-form>
@@ -48,13 +49,13 @@
 
 <script>
 import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage.vue";
-
+import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
     picturesOfMessage
   },
   data: () => ({
-    valid: false,
+    valid: true,
     loading: false,
     tagText: "",
     selectedFiles: [],
@@ -71,7 +72,9 @@ export default {
       this.validate();
       if (this.valid) {
         this.loading = true;
-        //here is converting form data with images to body post
+        this.$store
+          .dispatch(SEND_MESSAGE, { text: this.tagText })
+          .then(res => console.log(res));
         this.loading = false;
       }
     },

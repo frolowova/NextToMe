@@ -2,18 +2,16 @@
   <div class="reset-page">
     <span class="reset__descr">Логин для восстановления</span>
     <resetForm class="mb-6" />
-    <linkButton to="/login" text="Назад" class="mb-4" />
+    <v-btn nuxt to="/login" block elevation="2" x-large outlined>Назад</v-btn>
   </div>
 </template>
 
 <script>
 import resetForm from "@/components/Auth/ResetForm";
-import linkButton from "@/components/Auth/LinkButton";
 export default {
   layout: "auth",
   components: {
-    resetForm,
-    linkButton
+    resetForm
   }
 };
 </script>
