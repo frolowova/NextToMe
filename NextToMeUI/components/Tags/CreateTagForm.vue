@@ -9,10 +9,6 @@
         class="rounded-lg"
         :rules="[rules.required]"
       ></v-textarea>
-      <div class="d-flex justify-space-between align-center">
-        <label class="font-weight-bold" for="switch">Анонимное сообщение</label>
-        <v-switch id="switch" v-model="anonymMessageFlag" inset></v-switch>
-      </div>
       <div class="images-block d-flex flex-row flex-wrap">
         <!--- HERE IS picturesOfMessage COMPONENT --->
       </div>
@@ -37,7 +33,6 @@
           >Добавить изображение</v-btn
         >
       </div>
-
       <v-btn
         block
         color="primary"
@@ -62,7 +57,6 @@ export default {
     valid: false,
     loading: false,
     tagText: "",
-    anonymMessageFlag: false,
     selectedFiles: [],
     attachedFiles: [],
     rules: {
@@ -92,15 +86,52 @@ export default {
       const selectedFiles = Array.from(this.selectedFiles);
       this.selectedFiles = [];
       selectedFiles.forEach(file => {
+        if (file.type !== "image/jpeg") {
+          return;
+        }
         const reader = new FileReader();
         reader.addEventListener("load", ({ target: { result } }) => {
-          this.attachedFiles.push({
-            url: result,
-            file: file
-          });
+          this.compressImage(result, file);
         });
         reader.readAsDataURL(file);
       });
+    },
+    compressImage(base64, file) {
+      const canvas = document.createElement("canvas");
+      const img = document.createElement("img");
+
+      img.addEventListener("load", () => {
+        let width = img.width;
+        let height = img.height;
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 900;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round((height *= MAX_WIDTH / width));
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round((width *= MAX_HEIGHT / height));
+            height = MAX_HEIGHT;
+          }
+        }
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+        const compressedData = canvas.toDataURL("image/jpeg", 0.8);
+        this.attachedFiles.push({
+          url: compressedData,
+          file: file
+        });
+      });
+      img.addEventListener("error", () => {
+        throw new Error("Compressed img error!");
+      });
+      img.src = base64;
     }
   }
 };
