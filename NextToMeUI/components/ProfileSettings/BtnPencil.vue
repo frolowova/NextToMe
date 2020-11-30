@@ -8,19 +8,12 @@
 </template>
 
 <script>
-import { mdiAccount,mdiPencilOutline, } from '@mdi/js';
+
 
 export default {
   props: {
       btnPencilName: String,
     },
-  data: () => ({
-    icons: {
-        mdiAccount,
-        mdiPencilOutline,
-      },
-    
-  }),
 }
 
 </script>

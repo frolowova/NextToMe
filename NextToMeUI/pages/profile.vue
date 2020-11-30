@@ -9,7 +9,7 @@
         <v-col class="d-flex align-center">
           <avatar :sizeC=100></avatar>
           <v-col>
-            <p class="ps-4">Name</p>
+            <p class="ps-4"> Name</p>
             <p class="ps-4 body-2">Tags N</p>
           </v-col>
         </v-col>
@@ -26,22 +26,15 @@
 </template>
 
 
-
 <script>
 import avatar from '@/components/ProfileSettings/Avatar';
-import { mdiAccount, mdiTuneVariant  } from '@mdi/js';
+
 export default {
   components: {avatar},
-  data: () => ({
-    icons: {
-        mdiAccount,
-        mdiTuneVariant,
-      },
-  }),
   methods:{
     settingsGo() {
       this.$router.push("/settings")
-    }
+    },
   }
 }
 </script>
