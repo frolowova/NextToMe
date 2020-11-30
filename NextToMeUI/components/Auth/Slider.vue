@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import sliderItem from "@/components/SliderItem";
+import sliderItem from "@/components/Auth/SliderItem";
 
 export default {
   data: () => ({

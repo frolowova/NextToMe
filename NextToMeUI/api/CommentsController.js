@@ -5,13 +5,13 @@ class CommentsController extends APIController {
     super();
   }
 
-  /* 
-    comment_info: 
-      text: string
-      messageId: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+  /**  
+    @param {Object} comment_info:  
+      @param {String} text - текст комментария
+      @param {String} messageId - id Сообщения
   */
   async sendComment(comment_info) {
-    const newComment = this.request(
+    const newComment = await this.request(
       "send",
       "/message/comments/send",
       comment_info
@@ -19,8 +19,11 @@ class CommentsController extends APIController {
     return newComment;
   }
 
+  /**  
+    @param {String} messageId - id Сообщения
+  */
   async getComments(messageId, skip = 0, take = 2147483647) {
-    const comments = this.request(
+    const comments = await this.request(
       "get",
       `/message/comments/get?messageId=${messageId}&skip=${skip}&take=${take}`
     );

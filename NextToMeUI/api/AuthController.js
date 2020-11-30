@@ -5,6 +5,11 @@ class AuthController extends APIController {
     super();
   }
 
+  /**  
+    @param {Object} user_info
+      @param {String} login
+      @param {String} password
+  */
   async login(user_info) {
     const loginResponse = await this.request("post", "/auth/login", user_info);
     this.updateAuthHeader(loginResponse.data.accessToken);
@@ -12,6 +17,11 @@ class AuthController extends APIController {
     return data;
   }
 
+  /**  
+    @param {Object} user_info
+      @param {String} login
+      @param {String} redirectUrl - url, с окном для ввода пароля
+  */
   async signup(user_info) {
     const signupResponse = await this.request(
       "post",
@@ -21,6 +31,12 @@ class AuthController extends APIController {
     return signupResponse;
   }
 
+  /**  
+    @param {Object} user_info
+      @param {String} userId
+      @param {String} code 
+      @param {String} password 
+  */
   async confirm(user_info) {
     const confirmResponse = await this.request(
       "post",
@@ -30,6 +46,11 @@ class AuthController extends APIController {
     return confirmResponse;
   }
 
+  /**  
+    @param {Object} user_info
+      @param {String} login
+      @param {String} redirectUrl
+  */
   async resetPassword(user_info) {
     const resetStatus = await this.request(
       "post",
@@ -39,6 +60,12 @@ class AuthController extends APIController {
     return resetStatus;
   }
 
+  /**  
+    @param {Object} user_info
+      @param {String} userId
+      @param {String} code
+      @param {String} newPassword
+  */
   async setNewPassword(user_info) {
     const setStatus = await this.request(
       "post",
