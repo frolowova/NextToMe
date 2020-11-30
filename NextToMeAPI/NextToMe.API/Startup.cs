@@ -33,6 +33,9 @@ namespace NextToMe.API
 
         public IConfiguration Configuration { get; }
 
+        private string GetGitHubConnectionStringSuffix() =>
+            Environment.GetEnvironmentVariable("GITHUB_RUN_ID") != null ? "GitHub" : string.Empty;
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -76,11 +79,12 @@ namespace NextToMe.API
                    };
                });
 
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options
                     .UseLazyLoadingProxies()
                     .UseMySql(
-                        Configuration.GetConnectionString("ApplicationDbContext"),
+                        Configuration.GetConnectionString($"ApplicationDbContext{GetGitHubConnectionStringSuffix()}"),
                         mySqlOptions => mySqlOptions
                             .UseNetTopologySuite()
                             .ServerVersion(new Version(8, 0, 21), ServerType.MySql)));
@@ -111,6 +115,7 @@ namespace NextToMe.API
             services.AddTransient<IMessageCommentService, MessageCommentService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IUserInfoService, UserInfoService>();
             services.AddHostedService<MessageDeleteService>();
 
             services.AddControllers();

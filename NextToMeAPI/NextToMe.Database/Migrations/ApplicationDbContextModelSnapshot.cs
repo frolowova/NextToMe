@@ -303,6 +303,26 @@ namespace NextToMe.Database.Migrations
                     b.ToTable("UserLikedMessages");
                 });
 
+            modelBuilder.Entity("NextToMe.Database.Entities.UserImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("UserImages");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", null)
@@ -398,6 +418,15 @@ namespace NextToMe.Database.Migrations
                     b.HasOne("NextToMe.Database.Entities.User", "User")
                         .WithMany("UserLikedMessages")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("NextToMe.Database.Entities.UserImage", b =>
+                {
+                    b.HasOne("NextToMe.Database.Entities.User", "User")
+                        .WithOne("UserImage")
+                        .HasForeignKey("NextToMe.Database.Entities.UserImage", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

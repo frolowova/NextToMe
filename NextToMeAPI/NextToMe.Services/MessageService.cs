@@ -57,7 +57,7 @@ namespace NextToMe.Services
                 {
                     DistanceToUser = x.Location.Distance(userLocation),
                     CreatedAt = x.CreatedAt,
-                    From = x.User.UserName,
+                    From = x.User.Id,
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
                     DeleteAt = x.DeleteAt,
@@ -82,7 +82,7 @@ namespace NextToMe.Services
 
         public async Task<MessageResponse> SendMessage(AddMessageRequest request)
         {
-            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
             var newMessage = _mapper.Map<Message>(request);
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;

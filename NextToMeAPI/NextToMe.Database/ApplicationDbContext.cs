@@ -35,6 +35,8 @@ namespace NextToMe.Database
 
         public virtual DbSet<UserLikedMessage> UserLikedMessages { get; set; }
 
+        public virtual DbSet<UserImage> UserImages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -53,6 +55,11 @@ namespace NextToMe.Database
                 .HasMany(x => x.MessageComments)
                 .WithOne(x => x.User)
                 .HasForeignKey(x => x.UserId);
+
+            modelBuilder.Entity<User>()
+                .HasOne(x => x.UserImage)
+                .WithOne(x => x.User)
+                .HasForeignKey<UserImage>(x => x.UserId);
 
             modelBuilder.Entity<Message>()
                 .HasMany(x => x.Comments)

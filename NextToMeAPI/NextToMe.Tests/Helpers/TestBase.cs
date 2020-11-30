@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using NextToMe.API;
 using NextToMe.API.Controllers;
-using NUnit.Framework;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using NextToMe.Common;
 using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services;
+using NUnit.Framework;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace NextToMe.Tests.Helpers
 {
@@ -22,6 +19,8 @@ namespace NextToMe.Tests.Helpers
     public class TestBase
     {
         public const string TestUserName = "test";
+
+        public Guid TestUserId;
 
         public const int DeleteMessageDelayInSeconds = 1;
 
@@ -40,6 +39,7 @@ namespace NextToMe.Tests.Helpers
             using (IServiceScope scope = _host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await db.Database.EnsureDeletedAsync();
                 await db.Database.EnsureCreatedAsync();
 
                 var settings = scope.ServiceProvider.GetRequiredService<IOptions<AppSettings>>();
@@ -51,6 +51,7 @@ namespace NextToMe.Tests.Helpers
 
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
                 await userManager.CreateAsync(new User { UserName = TestUserName, Email = TestUserName });
+                TestUserId = userManager.FindByNameAsync(TestUserName).Result.Id;
             }
         }
 

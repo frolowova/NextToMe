@@ -12,6 +12,8 @@ namespace NextToMe.Database.Entities
 
         public virtual ICollection<RefreshToken> RefreshTokens { get; set; } = new HashSet<RefreshToken>();
 
+        public virtual UserImage UserImage { get; set; }
+
         public virtual ICollection<UserLikedMessage> UserLikedMessages { get; set; } = new HashSet<UserLikedMessage>();
     }
 }
