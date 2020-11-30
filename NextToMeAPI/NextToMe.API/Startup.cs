@@ -77,8 +77,7 @@ namespace NextToMe.API
                });
 
 
-            string testConnectionString = Environment.GetEnvironmentVariable("Github") ?? string.Empty;
-            Console.WriteLine(testConnectionString + "!");
+            string testConnectionString = Environment.GetEnvironmentVariable("GITHUB_RUN_ID") != null ? "GitHub" : string.Empty;
             services.AddDbContext<ApplicationDbContext>(options =>
                 options
                     .UseLazyLoadingProxies()
