@@ -16,20 +16,12 @@ namespace NextToMe.Tests.Helpers
 {
     public static class TestBuilder
     {
-        private const string _testDbName = "InMemoryDb";
         private const string _controllersAssembly = "NextToMe.API";
 
         public static IHostBuilder ConfigureTestHost(this IHostBuilder builder)
         {
             return builder.ConfigureServices((context, services) =>
             {
-                //ServiceDescriptor descriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationDbContext>));
-                //services.Remove(descriptor);
-                //services.AddDbContext<ApplicationDbContext>(options =>
-                //{
-                //    options.UseInMemoryDatabase(_testDbName);
-                //});
-
                 Assembly assembly = Assembly.Load(_controllersAssembly);
                 services.AddMvc().AddApplicationPart(assembly).AddControllersAsServices();
 
