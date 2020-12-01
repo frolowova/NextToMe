@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Linq;
+using AutoMapper;
 using NetTopologySuite.Geometries;
 using NextToMe.Common.DTOs;
 using NextToMe.Database.Entities;
@@ -16,6 +17,7 @@ namespace NextToMe.Services.Mappings
             CreateMap<Message, MessageResponse>()
                 .ForMember(x => x.From, opt => opt.MapFrom(y => y.User.Id))
                 .ForMember(x => x.Location, opt => opt.MapFrom(y => new Common.Models.Location(y.Location.X, y.Location.Y)))
+                .ForMember(x => x.LikesCount, opt => opt.MapFrom(y => y.UserLikedMessages.Count))
                 .ReverseMap();
 
             CreateMap<AddMessageCommentRequest, MessageComment>().ReverseMap();
