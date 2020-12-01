@@ -6,11 +6,11 @@
         solo
         auto-grow
         v-model="tagText"
-        class="rounded-lg"
+        class="rounded-xl"
         :rules="[rules.required]"
       ></v-textarea>
       <div class="images-block">
-        <!--- HERE IS picturesOfMessage COMPONENT --->
+        <tagImages :arrayOfPic="arrayOfPic" @remove-image="removeImage" />
       </div>
       <div class="input-file-btn">
         <v-file-input
@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage.vue";
+import tagImages from "@/components/Tags/TagImages.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
-    picturesOfMessage
+    tagImages
   },
   data: () => ({
     valid: true,
@@ -64,6 +64,14 @@ export default {
       required: v => !!v || "Напишите-что нибудь"
     }
   }),
+  computed: {
+    totalFiles() {
+      return this.selectedFiles.length + this.attachedFiles.length;
+    },
+    arrayOfPic() {
+      return this.attachedFiles.map(img => img.url);
+    }
+  },
   methods: {
     validate() {
       this.$refs.form.validate();
@@ -78,12 +86,20 @@ export default {
         this.loading = false;
       }
     },
+    removeImage(index) {
+      this.attachedFiles = this.attachedFiles.filter((item, i) => i !== index);
+    },
     loadImage() {
       const fileInput = this.$refs.fileInput.$children[0].$el;
       fileInput.click();
     },
     onChangeFile() {
       if (!this.selectedFiles.length) {
+        return;
+      }
+      if (this.totalFiles > 8) {
+        alert("Вы не можете прикрепить больше 8 файлов!");
+        this.selectedFiles = [];
         return;
       }
       const selectedFiles = Array.from(this.selectedFiles);
@@ -144,8 +160,5 @@ export default {
 .create-tag-form {
   max-width: 650px;
   margin: auto;
-}
-.img {
-  height: 80px;
 }
 </style>
