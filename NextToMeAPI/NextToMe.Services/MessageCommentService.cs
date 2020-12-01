@@ -50,24 +50,18 @@ namespace NextToMe.Services
         public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
         {
             User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
-            if (request.MessageId != null)
+
+            MessageComment comment = _dbContext.MessageComments.FirstOrDefault(x => x.MessageId == request.MessageId);
+            if (comment != null)
             {
-                MessageComment comment = _dbContext.MessageComments.FirstOrDefault(x => x.MessageId == request.MessageId);
-                if (comment != null)
-                {
-                    request.MessageId = comment.MessageId;
-                }
-                else
-                {
-                    if (_dbContext.Messages.All(x => x.Id != request.MessageId))
-                    {
-                        throw new BadRequestException($"MessageId = {request.MessageId} does not exists");
-                    }
-                }
+                request.MessageId = comment.MessageId;
             }
             else
             {
-                throw new BadRequestException($"MessageId = {request.MessageId} does not exists");
+                if (_dbContext.Messages.All(x => x.Id != request.MessageId))
+                {
+                    throw new BadRequestException($"MessageId = {request.MessageId} does not exists");
+                }
             }
 
             var newComment = _mapper.Map<MessageComment>(request);

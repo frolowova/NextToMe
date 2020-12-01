@@ -6,7 +6,7 @@ namespace NextToMe.Common.DTOs
 {
     public class MessageCommentResponse : AddMessageCommentRequest
     {
-        public string From { get; set; }
+        public Guid From { get; set; }
 
         public DateTime CreatedAt { get; set; }
     }
