@@ -59,4 +59,9 @@ export default {
   display: flex;
   justify-content: space-evenly;
 }
+@media screen and (max-width: 350px) {
+  span {
+    display: none;
+  }
+}
 </style>

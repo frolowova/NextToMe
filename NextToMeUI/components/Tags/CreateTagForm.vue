@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage.vue";
+import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
-    picturesOfMessage
+    picturesOfMessage,
   },
   data: () => ({
     valid: true,
@@ -61,8 +61,8 @@ export default {
     selectedFiles: [],
     attachedFiles: [],
     rules: {
-      required: v => !!v || "Напишите-что нибудь"
-    }
+      required: (v) => !!v || "Напишите-что нибудь",
+    },
   }),
   methods: {
     validate() {
@@ -74,7 +74,7 @@ export default {
         this.loading = true;
         this.$store
           .dispatch(SEND_MESSAGE, { text: this.tagText })
-          .then(res => console.log(res));
+          .then((res) => console.log(res));
         this.loading = false;
       }
     },
@@ -88,7 +88,7 @@ export default {
       }
       const selectedFiles = Array.from(this.selectedFiles);
       this.selectedFiles = [];
-      selectedFiles.forEach(file => {
+      selectedFiles.forEach((file) => {
         if (file.type !== "image/jpeg") {
           return;
         }
@@ -128,15 +128,15 @@ export default {
         const compressedData = canvas.toDataURL("image/jpeg", 0.8);
         this.attachedFiles.push({
           url: compressedData,
-          file: file
+          file: file,
         });
       });
       img.addEventListener("error", () => {
         throw new Error("Compressed img error!");
       });
       img.src = base64;
-    }
-  }
+    },
+  },
 };
 </script>
 
