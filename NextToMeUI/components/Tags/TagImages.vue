@@ -17,6 +17,7 @@
         :key="i"
         class="d-flex child-flex"
         cols="4"
+        @dblclick="$emit('remove-image', i)"
       >
         <imageView :img="img" />
       </v-col>
