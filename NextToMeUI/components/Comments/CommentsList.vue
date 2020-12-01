@@ -15,8 +15,8 @@
 </template>
 
 <script>
-import CommentCard from "@/components/comments/CommentCard";
-import CreateComment from "@/components/comments/CreateComment";
+import CommentCard from "@/components/Comments/CommentCard";
+import CreateComment from "@/components/Comments/CreateComment";
 
 export default {
   components: { CommentCard, CreateComment },

@@ -24,13 +24,14 @@ axiosModule.interceptors.response.use(
       .then(response => {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
-        axiosModule.defaults.headers["Authorization"] = `Bearer ${accessToken}`;
+        axiosModule.defaults.headers["Authorization"] = `Bearer ${response.data.accessToken}`;
         error.response.config.headers[
           "Authorization"
         ] = `Bearer ${response.data.accessToken}`;
         return axios(error.response.config);
       })
       .catch(error => {
+        console.log(error);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         delete axiosModule.defaults.headers["Authorization"];

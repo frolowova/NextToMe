@@ -5,32 +5,44 @@ class MessageController extends APIController {
     super();
   }
 
-  /* 
-    message_info: 
-      text: "string",
-      location: {
-        latitude: 0,
-        longitude: 0
-      },
-      place: "string"
+  /**  
+    @param {Object} message_info:  
+      @param {string} text - текст сообщения
+      @param {Array} images - пока не добавлено
   */
   async sendMessage(message_info) {
-    const createdMessage = this.request("post", "/messages/send", message_info);
+    const location = await this.getLocationInfo();
+    message_info = { ...message_info, ...location };
+    console.log(message_info);
+    const createdMessage = await this.request(
+      "post",
+      "/messages/send",
+      message_info
+    );
     return createdMessage;
   }
 
-  /* 
-    message_info: 
-      currentLocation: {
-        latitude: 0,
-        longitude: 0
-      },
-      skip: 0,
-      take: 0,
-      gettingMessagesRadiusInMeters: 0
+  /**  
+    @param {Number} skip - сколько пропустить сообщение  
+    @param {Number} take - сколько взять сообщений
+    @param {Number} gettingMessagesRadiusInMeters - радиус
   */
-  async getMessages(message_info) {
-    const messages = this.request("post", "/messages/get", message_info);
+  async getMessages(skip = 0, take = 0, gettingMessagesRadiusInMeters = 0) {
+    const location = await this.getLocationInfo();
+    const location_params = {
+      currentLocation: {
+        latitude: location.latitude,
+        longitude: location.longitude
+      },
+      skip,
+      take,
+      gettingMessagesRadiusInMeters
+    };
+    const messages = await this.request(
+      "post",
+      "/messages/get",
+      location_params
+    );
     return messages;
   }
 }

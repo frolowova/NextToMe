@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import slider from "@/components/Slider";
+import slider from "@/components/Auth/Slider";
 import successIcon from "@/assets/flame-success.svg";
 import waitingIcon from "@/assets/flame-waiting.svg";
 import messageIcon from "@/assets/flame-no-messages.svg";

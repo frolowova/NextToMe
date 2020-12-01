@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import confirmForm from "@/components/confirmForm";
+import confirmForm from "@/components/Auth/confirmForm";
 import { RESET_PASSWORD_CONFIRM } from "@/store/actions/auth";
 
 export default {
