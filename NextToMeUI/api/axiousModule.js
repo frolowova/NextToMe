@@ -11,9 +11,9 @@ axiosModule.interceptors.response.use(
   error => {
     if (
       error.response.status !== 401 ||
-      !error.response.headers["Token-Expired"] === true
+      !error.response.headers["token-expired"]
     ) {
-      return Promise.reject(error);
+      return Promise.reject(error.response.status);
     }
     const tokens = {
       accessToken: localStorage.getItem("accessToken"),
@@ -24,15 +24,18 @@ axiosModule.interceptors.response.use(
       .then(response => {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
+        axiosModule.defaults.headers["Authorization"] = `Bearer ${response.data.accessToken}`;
         error.response.config.headers[
           "Authorization"
         ] = `Bearer ${response.data.accessToken}`;
         return axios(error.response.config);
       })
       .catch(error => {
+        console.log(error);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
-        return Promise.reject(error);
+        delete axiosModule.defaults.headers["Authorization"];
+        return Promise.reject(error.response.status);
       });
   }
 );

@@ -1,0 +1,62 @@
+<template>
+  <div class="footer-menu">
+    <v-bottom-navigation
+      color="primary"
+      v-model="value"
+      class="footer-menu_btns"
+    >
+      <div class="footer-menu_container">
+        <v-btn value="home" to="/home" nuxt>
+          <span>Главная</span>
+          <v-icon>mdi-home</v-icon>
+        </v-btn>
+
+        <v-btn value="notifications" to="/notifications" nuxt>
+          <span>Уведомления</span>
+          <v-icon>mdi-bell</v-icon>
+        </v-btn>
+
+        <v-btn value="profile" to="/profile" nuxt>
+          <span>Профиль</span>
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+
+        <v-btn value="tag-create" to="/tag-create" nuxt>
+          <span>Тегнуть</span>
+          <v-icon>mdi-pencil</v-icon>
+        </v-btn>
+      </div>
+    </v-bottom-navigation>
+  </div>
+</template>
+
+<script>
+export default {
+  data: () => ({ value: "" }),
+  mounted() {
+    this.value = this.$route.name;
+  },
+};
+</script>
+
+<style scoped>
+.footer-menu {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-menu_btns {
+  display: flex;
+  justify-content: space-around;
+}
+.footer-menu_container {
+  max-width: 900px;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+</style>
