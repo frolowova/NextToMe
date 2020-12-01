@@ -60,6 +60,7 @@ export default {
           accent: 'FF5858',
           cardBackground: "#3c3c3c",
           countComment: '#E85F81',
+          textWhite: '#f9f9f9'
         },
         light: {
           primary: '#ED645E',
