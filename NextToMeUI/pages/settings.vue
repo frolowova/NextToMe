@@ -31,12 +31,24 @@
 
           <v-col class="d-flex justify-space-between  pa-2 pr-0"> 
             <sub-title-input title = "Вкл. push-уведомления"></sub-title-input>
-            <btn-switch></btn-switch>
+            <v-switch
+              class="ma-0 pa-0"
+              v-model="btnSwitch1"
+              color="red"
+              inset
+            ></v-switch>
           </v-col>
 
           <v-col class="d-flex justify-space-between pa-2 pr-0"> 
             <sub-title-input title = "Вкл. темную тему"></sub-title-input>
-            <btn-switch></btn-switch>
+            <v-switch
+              class="ma-0 pa-0"
+              v-model="btnSwitch2"
+              color="red"
+              inset
+              @click="changeTheme"
+            ></v-switch>
+
           </v-col>
           <btn-pencil btnPencilName="Изменить пароль"></btn-pencil>
           
@@ -56,23 +68,31 @@
 
 <script>
 import avatar from '@/components/ProfileSettings/Avatar';
-import BtnSwitch from '@/components/ProfileSettings/BtnSwitch';
 import SettingsInput from '@/components/ProfileSettings/SettingsInput';
 import SubTitleInput from '@/components/ProfileSettings/SubTitleInput';
 import BtnPencil from '@/components/ProfileSettings/BtnPencil';
 
 
 export default {
-  components: {avatar, BtnSwitch, SettingsInput,SubTitleInput,BtnPencil},
+  components: {avatar, SettingsInput,SubTitleInput,BtnPencil},
   data: () => ({
     title: " ",
     btnPencilName: " ",
+    btnSwitch1: false,
+    btnSwitch2: false,
 
   }),
   methods: {
     settingsOut() {
       this.$router.push({path:"/profile"})
+    },
+    changeTheme() {
+      this.$vuetify.theme.dark=!this.$vuetify.theme.dark
+      console.log( this.$vuetify.theme.dark)
+      console.log("hello")
+
     }
+
   }
 }
 
