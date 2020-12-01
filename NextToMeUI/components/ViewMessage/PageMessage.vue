@@ -16,7 +16,7 @@ import Bomb from "./Bomb";
 import Eye from "./Eye";
 import HeaderMessage from "./HeaderMessage";
 import TextMessage from "./TextMessage";
-import PicturesOfMessage from "./PicturesOfMessage";
+import PicturesOfMessage from "./PicturesOfMessage/PicturesOfMessage";
 import StatisticMessage from "./StatisticMessage";
 export default {
   components: {
