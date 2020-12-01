@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage.vue";
+import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
@@ -64,6 +64,11 @@ export default {
       required: v => !!v || "Напишите-что нибудь"
     }
   }),
+  computed: {
+    totalFiles() {
+      return this.selectedFiles.length + this.attachedFiles.length;
+    }
+  },
   methods: {
     validate() {
       this.$refs.form.validate();
@@ -84,6 +89,11 @@ export default {
     },
     onChangeFile() {
       if (!this.selectedFiles.length) {
+        return;
+      }
+      if (this.totalFiles > 8) {
+        alert("Вы не можете прикрепить больше 8 файлов!");
+        this.selectedFiles = [];
         return;
       }
       const selectedFiles = Array.from(this.selectedFiles);
