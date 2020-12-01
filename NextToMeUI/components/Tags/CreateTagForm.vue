@@ -6,11 +6,11 @@
         solo
         auto-grow
         v-model="tagText"
-        class="rounded-lg"
+        class="rounded-xl"
         :rules="[rules.required]"
       ></v-textarea>
       <div class="images-block">
-        <!--- HERE IS picturesOfMessage COMPONENT --->
+        <tagImages :arrayOfPic="arrayOfPic" @remove-image="removeImage" />
       </div>
       <div class="input-file-btn">
         <v-file-input
@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage.vue";
+import tagImages from "@/components/Tags/TagImages.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
-    picturesOfMessage
+    tagImages
   },
   data: () => ({
     valid: true,
@@ -67,6 +67,9 @@ export default {
   computed: {
     totalFiles() {
       return this.selectedFiles.length + this.attachedFiles.length;
+    },
+    arrayOfPic() {
+      return this.attachedFiles.map(img => img.url);
     }
   },
   methods: {
@@ -82,6 +85,9 @@ export default {
           .then(res => console.log(res));
         this.loading = false;
       }
+    },
+    removeImage(index) {
+      this.attachedFiles = this.attachedFiles.filter((item, i) => i !== index);
     },
     loadImage() {
       const fileInput = this.$refs.fileInput.$children[0].$el;
@@ -154,8 +160,5 @@ export default {
 .create-tag-form {
   max-width: 650px;
   margin: auto;
-}
-.img {
-  height: 80px;
 }
 </style>
