@@ -22,15 +22,20 @@
         :rules="[rules.required, passwordsMatch]"
       ></v-text-field>
     </v-container>
-    <v-btn type="submit" color="primary" x-large block>
+    <v-btn
+      :loading="loading"
+      :disabled="loading"
+      type="submit"
+      color="primary"
+      x-large
+      block
+    >
       Подтвердить
     </v-btn>
   </v-form>
 </template>
 
 <script>
-import { SIGNUP_CONFIRM } from "@/store/actions/auth";
-
 export default {
   layout: "auth",
   data: () => ({
@@ -40,9 +45,11 @@ export default {
     rules: {
       required: v => !!v || "Обязательное поле",
       min: v => v.length >= 6 || "Пароль должен содержать > 6 символов",
-      password: v => /((?=.*\d)(?=.*[A-Z]).{6,6})/.test(v) || "Невалидный пароль"
+      password: v =>
+        /((?=.*\d)(?=.*[A-Z]).{6,6})/.test(v) || "Невалидный пароль"
     },
-    errorMessage: null
+    errorMessage: null,
+    loading: false
   }),
   computed: {
     passwordsMatch() {
@@ -55,6 +62,9 @@ export default {
       return this.$route.query.code;
     }
   },
+  props: {
+    action: String
+  },
   methods: {
     validate() {
       this.$refs.form.validate();
@@ -62,14 +72,21 @@ export default {
     onConfirm() {
       this.validate();
       if (this.valid) {
+        this.loading = true;
         this.$store
-          .dispatch(SIGNUP_CONFIRM, {
+          .dispatch(this.action, {
             password: this.password,
             code: this.code,
             userId: this.userId
           })
-          .then(res => this.$router.push("/login"))
-          .catch(err => (this.errorMessage = "Ошибка подтверждения"));
+          .then(res => {
+            this.loading = false;
+            this.$router.push("/login");
+          })
+          .catch(err => {
+            this.loading = false;
+            this.errorMessage = "Ошибка подтверждения";
+          });
       }
     }
   }

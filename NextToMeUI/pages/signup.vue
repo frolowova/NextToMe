@@ -1,21 +1,21 @@
 <template>
   <div class="signup-page">
     <span class="auth__descr">Регистрация</span>
-    <signupForm class="mb-6"/>
-    <linkButton to='/login' text='Войти'/>
+    <signupForm class="mb-6" />
+    <v-btn nuxt to="/login" block elevation="2" x-large outlined class="mb-4"
+      >Войти</v-btn
+    >
   </div>
 </template>
 
 <script>
-import signupForm from "@/components/SignupForm";
-import linkButton from "@/components/LinkButton";
+import signupForm from "@/components/Auth/SignupForm";
 
 export default {
-  middleware: ['notAuth'],
+  middleware: ["notAuth"],
   layout: "auth",
   components: {
-    signupForm,
-    linkButton
+    signupForm
   }
 };
 </script>
