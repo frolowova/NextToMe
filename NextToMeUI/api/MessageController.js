@@ -45,6 +45,28 @@ class MessageController extends APIController {
     );
     return messages;
   }
+
+  /**  
+    @param {String} message_id
+  */
+  async likeMessage(message_id) {
+    const likeStatus = this.request(
+      "post",
+      `/messages/like?messageId=${message_id}`
+    );
+    return likeStatus;
+  }
+
+  /**  
+    @param {String} message_id
+  */
+  async unlikeMessage(message_id) {
+    const unLikeStatus = this.request(
+      "post",
+      `/messages/like/remove?messageId=${message_id}`
+    );
+    return unLikeStatus;
+  }
 }
 
 export default new MessageController();
