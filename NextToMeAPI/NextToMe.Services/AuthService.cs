@@ -20,6 +20,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using NextToMe.Common.Models;
 
 namespace NextToMe.Services
 {
@@ -70,6 +71,7 @@ namespace NextToMe.Services
                 {
                     throw new AuthException(result.Errors);
                 }
+                await _userManager.AddToRoleAsync(user, Roles.User);
             }
 
             var queryParams = new Dictionary<string, string>

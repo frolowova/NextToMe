@@ -22,7 +22,7 @@ namespace NextToMe.Services.Mappings
 
             CreateMap<AddMessageCommentRequest, MessageComment>().ReverseMap();
             CreateMap<MessageComment, MessageCommentResponse>()
-                .ForMember(x => x.From, opt => opt.MapFrom(y => y.User.UserName))
+                .ForMember(x => x.From, opt => opt.MapFrom(y => y.User.Id))
                 .ReverseMap();
 
             CreateMap<User, LoginResponse>().ReverseMap();

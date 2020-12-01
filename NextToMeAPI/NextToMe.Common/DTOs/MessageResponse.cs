@@ -17,5 +17,7 @@ namespace NextToMe.Common.DTOs
         public DateTime? DeleteAt { get; set; }
 
         public long Views { get; set; }
+
+        public long CommentsCount { get; set; }
     }
 }
