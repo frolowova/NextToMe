@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NextToMe.Database.Entities;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace NextToMe.Database
 {
@@ -34,6 +32,8 @@ namespace NextToMe.Database
         public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public virtual DbSet<MessageComment> MessageComments { get; set; }
+
+        public virtual DbSet<UserLikedMessage> UserLikedMessages { get; set; }
 
         public virtual DbSet<UserImage> UserImages { get; set; }
 
@@ -65,7 +65,19 @@ namespace NextToMe.Database
                 .HasMany(x => x.Comments)
                 .WithOne(x => x.Message)
                 .HasForeignKey(x => x.MessageId);
-        }
 
+            modelBuilder.Entity<UserLikedMessage>()
+                .HasKey(x => new { x.UserId, x.MessageId });
+
+            modelBuilder.Entity<UserLikedMessage>()
+                .HasOne(x => x.Message)
+                .WithMany(x => x.UserLikedMessages)
+                .HasForeignKey(x => x.MessageId);
+
+            modelBuilder.Entity<UserLikedMessage>()
+                .HasOne(x => x.User)
+                .WithMany(x => x.UserLikedMessages)
+                .HasForeignKey(x => x.UserId);
+        }
     }
 }

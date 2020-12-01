@@ -39,6 +39,7 @@ namespace NextToMe.Tests.Helpers
             using (IServiceScope scope = _host.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await db.Database.EnsureDeletedAsync();
                 await db.Database.EnsureCreatedAsync();
 
                 var settings = scope.ServiceProvider.GetRequiredService<IOptions<AppSettings>>();

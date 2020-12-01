@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NetTopologySuite.Geometries;
 using NextToMe.Database;
@@ -9,9 +10,10 @@ using NextToMe.Database;
 namespace NextToMe.Database.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201127215225_MessageLikes")]
+    partial class MessageLikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,29 +300,7 @@ namespace NextToMe.Database.Migrations
 
                     b.HasKey("UserId", "MessageId");
 
-                    b.HasIndex("MessageId");
-
                     b.ToTable("UserLikedMessages");
-                });
-
-            modelBuilder.Entity("NextToMe.Database.Entities.UserImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("Image")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("UserImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -411,22 +391,13 @@ namespace NextToMe.Database.Migrations
                 {
                     b.HasOne("NextToMe.Database.Entities.Message", "Message")
                         .WithMany("UserLikedMessages")
-                        .HasForeignKey("MessageId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("NextToMe.Database.Entities.User", "User")
                         .WithMany("UserLikedMessages")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("NextToMe.Database.Entities.UserImage", b =>
-                {
-                    b.HasOne("NextToMe.Database.Entities.User", "User")
-                        .WithOne("UserImage")
-                        .HasForeignKey("NextToMe.Database.Entities.UserImage", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
