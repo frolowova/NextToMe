@@ -2,26 +2,26 @@
   <div class="footer-menu">
     <v-bottom-navigation
       color="primary"
-      :value="value"
+      v-model="value"
       class="footer-menu_btns"
     >
       <div class="footer-menu_container">
-        <v-btn to="/home" nuxt>
+        <v-btn value="home" to="/home" nuxt>
           <span>Главная</span>
           <v-icon>mdi-home</v-icon>
         </v-btn>
 
-        <v-btn to="/notifications" nuxt>
+        <v-btn value="notifications" to="/notifications" nuxt>
           <span>Уведомления</span>
           <v-icon>mdi-bell</v-icon>
         </v-btn>
 
-        <v-btn to="/profile" nuxt>
+        <v-btn value="profile" to="/profile" nuxt>
           <span>Профиль</span>
           <v-icon>mdi-account</v-icon>
         </v-btn>
 
-        <v-btn to="/tag-create" nuxt>
+        <v-btn value="tag-create" to="/tag-create" nuxt>
           <span>Тегнуть</span>
           <v-icon>mdi-pencil</v-icon>
         </v-btn>
@@ -32,7 +32,10 @@
 
 <script>
 export default {
-  data: () => ({ value: 0 }),
+  data: () => ({ value: "" }),
+  mounted() {
+    this.value = this.$route.name;
+  },
 };
 </script>
 
