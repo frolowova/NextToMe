@@ -17,7 +17,7 @@ export default {
         leftHours = date.getHours() - currentDate.getHours();
       } else {
         leftHours =
-          leftDays * 24 - date.getHours() - currentDate.getHours(); // На всякий случай, если условия размещения тега изменятся (24 часа на данный момент) 
+          leftDays * 24 + date.getHours() - currentDate.getHours(); // На всякий случай, если условия размещения тега изменятся (24 часа на данный момент) 
       }
       if ((leftHours < 0) | (leftHours > 24)) {
         return "Error";
