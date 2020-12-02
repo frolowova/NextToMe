@@ -19,9 +19,14 @@
           @click=" (pressShowComments=!pressShowComments)"
         >Показать все</p>
       </div>
-      <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
-        <CommentCard :commentData="comment" :index="i"></CommentCard>
-      </v-list-item>
+      <div class="d-flex align-top justify-center" v-if="!comments.length">
+        <p>Здесь пока нет комментариев. Будьте Первым!</p>
+      </div>
+      <div v-if="comments.length">
+        <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
+          <CommentCard :commentData="comment" :index="i"></CommentCard>
+        </v-list-item>
+      </div>
     </div>
     <CreateComment></CreateComment>
   </div>
@@ -30,7 +35,7 @@
 <script>
 import CommentCard from "@/components/comments/CommentCard";
 import CreateComment from "@/components/comments/CreateComment";
-import comments from "../../store/modules/comments";
+import { GET_COMMENTS } from "@/store/actions/comments";
 
 export default {
   components: { CommentCard, CreateComment },
@@ -41,16 +46,22 @@ export default {
   computed: {
     comments() {
       let comments = this.$store.state.comments.comments;
-      return this.pressShowComments ? comments : [comments[0]];
+
+      return this.pressShowComments || comments.length == 0
+        ? comments
+        : [comments[0]];
     },
 
     countComments() {
       return this.$store.state.comments.comments.length;
+    },
+    messageId() {
+      return this.$route.query.id;
     }
   },
 
   mounted() {
-    // this.getComments();
+    this.$store.dispatch(GET_COMMENTS, this.messageId);
   }
 };
 </script>
@@ -62,7 +73,7 @@ export default {
 }
 
 .comments-conteiner {
-  max-height: 80vh;
+  max-height: 40vh;
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;

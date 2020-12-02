@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-2 ma-2" position="sticky">
+  <div class="pa-2 ma-2" position="absolute">
     <v-textarea
       placeholder="Ваш комментарий"
       auto-grow
@@ -17,27 +17,24 @@
 </template>
 
 <script>
+import { SEND_COMMENTS } from "@/store/actions/comments";
+
 export default {
   data: () => ({
     commentText: ""
   }),
   methods: {
     sendComment() {
-      //     const post = "/api/message/comments/send";
-      //     const dataComment = {
-      //       text: this.commentText
-      //     };
-      //     this.$axios
-      //       .$post(`${this.$store.state.url}${post}`, dataComment, {
-      //         headers: { Authorization: `Bearer ${this.$store.state.token}` }
-      //       })
-      //       .then(response => {
-      //         this.$store.dispatch("addMessages");
-      //         this.message = "";
-      //       })
-      //       .catch(error => {
-      //         console.log(error);
-      //       });
+      this.$store.dispatch(SEND_COMMENTS, {
+        text: this.commentText,
+        messageId: this.messageId
+      });
+    }
+  },
+
+  computed: {
+    messageId() {
+      return this.$route.query.id;
     }
   }
 };

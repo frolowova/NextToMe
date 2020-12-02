@@ -12,7 +12,7 @@ class CommentsController extends APIController {
   */
   async sendComment(comment_info) {
     const newComment = await this.request(
-      "send",
+      "post",
       "/message/comments/send",
       comment_info
     );
