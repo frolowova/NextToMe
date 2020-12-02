@@ -13,7 +13,7 @@ namespace NextToMe.Tests
     {
         private const string _defaultMessageText = "Test MessageText";
         private const string _defaultCommentsText = "Test CommentText";
-        private const string _secondCommentsText = "Test CommentText";
+        private const string _secondCommentsText = "Second test CommentText";
         private readonly Location _zeroLocation = new Location(0, 0);
 
         [Test]
@@ -37,7 +37,7 @@ namespace NextToMe.Tests
             List<MessageCommentResponse> comments = await messageCommentsController.GetComments(messages[0].Id);
             Assert.AreEqual(1, comments.Count);
             Assert.AreEqual(_defaultCommentsText, comments[0].Text);
-            Assert.AreEqual(TestUserName, comments[0].From);
+            Assert.AreEqual(TestUserId, comments[0].From);
         }
 
         [Test]
@@ -83,7 +83,7 @@ namespace NextToMe.Tests
             List<MessageCommentResponse> comments = await messageCommentsController.GetComments(messages[0].Id);
             await messageCommentsController.SendComment(new AddMessageCommentRequest
             {
-                Text = _defaultCommentsText,
+                Text = _secondCommentsText,
                 MessageId = comments[0].MessageId
             });
             comments = await messageCommentsController.GetComments(messages[0].Id);

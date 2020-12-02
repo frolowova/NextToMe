@@ -19,7 +19,14 @@
         :rules="[rules.required, rules.email]"
       ></v-text-field>
     </v-container>
-    <v-btn type="submit" color="primary" x-large block>
+    <v-btn
+      :loading="loading"
+      :disabled="loading"
+      type="submit"
+      color="primary"
+      x-large
+      block
+    >
       Зарегистрироваться
     </v-btn>
   </v-form>
@@ -44,7 +51,8 @@ export default {
         "Невалидный e-mail"
     },
     errorMessage: null,
-    successMessage: null
+    successMessage: null,
+    loading: false
   }),
   methods: {
     validate() {
@@ -53,14 +61,21 @@ export default {
     onSignup() {
       this.validate();
       if (this.valid) {
+        this.loading = true;
         this.$store
           .dispatch(AUTH_SIGNUP, { ...this.user })
           .then(res => {
+            this.loading = false;
             this.successMessage = "Успешно. Подтвердите почту, пожалуйста";
             this.errorMessage = null;
           })
           .catch(err => {
-            this.errorMessage = "Ошибка регистрации";
+            this.loading = false;
+            if (err == 400) {
+              this.errorMessage = "Такой логин уже зарегистрирован";
+            } else {
+              this.errorMessage = "Ошибка регистрации";
+            }
             this.successMessage = null;
           });
       }

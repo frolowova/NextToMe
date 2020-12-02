@@ -8,12 +8,16 @@ namespace NextToMe.Common.DTOs
 
         public DateTime CreatedAt { get; set; }
 
-        public string From { get; set; }
+        public Guid From { get; set; }
+
+        public int LikesCount { get; set; }
 
         public double DistanceToUser { get; set; }
 
         public DateTime? DeleteAt { get; set; }
 
         public long Views { get; set; }
+
+        public long CommentsCount { get; set; }
     }
 }

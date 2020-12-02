@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import Bomb from "./Bomb";
-import Eye from "./Eye";
-import HeaderMessage from "./HeaderMessage";
-import TextMessage from "./TextMessage";
-import PicturesOfMessage from "./PicturesOfMessage";
-import StatisticMessage from "./StatisticMessage";
+import Bomb from "@/components/ViewMessage/Bomb";
+import Eye from "@/components/ViewMessage/Eye";
+import HeaderMessage from "@/components/ViewMessage/HeaderMessage";
+import TextMessage from "@/components/ViewMessage/TextMessage";
+import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
+import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
 export default {
   components: {
     Bomb,

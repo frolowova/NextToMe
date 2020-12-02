@@ -1,24 +1,23 @@
 <template>
   <div class="login-page">
     <span class="auth__descr">Вход</span>
-    <loginForm class="mb-6"/>
-    <linkButton to='/signup' text='Зарегистрироваться' class="mb-4"/>
-    <nuxt-link class="login-page__link" to='/reset-password'>Забыли пароль</nuxt-link>
+    <loginForm class="mb-6" />
+    <v-btn nuxt to="/signup" block elevation="2" x-large outlined class="mb-4"
+      >Зарегистрироваться</v-btn
+    >
+    <nuxt-link class="login-page__link" to="/reset">Забыли пароль</nuxt-link>
   </div>
 </template>
 
 <script>
-import loginForm from "@/components/LoginForm";
-import linkButton from "@/components/LinkButton";
+import loginForm from "@/components/Auth/LoginForm";
 
 export default {
-  middleware: [],
+  middleware: ["notAuth"],
   layout: "auth",
   components: {
-    loginForm,
-    linkButton
-  },
-  
+    loginForm
+  }
 };
 </script>
 
