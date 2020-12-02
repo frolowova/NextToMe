@@ -13,7 +13,6 @@ class MessageController extends APIController {
   async sendMessage(message_info) {
     const location = await this.getLocationInfo();
     message_info = { ...message_info, ...location };
-    console.log(message_info);
     const createdMessage = await this.request(
       "post",
       "/messages/send",

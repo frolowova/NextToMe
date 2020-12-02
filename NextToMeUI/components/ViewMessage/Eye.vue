@@ -20,7 +20,7 @@
 export default {
   props: {
     views: {
-      type: String || Number,
+      type: [String, Number],
       default: 0
     }
   }

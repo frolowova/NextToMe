@@ -12,16 +12,16 @@
         fill="#F55454"
       />
     </svg>
-    <p v-if="views" class="ml-2">{{ views }}</p>
+    <p class="ml-2  white--text">{{ amount }}</p>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    views: {
-      type: String || Number,
-      default: null
+    amount: {
+      type: [String, Number],
+      default: 0
     }
   }
 };

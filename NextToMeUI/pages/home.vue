@@ -1,34 +1,76 @@
 <template>
   <div class="home-page">
-    <tagView
-      :avatar="src"
-      :username="username"
-      :position="position"
-      :text="message"
-      :views="view"
-      :time="time"
-    />
+    <v-select
+      v-model="select"
+      :items="items"
+      item-text="abbr"
+      item-value="state"
+      return-object
+      solo
+      single-line
+    ></v-select>
+    <div v-if="!loading" class="messages">
+      <tagView
+        v-for="message in messages"
+        :message="message"
+        :key="message.id"
+        :avatarLoading="avatarLoading"
+        class="mb-4"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import tagView from "@/components/Tags/TagView.vue";
-import { GET_MESSAGES } from "@/store/actions/messages";
+import { GET_MESSAGES, LOAD_AVATARS } from "@/store/actions/messages";
 export default {
   components: {
     tagView
   },
   data: () => ({
-    src: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
-    username: "Евгений",
-    position: "100м",
-    message:
-      " А также некоторые особенности внутренней политики могут быть рассмотрены исключительно в разрезе маркетинговых и финансовыхпредпосылок. Вот вам яркий пример современ ьных тенденций - пониманиесути ресурсосберегающих технологий обеспечивает актуальность инновационных методов управления процессами. Для современного мирасуществующая теория прекрасно подходит для реализации поэтапного и последовательного развития общества. Но многие известные личности, инициированные исключительно синтетически, ассоциативно.",
-    time: "14 минут",
-    view: "30"
+    loading: false,
+    avatarLoading: false,
+    select: {
+      state: "Сначала самые просматриваемые",
+      abbr: "Самые просматриваемые"
+    },
+    items: [
+      { state: "Сначала самые просматриваемые", abbr: "Самые просматриваемые" },
+      { state: "Сначала менее просматриваемые", abbr: "Менее просматриваемые" },
+      { state: "Сначала самые обсуждаемые", abbr: "Самые обсуждаемые" },
+      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" }
+    ]
   }),
+  computed: {
+    messages() {
+      const messages = [...this.$store.state.messages.messages];
+      switch (this.select.abbr) {
+        case this.items[0].abbr:
+          return messages.sort((a, b) => b.views - a.views);
+        case this.items[1].abbr:
+          return messages.sort((a, b) => a.views - b.views);
+        case this.items[2].abbr:
+          return messages.sort((a, b) => b.commentsCount - a.commentsCount);
+        case this.items[3].abbr:
+          return messages.sort((a, b) => a.commentsCount - b.commentsCount);
+      }
+    }
+  },
   mounted() {
-    this.$store.dispatch(GET_MESSAGES).then(res => console.log(res));
+    this.loading = true;
+    this.avatarLoading = true;
+    this.$store
+      .dispatch(GET_MESSAGES)
+      .then(result => {
+        this.loading = false;
+        return this.$store.dispatch(LOAD_AVATARS);
+      })
+      .then(res => (this.avatarLoading = false))
+      .catch(err => {
+        this.loading = false;
+        this.avatarLoading = false;
+      });
   }
 };
 </script>
