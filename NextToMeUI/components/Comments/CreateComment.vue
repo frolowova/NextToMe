@@ -1,64 +1,49 @@
 <template>
-  <div class="create-comment-conteiner">
-    <div class="create-comment">
-      <v-textarea autofocus no-resize flat v-model="comment" rows="1"></v-textarea>
-      <v-btn class="mx-2" fab dark large color="#F55454" @click="sendComment">
-        <v-icon>mdi-telegram</v-icon>
-      </v-btn>
-    </div>
+  <div class="pa-2 ma-2" position="sticky">
+    <v-textarea
+      placeholder="Ваш комментарий"
+      auto-grow
+      solo
+      rows="1"
+      row-height="15"
+      :append-icon="commentText.length > 0 ? 'mdi-send-circle' : ''"
+      v-model="commentText"
+      background-color="cardBackground"
+      color="accent"
+      @click:append="sendComment"
+      @keyup.esc="commentText = ''"
+    ></v-textarea>
   </div>
 </template>
 
 <script>
 export default {
   data: () => ({
-    comment: ""
-  })
-  // methods: {
-  //    sendComment() {
-  //      const post = "/api/message/comments/send";
-  //      const dataComment = {
-  //       text: this.comment,
-  //      };
-
-  //      this.$axios
-  //        .$post(`${this.$store.state.url}${post}`, dataComment, {
-  //          headers: { Authorization: `Bearer ${this.$store.state.token}` },
-  //        })
-  //        .then((response) => {
-  //          this.$store.dispatch("addMessages");
-  //        this.message = "";
-  //        })
-  //        .catch((error) => {
-  //          console.log(error);
-  //        });
-  //   },
-  // },
+    commentText: ""
+  }),
+  methods: {
+    sendComment() {
+      //     const post = "/api/message/comments/send";
+      //     const dataComment = {
+      //       text: this.commentText
+      //     };
+      //     this.$axios
+      //       .$post(`${this.$store.state.url}${post}`, dataComment, {
+      //         headers: { Authorization: `Bearer ${this.$store.state.token}` }
+      //       })
+      //       .then(response => {
+      //         this.$store.dispatch("addMessages");
+      //         this.message = "";
+      //       })
+      //       .catch(error => {
+      //         console.log(error);
+      //       });
+    }
+  }
 };
 </script>
 
 
 
 <style lang="scss" scoped>
-.create-comment-conteiner {
-  position: sticky;
-  bottom: 0;
-  width: 20.5rem;
-  background-color: #3c3c3c;
-}
-.create-comment {
-  border: 1px solid grey;
-  border-radius: 5px;
-  position: relative;
-  left: 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.mx-2 {
-  margin-bottom: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-}
 </style>
