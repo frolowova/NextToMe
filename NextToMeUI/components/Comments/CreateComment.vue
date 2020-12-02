@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { SEND_COMMENTS } from "@/store/actions/comments";
+import { SEND_COMMENTS } from "@/store/actions/currentTag";
 
 export default {
   data: () => ({

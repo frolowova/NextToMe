@@ -1,5 +1,5 @@
 
-import { GET_COMMENTS, SEND_COMMENTS } from "../actions/comments";
+import { GET_COMMENTS, SEND_COMMENTS } from "../actions/currentTag";
 import CommentsController from "@/api/CommentsController";
 
 

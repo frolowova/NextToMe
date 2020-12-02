@@ -24,7 +24,7 @@
           @click=" (pressShowComments=!pressShowComments)"
         >Показать все</v-btn>
       </div>
-      <div class="d-flex align-top justify-center" v-if="!comments.length">
+      <div class="d-flex align-top justify-center pt-4" v-if="!comments.length">
         <p>Здесь пока нет комментариев. Будьте Первым!</p>
       </div>
       <div v-if="comments.length">
@@ -40,7 +40,7 @@
 <script>
 import CommentCard from "@/components/comments/CommentCard";
 import CreateComment from "@/components/comments/CreateComment";
-import { GET_COMMENTS } from "@/store/actions/comments";
+import { GET_COMMENTS } from "@/store/actions/currentTag";
 
 export default {
   components: { CommentCard, CreateComment },
@@ -88,9 +88,5 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
-}
-.hide-btn,
-.show-btn {
-  cursor: pointer;
 }
 </style>
