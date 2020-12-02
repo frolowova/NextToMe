@@ -8,16 +8,21 @@
           <span v-if="countComments ==1">комментарий</span>
           <span v-if="countComments>1 && countComments<=4">комментария</span>
         </div>
-        <p
-          class="hide-btn"
+        <v-btn
+          class="text-none"
+          small
+          text
           v-if="pressShowComments"
           @click=" (pressShowComments=!pressShowComments)"
-        >Скрыть</p>
-        <p
-          class="show-btn"
+        >Скрыть</v-btn>
+        <v-btn
+          class="text-none"
+          small
+          text
+          :disabled="!comments.length"
           v-if="!pressShowComments"
           @click=" (pressShowComments=!pressShowComments)"
-        >Показать все</p>
+        >Показать все</v-btn>
       </div>
       <div class="d-flex align-top justify-center" v-if="!comments.length">
         <p>Здесь пока нет комментариев. Будьте Первым!</p>
