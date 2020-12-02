@@ -41,6 +41,7 @@ export default {
 
 <style scoped>
 .footer-menu {
+  z-index: 2;
   position: relative;
   display: flex;
   overflow: hidden;
