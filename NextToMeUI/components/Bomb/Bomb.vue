@@ -37,8 +37,5 @@ export default {
       }
     },
   },
-  mounted() {
-    console.log(this.timeUpload);
-  },
 };
 </script>
