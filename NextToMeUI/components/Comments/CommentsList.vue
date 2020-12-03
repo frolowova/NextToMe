@@ -1,40 +1,72 @@
 <template>
-  <div class="comments-wraper">
+  <div>
     <div class="comments-conteiner">
-      <div class="up-bar">
-        <div>{{comments.length}} комментариев</div>
-        <button>скрыть</button>
+      <div class="up-bar px-4">
+        <div>
+          {{countComments}}
+          <span v-if="countComments ==0 || countComments>=5">комментариев</span>
+          <span v-if="countComments ==1">комментарий</span>
+          <span v-if="countComments>1 && countComments<=4">комментария</span>
+        </div>
+        <v-btn
+          class="text-none"
+          small
+          text
+          v-if="pressShowComments"
+          @click=" (pressShowComments=!pressShowComments)"
+        >Скрыть</v-btn>
+        <v-btn
+          class="text-none"
+          small
+          text
+          :disabled="!comments.length"
+          v-if="!pressShowComments"
+          @click=" (pressShowComments=!pressShowComments)"
+        >Показать все</v-btn>
       </div>
-      <v-list-item v-for="(comment, i)  in comments" :key="comment.messageId">
-        <CommentCard :commentData="comment" :index="i"></CommentCard>
-      </v-list-item>
-      <CreateComment></CreateComment>
+      <div class="d-flex align-top justify-center pt-4" v-if="!comments.length">
+        <p>Здесь пока нет комментариев. Будьте Первым!</p>
+      </div>
+      <div v-if="comments.length">
+        <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
+          <CommentCard :commentData="comment" :index="i"></CommentCard>
+        </v-list-item>
+      </div>
     </div>
-    <div class="create"></div>
+    <CreateComment></CreateComment>
   </div>
 </template>
 
 <script>
-import CommentCard from "@/components/Comments/CommentCard";
-import CreateComment from "@/components/Comments/CreateComment";
+import CommentCard from "@/components/comments/CommentCard";
+import CreateComment from "@/components/comments/CreateComment";
+import { GET_COMMENTS } from "@/store/actions/currentTag";
 
 export default {
   components: { CommentCard, CreateComment },
-  // methods: {
-  //     getComments() {
-  //       this.$store.dispatch("addComments");
-  //     },
-
-  // },
+  data: () => ({
+    pressShowComments: false
+  }),
 
   computed: {
     comments() {
-      return  this.$store.state.comments.comments;
+      let comments = this.$store.state.comments.comments;
+
+      return this.pressShowComments || comments.length == 0
+        ? comments
+        : [comments[0]];
+    },
+
+    countComments() {
+      return this.$store.state.comments.comments.length;
+    },
+    messageId() {
+      return this.$route.query.id;
     }
   },
 
   mounted() {
-    // this.getComments()
+    this.$store.dispatch(GET_COMMENTS, this.messageId);
   }
 };
 </script>
@@ -45,24 +77,16 @@ export default {
   background: transparent;
 }
 
-.comments-wraper {
-  margin: 60px auto;
-  width: 25rem;
+.comments-conteiner {
+  max-height: 40vh;
+  overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-.comments-conteiner {
-  border: 1px solid #ccc;
-  background-color: #3c3c3c;
-  padding: 1rem;
-  max-height: 80vh;
-  overflow-x: auto;
+  position: relative;
 }
 .up-bar {
   display: flex;
   justify-content: space-between;
-  margin: 1rem;
-  width: 20rem;
+  width: 100%;
 }
 </style>

@@ -6,18 +6,22 @@
     </div>
     <div>
       <pictures-of-message />
-      <statistic-message :time="time" :view="view" />
+      <statistic-message  :time="time" :view="view" />
+    </div>
+    <div>
+      <CommentsList></CommentsList>
     </div>
   </div>
 </template>
 
 <script>
-import Bomb from "./Bomb";
-import Eye from "./Eye";
-import HeaderMessage from "./HeaderMessage";
-import TextMessage from "./TextMessage";
-import PicturesOfMessage from "./PicturesOfMessage/PicturesOfMessage";
-import StatisticMessage from "./StatisticMessage";
+import Bomb from "@/components/Bomb/Bomb";
+import Eye from "@/components/ViewMessage/Eye";
+import HeaderMessage from "@/components/ViewMessage/HeaderMessage";
+import TextMessage from "@/components/ViewMessage/TextMessage";
+import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
+import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
+import CommentsList from "@/components/Comments/CommentsList";
 export default {
   components: {
     Bomb,
@@ -26,6 +30,7 @@ export default {
     TextMessage,
     PicturesOfMessage,
     StatisticMessage,
+    CommentsList,
   },
   data: () => ({
     src: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",

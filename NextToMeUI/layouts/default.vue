@@ -2,17 +2,26 @@
   <v-app dark>
     <v-toolbar class="header" height="56px">
       <v-container style="max-width: 900px">
-        <v-toolbar-title v-if="$route.name === 'home'">
+        <v-toolbar-title class="header-title" v-if="$route.name === 'home'">
           {{ page[0] }}
         </v-toolbar-title>
-        <v-toolbar-title v-if="$route.name === 'notifications'">
+        <v-toolbar-title
+          class="header-title"
+          v-if="$route.name === 'notifications'"
+        >
           {{ page[1] }}
         </v-toolbar-title>
-        <v-toolbar-title v-if="$route.name === 'profile'">
+        <v-toolbar-title class="header-title" v-if="$route.name === 'profile'">
           {{ page[2] }}</v-toolbar-title
         >
-        <v-toolbar-title v-if="$route.name === 'tag-create'">
+        <v-toolbar-title
+          class="header-title"
+          v-if="$route.name === 'tag-create'"
+        >
           {{ page[3] }}</v-toolbar-title
+        >
+        <v-toolbar-title class="header-title" v-if="$route.name === 'settings'">
+          {{ page[4] }}</v-toolbar-title
         >
       </v-container>
     </v-toolbar>
@@ -33,7 +42,7 @@ export default {
   },
 
   data: () => ({
-    page: ["Главная", "Уведомления", "Профиль", "Тегнуть"],
+    page: ["Главная", "Уведомления", "Профиль", "Тегнуть", "Настройки"],
   }),
 };
 </script>
@@ -46,6 +55,9 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
+}
+.header-title {
+  color: white;
 }
 </style>
 
