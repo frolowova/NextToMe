@@ -82,4 +82,16 @@ export default {
     }
   }
 }
+
+@media screen and (max-width: 480px){
+  .show-all{
+   &__info {
+     & p{ 
+       font-size: 8px;
+       line-height: 10px;
+       margin-bottom: 0px;
+     }
+   }
+  }
+}
 </style>
