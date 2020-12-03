@@ -143,5 +143,13 @@ namespace NextToMe.Services
             _dbContext.Remove(userLikedMessage);
             await _dbContext.SaveChangesAsync();
         }
+
+        public Task<string> GetMessageImage(Guid messageImageId)
+        {
+            return Task.FromResult(_dbContext.MessageImages
+                .Where(x => x.Id == messageImageId)
+                .Select(x => x.Image)
+                .First());
+        }
     }
 }
