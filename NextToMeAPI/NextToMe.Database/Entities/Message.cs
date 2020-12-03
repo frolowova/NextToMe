@@ -32,5 +32,7 @@ namespace NextToMe.Database.Entities
         public virtual ICollection<MessageComment> Comments { get; set; } = new HashSet<MessageComment>();
 
         public virtual ICollection<UserLikedMessage> UserLikedMessages { get; set; } = new HashSet<UserLikedMessage>();
+
+        public virtual ICollection<MessageImage> MessageImages { get; set; } = new HashSet<MessageImage>();
     }
 }
