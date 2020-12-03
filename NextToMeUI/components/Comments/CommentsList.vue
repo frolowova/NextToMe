@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import CommentCard from "@/components/comments/CommentCard";
-import CreateComment from "@/components/comments/CreateComment";
+import CommentCard from "@/components/Comments/CommentCard";
+import CreateComment from "@/components/Comments/CreateComment";
 import { GET_COMMENTS } from "@/store/actions/currentTag";
 
 export default {

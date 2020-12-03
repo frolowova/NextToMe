@@ -9,13 +9,20 @@
       solo
       single-line
     ></v-select>
-    <div v-if="!loading" class="messages">
+    <div v-if="loading">
+      <skeletonTag v-for="i in 10" :key="i" />
+    </div>
+    <div v-else class="messages" @click="cardClick">
+      <h3 v-if="!messages.length" class="text-center">
+        К сожалению сейчас нет новых тэгов
+      </h3>
       <tagView
         v-for="message in messages"
         :message="message"
         :key="message.id"
+        :id="message.id"
         :avatarLoading="avatarLoading"
-        class="mb-4"
+        class="mb-4 tag-view"
       />
     </div>
   </div>
@@ -23,10 +30,12 @@
 
 <script>
 import tagView from "@/components/Tags/TagView.vue";
+import skeletonTag from "@/components/Tags/SkeletonTag.vue";
 import { GET_MESSAGES, LOAD_AVATARS } from "@/store/actions/messages";
 export default {
   components: {
-    tagView
+    tagView,
+    skeletonTag
   },
   data: () => ({
     loading: false,
@@ -57,8 +66,15 @@ export default {
       }
     }
   },
+  methods: {
+    cardClick(e) {
+      const parent = e.target.closest(".tag-view");
+      if (parent) {
+        this.$router.push(`/tag?id=${parent.id}`);
+      }
+    }
+  },
   mounted() {
-    console.log(localStorage.getItem("nextId"));
     this.loading = true;
     this.avatarLoading = true;
     this.$store
