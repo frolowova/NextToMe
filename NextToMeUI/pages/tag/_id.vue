@@ -8,16 +8,20 @@
       <pictures-of-message />
       <statistic-message :time="time" :view="view" />
     </div>
+    <div>
+      <CommentsList></CommentsList>
+    </div>
   </div>
 </template>
 
 <script>
-import Bomb from "./Bomb";
-import Eye from "./Eye";
-import HeaderMessage from "./HeaderMessage";
-import TextMessage from "./TextMessage";
-import PicturesOfMessage from "./PicturesOfMessage/PicturesOfMessage";
-import StatisticMessage from "./StatisticMessage";
+import Bomb from "@/components/ViewMessage/Bomb";
+import Eye from "@/components/ViewMessage/Eye";
+import HeaderMessage from "@/components/ViewMessage/HeaderMessage";
+import TextMessage from "@/components/ViewMessage/TextMessage";
+import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
+import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
+import CommentsList from "@/components/Comments/CommentsList";
 export default {
   components: {
     Bomb,
@@ -26,6 +30,7 @@ export default {
     TextMessage,
     PicturesOfMessage,
     StatisticMessage,
+    CommentsList
   },
   data: () => ({
     src: "https://avatars0.githubusercontent.com/u/9064066?v=4&s=460",
@@ -34,7 +39,7 @@ export default {
     message:
       " А также некоторые особенности внутренней политики могут быть рассмотрены исключительно в разрезе маркетинговых и финансовыхпредпосылок. Вот вам яркий пример современ ьных тенденций - пониманиесути ресурсосберегающих технологий обеспечивает актуальность инновационных методов управления процессами. Для современного мирасуществующая теория прекрасно подходит для реализации поэтапного и последовательного развития общества. Но многие известные личности, инициированные исключительно синтетически, ассоциативно.",
     time: "14 минут",
-    view: "30",
-  }),
+    view: "30"
+  })
 };
 </script> 

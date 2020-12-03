@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app dark>
     <v-toolbar class="header" height="56px">
       <v-container style="max-width: 900px">
         <v-toolbar-title class="header-title" v-if="$route.name === 'home'">

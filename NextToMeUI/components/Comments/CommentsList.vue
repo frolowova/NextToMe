@@ -1,40 +1,56 @@
 <template>
-  <div class="comments-wraper">
+  <div>
     <div class="comments-conteiner">
-      <div class="up-bar">
-        <div>{{comments.length}} комментариев</div>
-        <button>скрыть</button>
+      <div class="up-bar px-4">
+        <div>
+          {{countComments}}
+          <span v-if="countComments ==0 || countComments>=5">комментариев</span>
+          <span v-if="countComments ==1">комментарий</span>
+          <span v-if="countComments>1 && countComments<=4">комментария</span>
+        </div>
+        <p
+          class="hide-btn"
+          v-if="pressShowComments"
+          @click=" (pressShowComments=!pressShowComments)"
+        >Скрыть</p>
+        <p
+          class="show-btn"
+          v-if="!pressShowComments"
+          @click=" (pressShowComments=!pressShowComments)"
+        >Показать все</p>
       </div>
-      <v-list-item v-for="(comment, i)  in comments" :key="comment.messageId">
+      <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
         <CommentCard :commentData="comment" :index="i"></CommentCard>
       </v-list-item>
-      <CreateComment></CreateComment>
     </div>
-    <div class="create"></div>
+    <CreateComment></CreateComment>
   </div>
 </template>
 
 <script>
-import CommentCard from "@/components/Comments/CommentCard";
-import CreateComment from "@/components/Comments/CreateComment";
+import CommentCard from "@/components/comments/CommentCard";
+import CreateComment from "@/components/comments/CreateComment";
+import comments from "../../store/modules/comments";
 
 export default {
   components: { CommentCard, CreateComment },
-  // methods: {
-  //     getComments() {
-  //       this.$store.dispatch("addComments");
-  //     },
-
-  // },
+  data: () => ({
+    pressShowComments: false
+  }),
 
   computed: {
     comments() {
-      return  this.$store.state.comments.comments;
+      let comments = this.$store.state.comments.comments;
+      return this.pressShowComments ? comments : [comments[0]];
+    },
+
+    countComments() {
+      return this.$store.state.comments.comments.length;
     }
   },
 
   mounted() {
-    // this.getComments()
+    // this.getComments();
   }
 };
 </script>
@@ -45,24 +61,20 @@ export default {
   background: transparent;
 }
 
-.comments-wraper {
-  margin: 60px auto;
-  width: 25rem;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
 .comments-conteiner {
-  border: 1px solid #ccc;
-  background-color: #3c3c3c;
-  padding: 1rem;
   max-height: 80vh;
   overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  position: relative;
 }
 .up-bar {
   display: flex;
   justify-content: space-between;
-  margin: 1rem;
-  width: 20rem;
+  width: 100%;
+}
+.hide-btn,
+.show-btn {
+  cursor: pointer;
 }
 </style>
