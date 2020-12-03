@@ -1,57 +1,60 @@
 <template>
-    <v-container >
-      <v-row 
-        justify="space-around"> 
-        <v-card
-          width="600"
-          elevation="0">
+    <v-container>
 
-          <v-row
-            class=" mb-10"
-            justify="center">
-            <avatar :sizeC=200></avatar>
-            <btn-pencil></btn-pencil>
-          </v-row>
+      <div class=" d-flex justify-center mb-10">
+        <avatar :sizeC=200></avatar>
+        <v-btn
+          color="primary"
+          text
+          icon>
+          <v-icon>mdi-pencil-outline</v-icon>
+        </v-btn>
+      </div>
             
-          <h2 class="subtitle-1 red--text pa-2">Настройки профиля</h2>
+          <h2 class="subtitle-1 primary--text pa-2">Настройки профиля</h2>
 
-          <v-col class="d-flex align-start pa-2"> 
+          <div class="d-flex align-start pa-2"> 
             <sub-title-input title = "Имя"></sub-title-input>
             <settings-input labelC = "Введите новое имя"></settings-input>
-          </v-col >
+          </div >
 
-          <v-col class="d-flex align-start pa-2"> 
+          <div class="d-flex align-start pa-2"> 
             <sub-title-input title = "Почта"></sub-title-input>
             <settings-input labelC = "Введите новый e-mail"></settings-input>
-          </v-col>
+          </div>
 
           <v-divider></v-divider>
 
-          <h2 class="subtitle-1 red--text pa-2">Общие настройки</h2>
+          <h2 class="subtitle-1 primary--text pa-2">Общие настройки</h2>
 
-          <v-col class="d-flex justify-space-between  pa-2 pr-0"> 
+          <div class="d-flex justify-space-between  pa-2 pr-0"> 
             <sub-title-input title = "Вкл. push-уведомления"></sub-title-input>
             <v-switch
               class="ma-0 pa-0"
               v-model="btnSwitch1"
-              color="red"
+              color="primary"
               inset
             ></v-switch>
-          </v-col>
+          </div>
 
-          <v-col class="d-flex justify-space-between pa-2 pr-0"> 
+          <div class="d-flex justify-space-between pa-2 pr-0"> 
             <sub-title-input title = "Вкл. темную тему"></sub-title-input>
             <v-switch
               class="ma-0 pa-0"
               v-model="btnSwitch2"
-              color="red"
+              color="primary"
               inset
               @click="changeTheme"
             ></v-switch>
 
-          </v-col>
-          <btn-pencil btnPencilName="Изменить пароль"></btn-pencil>
-          
+          </div>
+          <v-btn
+            class="text-capitalize"
+            text
+            color="primary">
+              <v-icon>mdi-pencil-outline</v-icon>
+              Изменить пароль
+            </v-btn>
 
           <v-row
             align="center"
@@ -59,9 +62,6 @@
             >
             <v-btn class="text-capitalize body-1" text @click="settingsOut">Выйти</v-btn>
           </v-row>
-          
-
-        </v-card>
       </v-row>
     </v-container>
 </template>
@@ -70,11 +70,10 @@
 import avatar from '@/components/ProfileSettings/Avatar';
 import SettingsInput from '@/components/ProfileSettings/SettingsInput';
 import SubTitleInput from '@/components/ProfileSettings/SubTitleInput';
-import BtnPencil from '@/components/ProfileSettings/BtnPencil';
 
 
 export default {
-  components: {avatar, SettingsInput,SubTitleInput,BtnPencil},
+  components: {avatar, SettingsInput,SubTitleInput},
   data: () => ({
     title: " ",
     btnPencilName: " ",
@@ -89,7 +88,6 @@ export default {
     changeTheme() {
       this.$vuetify.theme.dark=!this.$vuetify.theme.dark
       console.log( this.$vuetify.theme.dark)
-      console.log("hello")
 
     }
 
