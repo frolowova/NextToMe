@@ -65,7 +65,8 @@ namespace NextToMe.Services
                     Id = x.Id,
                     Place = x.Place,
                     Views = x.Views,
-                    CommentsCount = x.Comments.Count
+                    CommentsCount = x.Comments.Count,
+                    Photos = x.MessageImages.Select(image => image.Id)
                 })
                 .ToList();
 
@@ -86,7 +87,11 @@ namespace NextToMe.Services
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;
             newMessage.DeleteAt = DateTime.UtcNow.Add(_messageDefaultLifetime);
-            _dbContext.Add(newMessage);
+            foreach (var photo in request.Photos)
+            {
+                newMessage.MessageImages.Add(new MessageImage() {Image = photo});
+            }
+;           _dbContext.Add(newMessage);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<MessageResponse>(newMessage);
         }

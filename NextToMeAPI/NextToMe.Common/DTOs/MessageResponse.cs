@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace NextToMe.Common.DTOs
 {
@@ -19,5 +20,7 @@ namespace NextToMe.Common.DTOs
         public long Views { get; set; }
 
         public long CommentsCount { get; set; }
+
+        public new IEnumerable<Guid> Photos { get; set; }
     }
 }
