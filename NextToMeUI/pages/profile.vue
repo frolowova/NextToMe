@@ -4,8 +4,9 @@
     <div class="d-flex align-center">
       <avatar :sizeC=100></avatar>
       <div>
-        <p class="ps-4 text--secondary" >userName</p>
+        <p class="ps-4 text--secondary" >{{userInfo}}</p>
         <p class="ps-4 body-2 text--secondary">Tags N</p>
+         <!-- <p class="ps-4 body-2 text--secondary" >Id: {{userId}}</p> -->
       </div>
     </div>
     <div>
@@ -18,7 +19,6 @@
     </div>
   </div>
     
-  <v-btn @click.prevent="getUserInfo"> Получить имя</v-btn>
 </v-container> 
   
 </template>
@@ -26,7 +26,7 @@
 
 <script>
 import avatar from '@/components/ProfileSettings/Avatar';
-import { GET_USER_INFO} from "@/store/actions/userInfo";
+import {GET_USER_INFO} from "@/store/actions/userInfo";
 import {mapGetters} from 'vuex';
 export default {
   components: {avatar},
@@ -44,7 +44,10 @@ export default {
     },
     
   },
-  // computed: mapGetters(['userName']),
+  mounted() {
+    this.getUserInfo()
+  },
+  computed: mapGetters(['userId','userInfo']),
   
 }
 </script>

@@ -1,26 +1,27 @@
 import UserController from "@/api/UserController";
-import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID} from "../actions/userInfo";
+import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID, CHANGE_THEME} from "../actions/userInfo";
   
   const state = () => ({
     id: localStorage.getItem('nextId') || null,
-    userInfo: {
-      image: " ",
-      userName: " ",
-    }
+    userInfo:{
+      userName: "",
+      imageBase64: "",
+
+    },
+    // darkTheme: localStorage.getItem('isDark') || false,
   });
   
   const mutations = {
     [GET_USER_ID](state, id) {
       state.id = id;
     },
-    [GET_USER_INFO](state, userInfO) {
-      state.userInfo = userInfO;
-    }
-
-    // [CHANGE_THEME](state, theme) {
-    //   localStorage.setItem('dark');
-
-    // },
+    [GET_USER_INFO](state, userInfo) {
+      state.userInfo = userInfo;
+    },
+    // [CHANGE_THEME](state, darkTheme){
+    //   localStorage.setItem('isDark', darkTheme);
+    //   state.darkTheme = darkTheme;
+    // }
   };
   
   const actions = {
@@ -28,13 +29,13 @@ import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID} from "../actions/userInfo";
       const id = localStorage.getItem("nextId");
       state.id = id;
       commit(GET_USER_ID, id);
+      console.log(id);
     },
 
 
     [GET_USER_INFO]: async ({ commit, state}) => {
-      const userInfo = await UserController.getUserInfo(state.id);
-      commit(GET_USER_INFO , userInfo);
-      console.log(userInfo);
+      const userInfo = await UserController.getUserInfo([state.id]);
+      commit(GET_USER_INFO, userInfo);
       return userInfo;
       
     },
@@ -45,9 +46,12 @@ import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID} from "../actions/userInfo";
   };
   
   const getters = {
-    // userName: state => {
-    //   return state.userInfo.userName;
-    // }
+    userId: state => {
+      return state.id;
+    },
+    userInfo: state => {
+      return state.userInfo;
+    }
   };
   
   export default {
