@@ -87,11 +87,12 @@ namespace NextToMe.Services
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;
             newMessage.DeleteAt = DateTime.UtcNow.Add(_messageDefaultLifetime);
-            foreach (var photo in request.Photos)
-            {
-                newMessage.MessageImages.Add(new MessageImage() {Image = photo});
-            }
-;           _dbContext.Add(newMessage);
+
+            if (request.Photos != null)
+                foreach (var photo in request.Photos)
+                    newMessage.MessageImages.Add(new MessageImage() { Image = photo });
+
+            _dbContext.Add(newMessage);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<MessageResponse>(newMessage);
         }
