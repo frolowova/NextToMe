@@ -58,6 +58,7 @@ export default {
     }
   },
   mounted() {
+    console.log(localStorage.getItem("nextId"));
     this.loading = true;
     this.avatarLoading = true;
     this.$store
