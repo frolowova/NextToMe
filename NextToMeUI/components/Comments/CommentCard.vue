@@ -14,7 +14,7 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </div>
-      <v-card-text class="pa-2 font-weight-regular text-body-1">{{commentData.text}}</v-card-text>
+      <v-card-text class="pa-2 white--text text-body-1">{{commentData.text}}</v-card-text>
 
       <v-container class="mt-0 pt-2" justify="start">
         <span class="text--secondary">{{this.time}}</span>
@@ -58,9 +58,9 @@ export default {
       } else if (minutes > 60 && minutes < 1440) {
         timeForm = this.declOfNum(inHours, ["час", "часа", "часов"]) + " назад";
         return timeForm;
-      } else if (minutes > 1440) {
+      } else if (minutes > 1440 && minutes < 2880) {
         timeForm = this.declOfNum(inDays, ["день", "дня", "дней"]) + " назад";
-      } else {
+      } else if (minutes > 2880) {
         timeForm = "более двух дней" + " назад";
       }
       return timeForm;

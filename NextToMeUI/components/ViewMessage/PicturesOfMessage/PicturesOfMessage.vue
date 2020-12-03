@@ -114,7 +114,6 @@ export default {
     },
     setOpen(isOpen) {
       this.isOpen = isOpen;
-      console.log(this.isOpen);
     },
   },
 };

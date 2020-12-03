@@ -20,10 +20,10 @@ class UserController extends APIController {
   }
 
   /**  
-    @param {string} user_id
+    @param {Array of string} user_id
   */
-  async getUserInfo(user_id) {
-    const userInfo = this.request("post", "/user/information/send", user_id);
+  async getUserInfo(users_id) {
+    const userInfo = this.request("post", "/user/information/get", users_id);
     return userInfo;
   }
 }

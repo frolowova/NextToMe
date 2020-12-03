@@ -1,6 +1,6 @@
 import Vuex from "vuex";
 import auth from "./modules/auth";
-import comments from "./modules/comments";
+import comments from "./modules/currentTag";
 import messages from "./modules/messages";
 import userInfo from "./modules/userInfo";
 

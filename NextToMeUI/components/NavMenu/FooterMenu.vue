@@ -41,6 +41,7 @@ export default {
 
 <style scoped>
 .footer-menu {
+  z-index: 2;
   position: relative;
   display: flex;
   overflow: hidden;
@@ -58,5 +59,10 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+}
+@media screen and (max-width: 350px) {
+  span {
+    display: none;
+  }
 }
 </style>

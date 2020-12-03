@@ -1,25 +1,24 @@
 <template>
-<v-container >
-  <v-row
-   justify="space-around">
-   
-      <v-row class="d-flex justify-space-between pa-2 pr-0"> 
-        <v-col class="d-flex align-center">
-          <avatar :sizeC=100></avatar>
-          <v-col>
-            <p class="ps-4" >userName</p>
-            <p class="ps-4 body-2">Tags N</p>
-
-            <v-btn @click.prevent="getUserInfo"> Получить имя</v-btn>
-          </v-col>
-        </v-col>
-        <v-btn
-        text
+<v-container>
+  <div class="d-flex justify-space-between">
+    <div class="d-flex align-center">
+      <avatar :sizeC=100></avatar>
+      <div>
+        <p class="ps-4 text--secondary" >userName</p>
+        <p class="ps-4 body-2 text--secondary">Tags N</p>
+      </div>
+    </div>
+    <div>
+      <v-btn
         icon 
-        @click="settingsGo">
-        <v-icon>mdi-tune-variant</v-icon> </v-btn>
-      </v-row>
-  </v-row>
+        @click="settingsGo"
+        color="secondary">
+        <v-icon>mdi-tune-variant</v-icon>
+      </v-btn>
+    </div>
+  </div>
+    
+  <v-btn @click.prevent="getUserInfo"> Получить имя</v-btn>
 </v-container> 
   
 </template>

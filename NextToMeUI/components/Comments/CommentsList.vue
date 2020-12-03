@@ -8,20 +8,30 @@
           <span v-if="countComments ==1">комментарий</span>
           <span v-if="countComments>1 && countComments<=4">комментария</span>
         </div>
-        <p
-          class="hide-btn"
+        <v-btn
+          class="text-none"
+          small
+          text
           v-if="pressShowComments"
           @click=" (pressShowComments=!pressShowComments)"
-        >Скрыть</p>
-        <p
-          class="show-btn"
+        >Скрыть</v-btn>
+        <v-btn
+          class="text-none"
+          small
+          text
+          :disabled="!comments.length"
           v-if="!pressShowComments"
           @click=" (pressShowComments=!pressShowComments)"
-        >Показать все</p>
+        >Показать все</v-btn>
       </div>
-      <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
-        <CommentCard :commentData="comment" :index="i"></CommentCard>
-      </v-list-item>
+      <div class="d-flex align-top justify-center pt-4" v-if="!comments.length">
+        <p>Здесь пока нет комментариев. Будьте Первым!</p>
+      </div>
+      <div v-if="comments.length">
+        <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
+          <CommentCard :commentData="comment" :index="i"></CommentCard>
+        </v-list-item>
+      </div>
     </div>
     <CreateComment></CreateComment>
   </div>
@@ -30,7 +40,7 @@
 <script>
 import CommentCard from "@/components/comments/CommentCard";
 import CreateComment from "@/components/comments/CreateComment";
-import comments from "../../store/modules/comments";
+import { GET_COMMENTS } from "@/store/actions/currentTag";
 
 export default {
   components: { CommentCard, CreateComment },
@@ -41,16 +51,22 @@ export default {
   computed: {
     comments() {
       let comments = this.$store.state.comments.comments;
-      return this.pressShowComments ? comments : [comments[0]];
+
+      return this.pressShowComments || comments.length == 0
+        ? comments
+        : [comments[0]];
     },
 
     countComments() {
       return this.$store.state.comments.comments.length;
+    },
+    messageId() {
+      return this.$route.query.id;
     }
   },
 
   mounted() {
-    // this.getComments();
+    this.$store.dispatch(GET_COMMENTS, this.messageId);
   }
 };
 </script>
@@ -62,7 +78,7 @@ export default {
 }
 
 .comments-conteiner {
-  max-height: 80vh;
+  max-height: 40vh;
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -72,9 +88,5 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
-}
-.hide-btn,
-.show-btn {
-  cursor: pointer;
 }
 </style>
