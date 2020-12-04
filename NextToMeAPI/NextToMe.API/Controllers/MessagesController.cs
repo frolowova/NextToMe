@@ -51,5 +51,12 @@ namespace NextToMe.API.Controllers
         {
             await _messageService.RemoveLikeFromMessage(messageId);
         }
+
+        [HttpPost]
+        [Route("image/get")]
+        public async Task<string> GetMessageImage(Guid messageImageId)
+        {
+            return await _messageService.GetMessageImage(messageImageId);
+        }
     }
 }

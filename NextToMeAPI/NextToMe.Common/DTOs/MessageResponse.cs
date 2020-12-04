@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using NextToMe.Common.Models;
 
 namespace NextToMe.Common.DTOs
 {
-    public class MessageResponse : AddMessageRequest
+    public class MessageResponse
     {
         public Guid Id { get; set; }
+
+        public string Text { get; set; }
+
+        public Location Location { get; set; }
+
+        public string Place { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
@@ -19,5 +27,7 @@ namespace NextToMe.Common.DTOs
         public long Views { get; set; }
 
         public long CommentsCount { get; set; }
+
+        public IEnumerable<Guid> Photos { get; set; }
     }
 }
