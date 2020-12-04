@@ -54,9 +54,9 @@ namespace NextToMe.API.Controllers
 
         [HttpPost]
         [Route("image/get")]
-        public async Task GetMessageImage(Guid messageImageId)
+        public async Task<string> GetMessageImage(Guid messageImageId)
         {
-            await _messageService.GetMessageImage(messageImageId);
+            return await _messageService.GetMessageImage(messageImageId);
         }
     }
 }
