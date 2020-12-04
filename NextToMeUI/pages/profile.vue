@@ -4,7 +4,7 @@
     <div class="d-flex align-center">
       <avatar :sizeC=100></avatar>
       <div>
-        <p class="ps-4 text--secondary" >{{userInfo}}</p>
+        <!-- <p class="ps-4 text--secondary" >{{userInfo}}</p> -->
         <p class="ps-4 body-2 text--secondary">Tags N</p>
          <!-- <p class="ps-4 body-2 text--secondary" >Id: {{userId}}</p> -->
       </div>
@@ -38,7 +38,8 @@ export default {
       this.$router.push("/settings")
     },
     getUserInfo(){
-      this.$store.dispatch(GET_USER_INFO, {}).then(res => {
+      this.$store.dispatch(GET_USER_INFO, {})
+      .then(res => {
         console.log(`userInfo ${res}`)
       }).catch(err => console.log(err))
     },

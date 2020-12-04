@@ -1,14 +1,14 @@
 import UserController from "@/api/UserController";
 import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID, CHANGE_THEME} from "../actions/userInfo";
+import {AUTH_LOGOUT,} from "../actions/auth";
   
   const state = () => ({
     id: localStorage.getItem('nextId') || null,
     userInfo:{
       userName: "",
       imageBase64: "",
-
     },
-    // darkTheme: localStorage.getItem('isDark') || false,
+    darkTheme: localStorage.getItem('isDark') || false,
   });
   
   const mutations = {
@@ -18,10 +18,19 @@ import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID, CHANGE_THEME} from "../acti
     [GET_USER_INFO](state, userInfo) {
       state.userInfo = userInfo;
     },
-    // [CHANGE_THEME](state, darkTheme){
-    //   localStorage.setItem('isDark', darkTheme);
-    //   state.darkTheme = darkTheme;
-    // }
+    [SEND_USER_INFO](state, updatedUserInfo) {
+      state.userInfo = updatedUserInfo;
+    },
+     
+    [CHANGE_THEME](state, darkTheme){
+      localStorage.setItem('isDark', darkTheme);
+      state.darkTheme = darkTheme;
+    },
+    [AUTH_LOGOUT]() {
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("nextId");
+    }
   };
   
   const actions = {
@@ -31,18 +40,20 @@ import { SEND_USER_INFO, GET_USER_INFO, GET_USER_ID, CHANGE_THEME} from "../acti
       commit(GET_USER_ID, id);
       console.log(id);
     },
-
-
     [GET_USER_INFO]: async ({ commit, state}) => {
       const userInfo = await UserController.getUserInfo([state.id]);
       commit(GET_USER_INFO, userInfo);
       return userInfo;
       
     },
-    // [SEND_USER_INFO]: async ({ commit }, user_info ) => {
-    //   const newUserInfo = await UserController.sendUserInfo(user_info);
-    //   return newUserInfo ;
-    // }
+    [SEND_USER_INFO]: async ({ commit }, user_info ) => {
+      const updatedUserInfo = await UserController.sendUserInfo(user_info);
+      return updatedUserInfo ;
+    },
+    [AUTH_LOGOUT]: async ({ commit }) => {
+      return commit(AUTH_LOGOUT);
+    }
+    
   };
   
   const getters = {
