@@ -99,6 +99,7 @@ export default {
         console.log(res)
       }).catch(err => console.log(err))
       this.$router.push("/login")
+
       },
     sendUserInfo() {
       this.$store.dispatch(SEND_USER_INFO, {userName: this.userName})
