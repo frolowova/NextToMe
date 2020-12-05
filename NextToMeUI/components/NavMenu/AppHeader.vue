@@ -1,5 +1,5 @@
 <template>
-  <div class="app-header">
+  <div v-if="headerData" class="app-header">
     <v-toolbar
       v-if="!headerData.subtitle_1 & !headerData.subtitle_2"
       class="header"
