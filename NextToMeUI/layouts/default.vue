@@ -18,6 +18,9 @@ export default {
     FooterMenu,
     AppHeader,
   },
+  mounted() {
+    this.$vuetify.theme.dark = this.$store.getters.darkTheme;
+  },
 
   computed: {
     headerData() {
