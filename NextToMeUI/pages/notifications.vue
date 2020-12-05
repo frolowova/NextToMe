@@ -63,6 +63,8 @@
 
 <script>
 export default {
-  data: () => ({}),
+  headerData: {
+    title: "Уведомления",
+  },
 };
 </script>
