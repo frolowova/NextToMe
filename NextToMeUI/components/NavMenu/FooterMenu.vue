@@ -39,8 +39,9 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .footer-menu {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 2;
   position: relative;
   display: flex;
@@ -63,6 +64,14 @@ export default {
 @media screen and (max-width: 350px) {
   span {
     display: none;
+  }
+  .v-item-group.v-bottom-navigation .v-btn {
+    min-width: none;
+  }
+
+  .v-btn:not(.v-btn--round).v-size--default {
+    min-width: 0px;
+    padding: 0px 0px;
   }
 }
 </style>
