@@ -1,40 +1,54 @@
 <template>
 <v-container>
-  <v-row
-   justify="space-around">
-    <v-card
-      width="600"
-      elevation="0">
-      <v-row class="d-flex justify-space-between pa-2 pr-0"> 
-        <v-col class="d-flex align-center">
-          <avatar :sizeC=100></avatar>
-          <v-col>
-            <p class="ps-4"> Name</p>
-            <p class="ps-4 body-2">Tags N</p>
-          </v-col>
-        </v-col>
-        <v-btn
-        text
+  <div class="d-flex justify-space-between">
+    <div class="d-flex align-center">
+      <avatar :sizeC=100></avatar>
+      <div>
+        <!-- <p class="ps-4 text--secondary" >{{userInfo}}</p> -->
+        <p class="ps-4 body-2 text--secondary">Tags N</p>
+         <!-- <p class="ps-4 body-2 text--secondary" >Id: {{userId}}</p> -->
+      </div>
+    </div>
+    <div>
+      <v-btn
         icon 
-        @click="settingsGo">
-        <v-icon>mdi-tune-variant</v-icon> </v-btn>
-      </v-row>
-    </v-card>
-  </v-row>
-</v-container>
+        @click="settingsGo"
+        color="secondary">
+        <v-icon>mdi-tune-variant</v-icon>
+      </v-btn>
+    </div>
+  </div>
+    
+</v-container> 
   
 </template>
 
 
 <script>
 import avatar from '@/components/ProfileSettings/Avatar';
-
+import {GET_USER_INFO} from "@/store/actions/userInfo";
+import {mapGetters} from 'vuex';
 export default {
   components: {avatar},
+  data: () => ({
+  
+  }),
   methods:{
     settingsGo() {
       this.$router.push("/settings")
     },
-  }
+    getUserInfo(){
+      this.$store.dispatch(GET_USER_INFO, {})
+      .then(res => {
+        console.log(`userInfo ${res}`)
+      }).catch(err => console.log(err))
+    },
+    
+  },
+  mounted() {
+    this.getUserInfo()
+  },
+  computed: mapGetters(['userId','userInfo']),
+  
 }
 </script>
