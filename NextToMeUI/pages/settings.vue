@@ -15,13 +15,15 @@
         <sub-title-text title = "Имя"></sub-title-text>
         <v-text-field 
           class="pa-0 ma-0"
-          label = "Введите новое имя"
+          :label = userName
+          v-model="newUserName"
           type="text"
           single-line
           reverse
           loading="0"
+          @click ="shown = !shown"
         ></v-text-field>
-        <v-btn 
+        <v-btn v-if ="!shown"
           icon
           color="primary"
           @click="sendUserInfo">
@@ -31,7 +33,7 @@
 
       <div class="d-flex align-start justify-space-between pa-2"> 
         <sub-title-text title = "Почта"></sub-title-text>
-        <p> E-mail</p>
+        <p> {{email}}</p>
       </div>
 
       <v-divider></v-divider>
@@ -42,7 +44,7 @@
         <sub-title-text title = "Вкл. push-уведомления"></sub-title-text>
         <v-switch
           class="ma-0 pa-0"
-          v-model="btnSwitch1"
+          v-model="btnSwitch"
           color="primary"
           inset
         ></v-switch>
@@ -52,11 +54,13 @@
         <sub-title-text title = "Вкл. темную тему"></sub-title-text>
         <v-switch
           class="ma-0 pa-0"
-          v-model="btnSwitch2"
+          v-model="darkTheme"
           color="primary"
           inset
           @click="changeTheme"
         ></v-switch>
+
+         
       </div>
       <div>
         <v-btn
@@ -82,39 +86,38 @@ import avatar from '@/components/ProfileSettings/Avatar';
 import SubTitleText from '@/components/ProfileSettings/SubTitleText';
 import {SEND_USER_INFO} from "@/store/actions/userInfo";
 import {AUTH_LOGOUT} from "@/store/actions/auth";
-
+import {CHANGE_THEME} from "@/store/actions/userInfo";
+import {mapGetters} from 'vuex';
 
 export default {
   components: {avatar,SubTitleText},
   data: () => ({
     title: " ",
-    btnSwitch1: false,
-    btnSwitch2: false,
+    btnSwitch: false,
+    newUserName: "",
+    shown: true
 
   }),
   methods: {
-    authLogOut() {
-      this.$store.dispatch(AUTH_LOGOUT, {})
-      .then(res => {
-        console.log(res)
-      }).catch(err => console.log(err))
-      this.$router.push("/login")
-
-      },
     sendUserInfo() {
-      this.$store.dispatch(SEND_USER_INFO, {userName: this.userName})
-      .then(res => {
-        console.log(res)
-      }).catch(err => console.log(err))
+      this.$store.dispatch(SEND_USER_INFO, {userName: this.newUserName})
+     .catch(err => console.log(err)) 
+
     },
     changeTheme() {
       this.$vuetify.theme.dark=!this.$vuetify.theme.dark
-      console.log( this.$vuetify.theme.dark);
-
-
-    }
-
-  }
+      localStorage.setItem('isDark', this.$vuetify.theme.dark);
+    },
+ 
+    authLogOut() {
+      this.$store.dispatch(AUTH_LOGOUT, {})
+      .catch(err => console.log(err))
+      this.$router.push("/login")
+      },
+  },
+  
+   computed: mapGetters(['userName', 'darkTheme', 'email']),
+            
 }
 
 </script>

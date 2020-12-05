@@ -36,6 +36,7 @@
 <script>
 import FooterMenu from "@/components/NavMenu/FooterMenu";
 
+
 export default {
   components: {
     FooterMenu,
@@ -44,6 +45,7 @@ export default {
   data: () => ({
     page: ["Главная", "Уведомления", "Профиль", "Тегнуть", "Настройки"],
   }),
+ 
 };
 </script>
 <style scoped>
