@@ -13,6 +13,7 @@
 import FooterMenu from "@/components/NavMenu/FooterMenu";
 import AppHeader from "@/components/NavMenu/AppHeader";
 
+
 export default {
   components: {
     FooterMenu,
