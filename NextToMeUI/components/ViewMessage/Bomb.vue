@@ -12,14 +12,17 @@
         fill="#D01E1E"
       />
     </svg>
-    <p v-if="time" class="ml-2">{{ time }}</p>
+    <p class="ml-2">{{ time }}</p>
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    time: [String, Number],
+    time: {
+      type: [String, Number],
+      default: '0 секунд'
+    }
   }
 };
 </script>

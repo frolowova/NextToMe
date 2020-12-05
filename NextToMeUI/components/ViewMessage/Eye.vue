@@ -12,7 +12,7 @@
         fill="#666666"
       />
     </svg>
-    <p v-if="views" class="ml-2">{{ views }}</p>
+    <p class="ml-2">{{ views }}</p>
   </div>
 </template>
 
