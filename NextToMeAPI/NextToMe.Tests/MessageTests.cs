@@ -4,7 +4,10 @@ using NextToMe.Common.Models;
 using NextToMe.Tests.Helpers;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace NextToMe.Tests
 {
@@ -12,7 +15,10 @@ namespace NextToMe.Tests
     {
         private const string _defaultMessageText = "Test Text";
         private const string _secondMessageText = "Test Text 2";
+        private const string _image1 = "base64_1";
+        private const string _image2 = "base64_2";
         private readonly Location _zeroLocation = new Location(0, 0);
+
 
         [Test]
         public async Task OneMessageTest()
@@ -91,6 +97,25 @@ namespace NextToMe.Tests
             {
                 Assert.AreEqual((messagesToSkip + i).ToString(), messages[i].Text);
             }
+        }
+
+        [Test]
+        public async Task AddMessageWithPhotos()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = _zeroLocation,
+                Photos = new List<string>() { _image1, _image2 }
+            });
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            string image1 = await controller.GetMessageImage(messages[0].Photos.First());
+            string image2 = await controller.GetMessageImage(messages[0].Photos.Last());
+
+            Assert.AreEqual(2, messages[0].Photos.Count());
+            Assert.AreEqual(_image1, image1);
+            Assert.AreEqual(_image2, image2);
         }
 
         [Test]

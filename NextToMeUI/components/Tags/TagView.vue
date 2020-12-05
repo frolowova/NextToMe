@@ -4,7 +4,7 @@
       <div class="tag d-flex">
         <div class="tag__left">
           <v-avatar size="40px">
-            <v-icon v-if="!avatarLoading && !avatar.imageBase64" dark
+            <v-icon v-if="!avatarLoading && !avatar.imageBase64"
               >mdi-account-circle</v-icon
             >
             <v-img v-else :src="src">
@@ -64,13 +64,12 @@ export default {
   },
   computed: {
     time() {
-      const time = Date.now() - Date.parse(this.message.createdAt)
+      const time = Date.now() - Date.parse(this.message.createdAt);
       const seconds = Math.floor(time / 1000);
       if (seconds < 60) {
         return `${seconds} секунд`;
       }
       const minutes = Math.floor(seconds / 60);
-      console.log(minutes)
       if (minutes < 60) {
         return `${minutes} минут`;
       }

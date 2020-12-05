@@ -18,7 +18,7 @@ const mutations = {
 
 const actions = {
   [GET_MESSAGES]: async ({ commit }) => {
-    const messages = await MessageController.getMessages();
+    const messages = await MessageController.getMessages(0, 100);
     commit(GET_MESSAGES, messages.data);
     return messages;
   },

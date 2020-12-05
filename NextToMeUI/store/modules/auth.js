@@ -17,11 +17,13 @@ const mutations = {
   [LOGIN_SUCCESS](state, data) {
     localStorage.setItem("accessToken", data.accessToken);
     localStorage.setItem("refreshToken", data.refreshToken);
+    localStorage.setItem("nextId", data.id);
     state.username = data.username;
   },
   [AUTH_LOGOUT]() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("nextId");
   }
 };
 

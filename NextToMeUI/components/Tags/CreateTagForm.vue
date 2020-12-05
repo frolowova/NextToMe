@@ -12,6 +12,9 @@
       <div class="images-block">
         <tagImages :arrayOfPic="arrayOfPic" @remove-image="removeImage" />
       </div>
+      <v-alert dense text type="error" v-if="errorMessage">{{
+        errorMessage
+      }}</v-alert>
       <div class="input-file-btn">
         <v-file-input
           accept="image/x-png,image/jpeg,image/gif"
@@ -48,11 +51,11 @@
 </template>
 
 <script>
-import picturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage.vue";
+import tagImages from "@/components/Tags/TagImages.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
-    picturesOfMessage,
+    tagImages
   },
   data: () => ({
     valid: true,
@@ -61,8 +64,9 @@ export default {
     selectedFiles: [],
     attachedFiles: [],
     rules: {
-      required: (v) => !!v || "Напишите-что нибудь",
+      required: v => !!v || "Напишите-что нибудь"
     },
+    errorMessage: ""
   }),
   computed: {
     totalFiles() {
@@ -82,8 +86,17 @@ export default {
         this.loading = true;
         this.$store
           .dispatch(SEND_MESSAGE, { text: this.tagText })
-          .then((res) => console.log(res));
-        this.loading = false;
+          .then(res => {
+            this.loading = false;
+            this.$router.push(`/tag?id=${res.data.id}`);
+          })
+          .catch(err => {
+            this.loading = false;
+            this.errorMessage = "Что-то пошло не так, попробуйте позже";
+            setTimeout(() => {
+              this.errorMessage = "";
+            }, 3000);
+          });
       }
     },
     removeImage(index) {
@@ -104,7 +117,7 @@ export default {
       }
       const selectedFiles = Array.from(this.selectedFiles);
       this.selectedFiles = [];
-      selectedFiles.forEach((file) => {
+      selectedFiles.forEach(file => {
         if (file.type !== "image/jpeg") {
           return;
         }
@@ -144,15 +157,15 @@ export default {
         const compressedData = canvas.toDataURL("image/jpeg", 0.8);
         this.attachedFiles.push({
           url: compressedData,
-          file: file,
+          file: file
         });
       });
       img.addEventListener("error", () => {
         throw new Error("Compressed img error!");
       });
       img.src = base64;
-    },
-  },
+    }
+  }
 };
 </script>
 
