@@ -6,7 +6,7 @@
     >
       <nuxt />
     </v-container>
-    <footer-menu />
+    <footer-menu :btnValue="btnValue" />
   </v-app>
 </template>
 <script>
@@ -23,11 +23,15 @@ export default {
       this.$vuetify.theme.dark = this.$store.getters.darkTheme;
     }, 0);
   },
-
   computed: {
     headerData() {
       return this.$route.matched.map((r) => {
         return r.components.default.options.headerData;
+      })[0];
+    },
+    btnValue() {
+      return this.$route.matched.map((r) => {
+        return r.components.default.options.btnValue;
       })[0];
     },
   },

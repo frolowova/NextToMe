@@ -32,9 +32,14 @@
 
 <script>
 export default {
-  data: () => ({ value: "" }),
+  props: {
+    btnValue: {
+      type: Object,
+    },
+  },
+  data: () => ({ value: "0" }),
   mounted() {
-    this.value = this.$route.name;
+    this.value = this.btnValue.value;
   },
 };
 </script>
