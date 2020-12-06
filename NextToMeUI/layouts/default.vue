@@ -2,7 +2,7 @@
   <v-app dark>
     <app-header :header-data="headerData" />
     <v-container
-      style="margin-bottom: 56px; margin-top: 56px; max-width: 900px"
+      style="margin-bottom: 56px; padding: 0; max-width: 900px"
     >
       <nuxt />
     </v-container>
