@@ -34,9 +34,11 @@
           </div>
           <div class="tag__content ml-2 mr-4" v-html="text"></div>
           <v-card-actions class="d-flex justify-space-between mt-2">
-            <bomb :time="time" class="flex-grow-1" />
+            <bomb :deleteTime="this.message.deleteAt" class="flex-grow-1" />
             <!-- <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`"> -->
-            <comments :amount="message.commentsCount" />
+            <nuxt-link class="tag-link" :to="`/tag?id=${this.message.id}`">
+              <comments :amount="message.commentsCount" />
+            </nuxt-link>
             <!-- </nuxt-link> -->
             <eye :views="message.views" />
           </v-card-actions>
@@ -47,7 +49,7 @@
 </template>
 
 <script>
-import bomb from "@/components/ViewMessage/Bomb";
+import bomb from "@/components/Bomb/Bomb";
 import eye from "@/components/ViewMessage/Eye";
 import comments from "@/components/ViewMessage/Comments";
 import imageView from "./Image.vue";
@@ -56,37 +58,25 @@ export default {
   components: {
     bomb,
     eye,
-    comments,
+    comments
   },
   props: {
     message: Object,
-    avatarLoading: Boolean,
+    avatarLoading: Boolean
   },
   computed: {
     text() {
       return this.message.text.split("\n").join("<br>");
     },
-    time() {
-      const time = new Date(this.message.deleteAt + "Z") - Date.now();
-      const seconds = Math.floor(time / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      if (hours >= 1) {
-        return `${hours} часа`;
-      } else if (minutes >= 1) {
-        return `${minutes} минут`;
-      }
-      return `${seconds} секунд`;
-    },
     avatar() {
       return this.$store.state.messages.avatars.find(
-        (el) => el.userId === this.message.from
+        el => el.userId === this.message.from
       );
     },
     src() {
       return this.avatar ? this.avatar.imageBase64 : null;
-    },
-  },
+    }
+  }
 };
 </script>
 
