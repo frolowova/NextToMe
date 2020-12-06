@@ -10,7 +10,7 @@ export default {
   methods: {
     howRed(timeOfDeath) {
       const date =
-        Date.parse(this.time) - Date.parse(new Date());
+        Date.parse(this.time + "Z") - Date.parse(new Date());
       let leftHours = Math.floor(date / (1000 * 60 * 60));
       if (leftHours < 0) {
         return "";
