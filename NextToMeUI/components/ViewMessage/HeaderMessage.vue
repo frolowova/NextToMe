@@ -2,11 +2,12 @@
   <div class="d-flex align-top justify-space-between">
     <div class="d-flex align-center">
       <v-avatar size="40px">
-        <img alt="Avatar" :src="src" />
+        <img v-if="src" alt="Avatar" :src="src" />
+        <v-icon v-else>mdi-account-circle</v-icon>
       </v-avatar>
       <div class="mx-2">
         <div class="">{{ username }}</div>
-        <div class="grey--text">{{ position }}</div>
+        <div class="grey--text">{{ position.toFixed() }} м</div>
       </div>
     </div>
     <v-btn icon>
@@ -20,7 +21,7 @@ export default {
   props: {
     src: String,
     username: String,
-    position: String,
+    position: Number,
   },
 };
 </script>

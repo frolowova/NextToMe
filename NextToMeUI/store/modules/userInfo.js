@@ -9,8 +9,8 @@ import {AUTH_LOGOUT,} from "../actions/auth";
       imageBase64: "",
       userId: "",
     },
-    email: localStorage.getItem('firstSeenSlider'),
-    darkTheme: localStorage.getItem('isDark'),
+    // email: localStorage.getItem('firstSeenSlider'),
+    darkTheme: JSON.parse(localStorage.getItem('isDark') || false),
   });
   
   const mutations = {
@@ -34,12 +34,14 @@ import {AUTH_LOGOUT,} from "../actions/auth";
     [GET_USER_INFO]: async ({ commit, state}) => {
       const userInfo = await UserController.getUserInfo([state.id]);
       commit(GET_USER_INFO, userInfo.data[0]);
+      console.log(userInfo.data[0]);
     },
 
     [SEND_USER_INFO]: async ({ commit }, userName) => {
       console.log(userName)
       const updatedUser = await UserController.sendUserInfo(userName);
-      commit(SEND_USER_INFO, updatedUser.data);
+      commit(SEND_USER_INFO, updatedUser);
+      console.log(updatedUser);
     },
 
     [AUTH_LOGOUT]: async ({ commit }) => {
@@ -55,12 +57,11 @@ import {AUTH_LOGOUT,} from "../actions/auth";
       return state.userInfo.userName;
     },
     darkTheme: state => {
-      if (state.darkTheme === "true") return true;
-      else return false;
+      return state.darkTheme;
     },
-    email: state => {
-      return state.email;
-    }
+    // email: state => {
+    //   return state.email;
+    // }
   };
   
   export default {
@@ -72,5 +73,7 @@ import {AUTH_LOGOUT,} from "../actions/auth";
 
 
   // mounted() {
-  //   this.$vuetify.theme.dark = this.$store.getters.darkTheme;
+  //   setTimeout(() => {
+  //   this.$vuetify.theme.dark = this.$store.getters.darkTheme
+  //   }, 0);
   // },

@@ -30,13 +30,14 @@
           elevation="2"
           x-large
           outlined
-          class="mb-6"
+          class="mb-6 rounded-lg"
           :disabled="loading"
           @click.prevent="loadImage"
           >Добавить изображение</v-btn
         >
       </div>
       <v-btn
+        class="rounded-lg"
         block
         color="primary"
         elevation="2"
@@ -85,7 +86,10 @@ export default {
       if (this.valid) {
         this.loading = true;
         this.$store
-          .dispatch(SEND_MESSAGE, { text: this.tagText })
+          .dispatch(SEND_MESSAGE, {
+            text: this.tagText,
+            photos: [...this.arrayOfPic]
+          })
           .then(res => {
             this.loading = false;
             this.$router.push(`/tag?id=${res.data.id}`);

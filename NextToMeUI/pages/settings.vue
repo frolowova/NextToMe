@@ -33,7 +33,7 @@
 
       <div class="d-flex align-start justify-space-between pa-2"> 
         <sub-title-text title = "Почта"></sub-title-text>
-        <p> {{email}}</p>
+        <p>email</p>
       </div>
 
       <v-divider></v-divider>
@@ -116,7 +116,7 @@ export default {
       },
   },
   
-   computed: mapGetters(['userName', 'darkTheme', 'email']),
+   computed: mapGetters(['userName', 'darkTheme']),
             
 }
 
