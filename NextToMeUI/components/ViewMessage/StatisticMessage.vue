@@ -5,7 +5,7 @@
       <p class="ml-2">{{ timeView(time) }}</p>
     </div>
     <div class="mr-4 d-flex">
-      <eye :view="view"/>
+      <eye :views="view"/>
     </div>
   </div>
 </template>
