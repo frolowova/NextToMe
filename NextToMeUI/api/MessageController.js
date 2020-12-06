@@ -26,7 +26,7 @@ class MessageController extends APIController {
     @param {Number} take - сколько взять сообщений
     @param {Number} gettingMessagesRadiusInMeters - радиус
   */
-  async getMessages(skip = 0, take = 10, gettingMessagesRadiusInMeters = 0) {
+  async getMessages(skip = 0, take = 10, gettingMessagesRadiusInMeters = 1000) {
     const { location } = await this.getLocationInfo();
     const location_params = {
       currentLocation: {
@@ -49,7 +49,7 @@ class MessageController extends APIController {
     @param {String} message_id
   */
   async likeMessage(message_id) {
-    const likeStatus = this.request(
+    const likeStatus = await this.request(
       "post",
       `/messages/like?messageId=${message_id}`
     );
@@ -60,7 +60,7 @@ class MessageController extends APIController {
     @param {String} message_id
   */
   async unlikeMessage(message_id) {
-    const unLikeStatus = this.request(
+    const unLikeStatus = await this.request(
       "post",
       `/messages/like/remove?messageId=${message_id}`
     );
