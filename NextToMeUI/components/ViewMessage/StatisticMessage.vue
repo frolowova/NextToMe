@@ -5,7 +5,7 @@
       <p class="ml-2">{{ timeView(time) }}</p>
     </div>
     <div class="mr-4 d-flex">
-      <eye :view="view"/>
+      <eye :views="view"/>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   },
   methods: {
     timeView() {
-      const time = Date.parse(this.time) - Date.now();
+      const time = Date.parse(this.time + "Z") - Date.now();
       const seconds = Math.floor(time / 1000);
       if (seconds < 60) {
         return `${seconds} секунд`;
