@@ -85,11 +85,14 @@ export default {
   data: () => ({
     isOpen: false,
   }),
-  computed: {
-    images() {
-      return this.$store.state.currentTag.images;
-    },
+  props: {
+    images: Array,
   },
+  // computed: {
+  //   images() {
+  //     return this.$store.state.currentTag.images;
+  //   },
+  // },
   methods: {
     getLength(array) {
       return array.length;
@@ -98,8 +101,8 @@ export default {
       this.isOpen = isOpen;
     },
   },
-  mounted() {
-    this.$store.dispatch(GET_IMAGES, this.$route.params.id);
-  },
+  // mounted() {
+  //   this.$store.dispatch(GET_IMAGES, this.$route.params.id);
+  // },
 };
 </script>

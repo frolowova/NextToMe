@@ -9,7 +9,7 @@
       <text-message :message="tagInformation.text" />
     </div>
     <div>
-      <pictures-of-message />
+      <pictures-of-message :images="tagInformation.photos" />
       <statistic-message
         :time="tagInformation.deleteAt"
         :view="tagInformation.views"
@@ -38,7 +38,7 @@ export default {
   computed: {
     tagInformation() {
       return this.$store.state.messages.messages.find(
-        (message) => message.id === this.$route.params.id
+        (message) => message.id === this.$route.query.id
       );
     },
   },
