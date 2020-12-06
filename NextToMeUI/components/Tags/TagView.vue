@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="cardBackground">
     <v-container>
       <div class="tag d-flex">
         <div class="tag__left">
@@ -35,9 +35,9 @@
           <div class="tag__content ml-2 mr-4" v-html="text"></div>
           <v-card-actions class="d-flex justify-space-between mt-2">
             <bomb :time="time" class="flex-grow-1" />
-            <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`">
-              <comments :amount="message.commentsCount" />
-            </nuxt-link>
+            <!-- <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`"> -->
+            <comments :amount="message.commentsCount" />
+            <!-- </nuxt-link> -->
             <eye :views="message.views" />
           </v-card-actions>
         </div>
@@ -56,11 +56,11 @@ export default {
   components: {
     bomb,
     eye,
-    comments
+    comments,
   },
   props: {
     message: Object,
-    avatarLoading: Boolean
+    avatarLoading: Boolean,
   },
   computed: {
     text() {
@@ -80,13 +80,13 @@ export default {
     },
     avatar() {
       return this.$store.state.messages.avatars.find(
-        el => el.userId === this.message.from
+        (el) => el.userId === this.message.from
       );
     },
     src() {
       return this.avatar ? this.avatar.imageBase64 : null;
-    }
-  }
+    },
+  },
 };
 </script>
 

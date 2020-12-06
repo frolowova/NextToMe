@@ -1,5 +1,5 @@
 <template>
-  <div class="home-page">
+  <div class="home-page mx-6 mt-4">
     <v-select
       v-model="select"
       :items="items"
@@ -35,21 +35,27 @@ import { GET_MESSAGES, LOAD_AVATARS } from "@/store/actions/messages";
 export default {
   components: {
     tagView,
-    skeletonTag
+    skeletonTag,
+  },
+  headerData: {
+    title: "Главная",
+  },
+  btnValue: {
+    value: "home",
   },
   data: () => ({
     loading: false,
     avatarLoading: false,
     select: {
       state: "Сначала самые просматриваемые",
-      abbr: "Самые просматриваемые"
+      abbr: "Самые просматриваемые",
     },
     items: [
       { state: "Сначала самые просматриваемые", abbr: "Самые просматриваемые" },
       { state: "Сначала менее просматриваемые", abbr: "Менее просматриваемые" },
       { state: "Сначала самые обсуждаемые", abbr: "Самые обсуждаемые" },
-      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" }
-    ]
+      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" },
+    ],
   }),
   computed: {
     messages() {
@@ -64,7 +70,7 @@ export default {
         case this.items[3].abbr:
           return messages.sort((a, b) => a.commentsCount - b.commentsCount);
       }
-    }
+    },
   },
   methods: {
     cardClick(e) {
@@ -72,22 +78,22 @@ export default {
       if (parent) {
         this.$router.push(`/tag?id=${parent.id}`);
       }
-    }
+    },
   },
   mounted() {
     this.loading = true;
     this.avatarLoading = true;
     this.$store
       .dispatch(GET_MESSAGES)
-      .then(result => {
+      .then((result) => {
         this.loading = false;
         return this.$store.dispatch(LOAD_AVATARS);
       })
-      .then(res => (this.avatarLoading = false))
-      .catch(err => {
+      .then((res) => (this.avatarLoading = false))
+      .catch((err) => {
         this.loading = false;
         this.avatarLoading = false;
       });
-  }
+  },
 };
 </script>

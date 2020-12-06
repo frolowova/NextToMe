@@ -1,50 +1,47 @@
 <template>
-<v-container>
-  <div class="d-flex justify-space-between">
-    <div class="d-flex align-center">
-      <avatar :sizeC=100></avatar>
+  <v-container>
+    <div class="d-flex justify-space-between">
+      <div class="d-flex align-center">
+        <avatar :sizeC="100"></avatar>
+        <div>
+          <p class="ps-4 text--secondary">{{ userName }}</p>
+          <p class="ps-4 body-2 text--secondary">Tags N</p>
+        </div>
+      </div>
       <div>
-        <p class="ps-4 text--secondary">{{userName}}</p>
-        <p class="ps-4 body-2 text--secondary">Tags N</p>
+        <v-btn icon @click="settingsGo" color="secondary">
+          <v-icon>mdi-tune-variant</v-icon>
+        </v-btn>
       </div>
     </div>
-    <div>
-      <v-btn
-        icon 
-        @click="settingsGo"
-        color="secondary">
-        <v-icon>mdi-tune-variant</v-icon>
-      </v-btn>
-    </div>
-  </div>
-    
-</v-container> 
-  
+  </v-container>
 </template>
 
 
 <script>
-import avatar from '@/components/ProfileSettings/Avatar';
-import {GET_USER_INFO} from "@/store/actions/userInfo";
-import {mapGetters} from 'vuex';
+import avatar from "@/components/ProfileSettings/Avatar";
+import { GET_USER_INFO } from "@/store/actions/userInfo";
+import { mapGetters } from "vuex";
 export default {
-  components: {avatar},
-  data: () => ({
-  
-  }),
-  methods:{
+  components: { avatar },
+  headerData: {
+    title: "Мой профиль",
+  },
+  btnValue: {
+    value: "profile",
+  },
+  data: () => ({}),
+  methods: {
     settingsGo() {
-      this.$router.push("/settings")
+      this.$router.push("/settings");
     },
-    getUserInfo(){
-      this.$store.dispatch(GET_USER_INFO)
+    getUserInfo() {
+      this.$store.dispatch(GET_USER_INFO);
     },
-    
   },
   mounted() {
-    this.getUserInfo()
+    this.getUserInfo();
   },
-  computed: mapGetters(['userName']),
-  
-}
+  computed: mapGetters(["userName"]),
+};
 </script>

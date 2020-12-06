@@ -1,6 +1,6 @@
 <template>
   <div class="card-wraper">
-    <v-card class="pa-2 my-2" color="card" background-color="cardBackground">
+    <v-card class="pa-2 my-2" color="cardBackground" outlined>
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
@@ -14,10 +14,12 @@
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </div>
-      <v-card-text class="pa-2 white--text text-body-1">{{commentData.text}}</v-card-text>
+      <v-card-text class="pa-2 white--text text-body-1">{{
+        commentData.text
+      }}</v-card-text>
 
       <v-container class="mt-0 pt-2" justify="start">
-        <span class="text--secondary">{{this.time}}</span>
+        <span class="text--secondary">{{ this.time }}</span>
       </v-container>
     </v-card>
   </div>
@@ -27,11 +29,11 @@
 export default {
   props: {
     commentData: Object,
-    index: Number
+    index: Number,
   },
 
   data: () => ({
-    lifeTime: ""
+    lifeTime: "",
   }),
 
   methods: {
@@ -77,7 +79,7 @@ export default {
             : 2
         ]
       );
-    }
+    },
   },
   mounted() {
     setInterval(() => {
@@ -89,8 +91,8 @@ export default {
     time() {
       if (this.lifeTime) return this.lifeTime;
       return this.showTime();
-    }
-  }
+    },
+  },
 };
 </script>
 

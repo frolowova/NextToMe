@@ -4,6 +4,7 @@
       v-if="!headerData.subtitle_1 & !headerData.subtitle_2"
       class="header"
       height="56px"
+      elevation="0"
     >
       <v-container style="max-width: 900px">
         <v-toolbar-title class="header-title">
@@ -11,7 +12,7 @@
         </v-toolbar-title>
       </v-container>
     </v-toolbar>
-    <v-toolbar v-else class="header" height="112px">
+    <v-toolbar v-else class="header" height="112px" elevation="0">
       <v-container style="max-width: 900px">
         <v-toolbar-title class="header-title">
           <span style="padding-bottom: 6px">{{ headerData.title }}</span>

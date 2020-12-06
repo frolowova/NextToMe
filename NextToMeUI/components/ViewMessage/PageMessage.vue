@@ -1,6 +1,6 @@
-<template>
-  <div v-if="tagInformation">
-    <div class="mx-2 mt-4">
+<template >
+  <div v-if="tagInformation" class="cardBackground mb-6">
+    <div class="mx-4 pt-6">
       <header-message
         :username="userInfo.userName"
         :position="tagInformation.distanceToUser"
@@ -43,9 +43,9 @@ export default {
     },
     userInfo() {
       return this.$store.state.messages.avatars.find(
-        user => user.userId === this.tagInformation.from
-      )
-    }
+        (user) => user.userId === this.tagInformation.from
+      );
+    },
   },
 };
 </script> 
