@@ -1,5 +1,5 @@
 <template>
-  <div v-if="tagInformation">
+  <div>
     <div class="mx-2 mt-4">
       <header-message
         :username="tagInformation.from"
