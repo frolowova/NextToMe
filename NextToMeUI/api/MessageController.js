@@ -26,7 +26,7 @@ class MessageController extends APIController {
     @param {Number} take - сколько взять сообщений
     @param {Number} gettingMessagesRadiusInMeters - радиус
   */
-  async getMessages(skip = 0, take = 10, gettingMessagesRadiusInMeters = 0) {
+  async getMessages(skip = 0, take = 10, gettingMessagesRadiusInMeters = 1000) {
     const { location } = await this.getLocationInfo();
     const location_params = {
       currentLocation: {
