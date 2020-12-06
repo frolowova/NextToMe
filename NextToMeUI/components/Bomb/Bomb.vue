@@ -5,12 +5,12 @@
 <script>
 export default {
   props: {
-    time: String, // При подключении с беком должно быть String
+    time: String, 
   },
   methods: {
     howRed(timeOfDeath) {
       const date =
-        Date.parse("2021-12-02T22:00:04.243Z") - Date.parse(new Date());
+        Date.parse(this.time) - Date.parse(new Date());
       let leftHours = Math.floor(date / (1000 * 60 * 60));
       if (leftHours < 0) {
         return "Error";
