@@ -58,14 +58,15 @@ export default {
         dark: {
           primary: "#FD6A6A",
           accent: 'FF5858',
+          header: '#333333',
           cardBackground: "#3c3c3c",
           countComment: '#E85F81',
           textWhite: '#f9f9f9'
         },
         light: {
           primary: '#ED645E',
-          accent: 'C51010',
-          header: 'DC5353',
+          accent: '#C51010',
+          header: '#DC5353',
           cardBackground: "#ffffff",
           countComment: '#F55454',
           textWhite: '#f9f9f9'

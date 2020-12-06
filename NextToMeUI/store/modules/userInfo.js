@@ -7,25 +7,21 @@ import {AUTH_LOGOUT,} from "../actions/auth";
     userInfo:{
       userName: "",
       imageBase64: "",
+      userId: "",
     },
-    darkTheme: localStorage.getItem('isDark') || false,
+    // email: localStorage.getItem('firstSeenSlider'),
+    darkTheme: JSON.parse(localStorage.getItem('isDark') || false),
   });
   
   const mutations = {
-    [GET_USER_ID](state, id) {
-      state.id = id;
-    },
+
     [GET_USER_INFO](state, userInfo) {
       state.userInfo = userInfo;
     },
-    [SEND_USER_INFO](state, updatedUserInfo) {
-      state.userInfo = updatedUserInfo;
+    [SEND_USER_INFO](state, updatedUser) {
+      state.userInfo = updatedUser;
     },
-     
-    [CHANGE_THEME](state, darkTheme){
-      localStorage.setItem('isDark', darkTheme);
-      state.darkTheme = darkTheme;
-    },
+
     [AUTH_LOGOUT]() {
       localStorage.removeItem("accessToken");
       localStorage.removeItem("refreshToken");
@@ -34,35 +30,38 @@ import {AUTH_LOGOUT,} from "../actions/auth";
   };
   
   const actions = {
-    [GET_USER_ID]: async({commit, state}) => {
-      const id = localStorage.getItem("nextId");
-      state.id = id;
-      commit(GET_USER_ID, id);
-      console.log(id);
-    },
+
     [GET_USER_INFO]: async ({ commit, state}) => {
       const userInfo = await UserController.getUserInfo([state.id]);
-      commit(GET_USER_INFO, userInfo);
-      return userInfo;
-      
+      commit(GET_USER_INFO, userInfo.data[0]);
+      console.log(userInfo.data[0]);
     },
-    [SEND_USER_INFO]: async ({ commit }, user_info ) => {
-      const updatedUserInfo = await UserController.sendUserInfo(user_info);
-      return updatedUserInfo ;
+
+    [SEND_USER_INFO]: async ({ commit }, userName) => {
+      console.log(userName)
+      const updatedUser = await UserController.sendUserInfo(userName);
+      commit(SEND_USER_INFO, updatedUser);
+      console.log(updatedUser);
     },
+
     [AUTH_LOGOUT]: async ({ commit }) => {
       return commit(AUTH_LOGOUT);
     }
-    
   };
   
   const getters = {
     userId: state => {
       return state.id;
     },
-    userInfo: state => {
-      return state.userInfo;
-    }
+    userName: state => {
+      return state.userInfo.userName;
+    },
+    darkTheme: state => {
+      return state.darkTheme;
+    },
+    // email: state => {
+    //   return state.email;
+    // }
   };
   
   export default {
@@ -71,3 +70,10 @@ import {AUTH_LOGOUT,} from "../actions/auth";
     actions,
     mutations
   };
+
+
+  // mounted() {
+  //   setTimeout(() => {
+  //   this.$vuetify.theme.dark = this.$store.getters.darkTheme
+  //   }, 0);
+  // },

@@ -1,21 +1,17 @@
 <template>
-  <v-img :src="howRed(timeUpload)" width="19px" height="19px"></v-img>
+  <v-img :src="howRed(time)" width="19px" height="19px"></v-img>
 </template>
 
 <script>
 export default {
   props: {
-    timeUpload: Date, // При подключении с беком должно быть String
+    time: String, // При подключении с беком должно быть String
   },
   methods: {
-    // const t = Date.parse(endtime) - Date.parse(new Date()),
-    //         days = Math.floor( (t/(1000*60*60*24)) ),
-    //         seconds = Math.floor( (t/1000) % 60 ),
     howRed(timeOfDeath) {
       const date =
         Date.parse("2021-12-02T22:00:04.243Z") - Date.parse(new Date());
       let leftHours = Math.floor(date / (1000 * 60 * 60));
-      console.log(leftHours);
       if (leftHours < 0) {
         return "Error";
       } else if ((leftHours >= 0) & (leftHours < 4)) {

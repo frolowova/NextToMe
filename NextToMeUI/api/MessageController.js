@@ -49,7 +49,7 @@ class MessageController extends APIController {
     @param {String} message_id
   */
   async likeMessage(message_id) {
-    const likeStatus = this.request(
+    const likeStatus = await this.request(
       "post",
       `/messages/like?messageId=${message_id}`
     );
@@ -60,11 +60,22 @@ class MessageController extends APIController {
     @param {String} message_id
   */
   async unlikeMessage(message_id) {
-    const unLikeStatus = this.request(
+    const unLikeStatus = await this.request(
       "post",
       `/messages/like/remove?messageId=${message_id}`
     );
     return unLikeStatus;
+  }
+  
+  /** 
+  @param {String} message_id
+  */
+  async getImages(message_id) {
+    const images = await this.request(
+      "post",
+      `/messages/image/get?messageImageId=${message_id}`
+    );
+    return images;
   }
 }
 
