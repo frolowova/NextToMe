@@ -13,14 +13,15 @@
 import FooterMenu from "@/components/NavMenu/FooterMenu";
 import AppHeader from "@/components/NavMenu/AppHeader";
 
-
 export default {
   components: {
     FooterMenu,
     AppHeader,
   },
   mounted() {
-    this.$vuetify.theme.dark = this.$store.getters.darkTheme;
+    setTimeout(() => {
+      this.$vuetify.theme.dark = this.$store.getters.darkTheme;
+    }, 0);
   },
 
   computed: {
