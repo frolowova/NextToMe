@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card class="cardBackground">
     <v-container>
       <div class="tag d-flex">
         <div class="tag__left">
@@ -28,16 +28,16 @@
                 }`
               }}
             </div>
-            <div class="grey--text">{{ message.distanceToUser }} м</div>
+            <div class="grey--text">
+              {{ Math.floor(message.distanceToUser) }} м
+            </div>
           </div>
-          <div class="tag__content ml-2 mr-4">
-            {{ message.text }}
-          </div>
+          <div class="tag__content ml-2 mr-4" v-html="text"></div>
           <v-card-actions class="d-flex justify-space-between mt-2">
             <bomb :time="time" class="flex-grow-1" />
-            <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`">
-              <comments :amount="message.commentsCount" />
-            </nuxt-link>
+            <!-- <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`"> -->
+            <comments :amount="message.commentsCount" />
+            <!-- </nuxt-link> -->
             <eye :views="message.views" />
           </v-card-actions>
         </div>
@@ -56,39 +56,37 @@ export default {
   components: {
     bomb,
     eye,
-    comments
+    comments,
   },
   props: {
     message: Object,
-    avatarLoading: Boolean
+    avatarLoading: Boolean,
   },
   computed: {
+    text() {
+      return this.message.text.split("\n").join("<br>");
+    },
     time() {
-      const time = Date.now() - Date.parse(this.message.createdAt);
+      const time = new Date(this.message.deleteAt + "Z") - Date.now();
       const seconds = Math.floor(time / 1000);
-      if (seconds < 60) {
-        return `${seconds} секунд`;
-      }
       const minutes = Math.floor(seconds / 60);
-      if (minutes < 60) {
+      const hours = Math.floor(minutes / 60);
+      if (hours >= 1) {
+        return `${hours} часа`;
+      } else if (minutes >= 1) {
         return `${minutes} минут`;
       }
-      const hours = Math.floor(minutes / 60);
-      if (hours < 24) {
-        return `${hours} часа`;
-      }
-      const days = Math.floor(hours / 24);
-      return `${days} день`;
+      return `${seconds} секунд`;
     },
     avatar() {
       return this.$store.state.messages.avatars.find(
-        el => el.userId === this.message.from
+        (el) => el.userId === this.message.from
       );
     },
     src() {
       return this.avatar ? this.avatar.imageBase64 : null;
-    }
-  }
+    },
+  },
 };
 </script>
 

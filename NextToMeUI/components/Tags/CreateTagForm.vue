@@ -1,13 +1,16 @@
 <template>
-  <div class="create-tag-form">
+  <div class="create-tag-form mx-6 mt-4">
     <v-form ref="form" v-model="valid">
-      <span class="ml-6 font-weight-bold">Тег</span>
+      <span class="ml-2">Тег</span>
       <v-textarea
+        background-color="cardBackground"
         solo
         auto-grow
         v-model="tagText"
-        class="rounded-xl"
+        class="rounded-xl mt-2"
         :rules="[rules.required]"
+        placeholder="Текст тега"
+        autofocus
       ></v-textarea>
       <div class="images-block">
         <tagImages :arrayOfPic="arrayOfPic" @remove-image="removeImage" />
@@ -30,19 +33,20 @@
           elevation="2"
           x-large
           outlined
-          class="mb-6"
+          class="mb-6 rounded-lg"
           :disabled="loading"
           @click.prevent="loadImage"
           >Добавить изображение</v-btn
         >
       </div>
       <v-btn
+        class="rounded-lg"
         block
         color="primary"
         elevation="2"
         x-large
         @click.prevent="createTag"
-        :disabled="loading"
+        :disabled="loading || !tagText.length"
         :loading="loading"
         >Разместить</v-btn
       >
@@ -55,7 +59,7 @@ import tagImages from "@/components/Tags/TagImages.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
 export default {
   components: {
-    tagImages
+    tagImages,
   },
   data: () => ({
     valid: true,
@@ -64,17 +68,17 @@ export default {
     selectedFiles: [],
     attachedFiles: [],
     rules: {
-      required: v => !!v || "Напишите-что нибудь"
+      required: (v) => !!v || "Напишите-что нибудь",
     },
-    errorMessage: ""
+    errorMessage: "",
   }),
   computed: {
     totalFiles() {
       return this.selectedFiles.length + this.attachedFiles.length;
     },
     arrayOfPic() {
-      return this.attachedFiles.map(img => img.url);
-    }
+      return this.attachedFiles.map((img) => img.url);
+    },
   },
   methods: {
     validate() {
@@ -85,12 +89,15 @@ export default {
       if (this.valid) {
         this.loading = true;
         this.$store
-          .dispatch(SEND_MESSAGE, { text: this.tagText })
-          .then(res => {
+          .dispatch(SEND_MESSAGE, {
+            text: this.tagText,
+            photos: [...this.arrayOfPic],
+          })
+          .then((res) => {
             this.loading = false;
             this.$router.push(`/tag?id=${res.data.id}`);
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading = false;
             this.errorMessage = "Что-то пошло не так, попробуйте позже";
             setTimeout(() => {
@@ -117,7 +124,7 @@ export default {
       }
       const selectedFiles = Array.from(this.selectedFiles);
       this.selectedFiles = [];
-      selectedFiles.forEach(file => {
+      selectedFiles.forEach((file) => {
         if (file.type !== "image/jpeg") {
           return;
         }
@@ -157,15 +164,15 @@ export default {
         const compressedData = canvas.toDataURL("image/jpeg", 0.8);
         this.attachedFiles.push({
           url: compressedData,
-          file: file
+          file: file,
         });
       });
       img.addEventListener("error", () => {
         throw new Error("Compressed img error!");
       });
       img.src = base64;
-    }
-  }
+    },
+  },
 };
 </script>
 
