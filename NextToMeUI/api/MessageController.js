@@ -66,6 +66,17 @@ class MessageController extends APIController {
     );
     return unLikeStatus;
   }
+  
+  /** 
+  @param {String} message_id
+  */
+  async getImages(message_id) {
+    const images = await this.request(
+      "post",
+      `/messages/image/get?messageImageId=${message_id}`
+    );
+    return images;
+  }
 }
 
 export default new MessageController();

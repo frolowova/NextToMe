@@ -6,7 +6,7 @@
       </v-avatar>
       <div class="mx-2">
         <div class="">{{ username }}</div>
-        <div class="grey--text">{{ position }}</div>
+        <div class="grey--text">{{ position }} м</div>
       </div>
     </div>
     <v-btn icon>
@@ -20,7 +20,7 @@ export default {
   props: {
     src: String,
     username: String,
-    position: String,
+    position: Number,
   },
 };
 </script>
