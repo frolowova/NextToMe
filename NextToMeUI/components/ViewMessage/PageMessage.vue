@@ -36,9 +36,10 @@ export default {
     StatisticMessage,
   },
   mounted() {
-    if (!this.$route.query) {
+    if (!this.$route.query.id) {
       this.$router.push("/home");
     }
+    console.log(this.$route.query);
   },
   computed: {
     tagInformation() {
