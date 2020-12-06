@@ -1,5 +1,5 @@
 <template>
-  <div class="mr-3 my-2">
+  <div class="my-2">
     <p v-html="text(message)" />
   </div>
 </template>

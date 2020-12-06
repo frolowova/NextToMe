@@ -12,7 +12,7 @@
         fill="#F55454"
       />
     </svg>
-    <p class="ml-2  white--text">{{ amount }}</p>
+    <p class="ml-2">{{ amount }}</p>
   </div>
 </template>
 
@@ -21,8 +21,8 @@ export default {
   props: {
     amount: {
       type: [String, Number],
-      default: 0
-    }
-  }
+      default: 0,
+    },
+  },
 };
 </script>
