@@ -3,6 +3,7 @@
     <v-form ref="form" v-model="valid">
       <span class="ml-2">Тег</span>
       <v-textarea
+        background-color="cardBackground"
         solo
         auto-grow
         v-model="tagText"
