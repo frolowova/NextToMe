@@ -2,9 +2,9 @@
   <div v-if="tagInformation">
     <div class="mx-2 mt-4">
       <header-message
-        :username="tagInformation.from"
+        :username="userInfo.userName"
         :position="tagInformation.distanceToUser"
-        :src="tagInformation.photos[0]"
+        :src="userInfo.imageBase64"
       />
       <text-message :message="tagInformation.text" />
     </div>
@@ -41,6 +41,11 @@ export default {
         (message) => message.id === this.$route.query.id
       );
     },
+    userInfo() {
+      return this.$store.state.messages.avatars.find(
+        user => user.userId === this.tagInformation.from
+      )
+    }
   },
 };
 </script> 

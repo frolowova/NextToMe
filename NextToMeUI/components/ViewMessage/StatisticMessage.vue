@@ -1,12 +1,11 @@
 <template>
   <div class="d-flex justify-space-between mt-2">
     <div class="ml-4 d-flex">
-      <Bomb :timeUpload="time" />
+      <Bomb :time="time" />
       <p class="ml-2">{{ timeView(time) }}</p>
     </div>
     <div class="mr-4 d-flex">
-      <eye />
-      <p class="ml-2">{{ view }}</p>
+      <eye :view="view"/>
     </div>
   </div>
 </template>
