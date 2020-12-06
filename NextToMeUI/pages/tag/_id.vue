@@ -9,6 +9,9 @@
 import CommentsList from "@/components/Comments/CommentsList";
 import PageMessage from "~/components/ViewMessage/PageMessage.vue";
 export default {
+  headerData: { 
+    title: "Тег"
+  },
   components: {
     CommentsList,
     PageMessage,

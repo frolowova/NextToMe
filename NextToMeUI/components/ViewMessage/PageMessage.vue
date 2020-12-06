@@ -1,15 +1,15 @@
-<template>
-  <div v-if="tagInformation">
-    <div class="mx-2 mt-4">
+<template >
+  <div v-if="tagInformation" class="cardBackground mb-6">
+    <div class="mx-4 pt-6">
       <header-message
-        :username="tagInformation.from"
+        :username="userInfo.userName"
         :position="tagInformation.distanceToUser"
-        :src="tagInformation.photos[0]"
+        :src="userInfo.imageBase64"
       />
       <text-message :message="tagInformation.text" />
     </div>
     <div>
-      <pictures-of-message />
+      <pictures-of-message :images="tagInformation.photos" />
       <statistic-message
         :time="tagInformation.deleteAt"
         :view="tagInformation.views"
@@ -38,7 +38,12 @@ export default {
   computed: {
     tagInformation() {
       return this.$store.state.messages.messages.find(
-        (message) => message.id === this.$route.params.id
+        (message) => message.id === this.$route.query.id
+      );
+    },
+    userInfo() {
+      return this.$store.state.messages.avatars.find(
+        (user) => user.userId === this.tagInformation.from
       );
     },
   },
