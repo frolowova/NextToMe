@@ -82,7 +82,7 @@ namespace NextToMe.Services
 
         public async Task<MessageResponse> SendMessage(AddMessageRequest request)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
             var newMessage = _mapper.Map<Message>(request);
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;
@@ -99,7 +99,7 @@ namespace NextToMe.Services
 
         public async Task LikeMessage(Guid messageId)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
             if (user.UserLikedMessages.Any(x => x.MessageId == messageId))
             {
                 throw new BadRequestException("The message has already been liked");
@@ -123,8 +123,8 @@ namespace NextToMe.Services
 
         public async Task RemoveLikeFromMessage(Guid messageId)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
-
+            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            _logger.LogError(_contextAccessor.HttpContext.User.Identity.Name);
             if (user.UserLikedMessages.All(x => x.MessageId != messageId))
             {
                 throw new BadRequestException("The message has not been liked");
