@@ -31,7 +31,6 @@ export default {
   props: {
     headerData: {
       type: Object,
-      required: true,
     },
   },
 };

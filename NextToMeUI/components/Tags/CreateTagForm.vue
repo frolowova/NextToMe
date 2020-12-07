@@ -178,7 +178,6 @@ export default {
 
 <style scoped>
 .create-tag-form {
-  max-width: 650px;
   margin: auto;
 }
 </style>

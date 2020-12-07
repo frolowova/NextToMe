@@ -11,7 +11,7 @@ class UserController extends APIController {
       @param {string} imageBase64
   */
   async sendUserInfo(user_info) {
-    const updatedUser = this.request(
+    const updatedUser = await this.request(
       "post",
       "/user/information/send",
       user_info
@@ -23,7 +23,7 @@ class UserController extends APIController {
     @param {Array} user_id - array of ids
   */
   async getUserInfo(users_id) {
-    const userInfo = this.request("post", "/user/information/get", users_id);
+    const userInfo = await this.request("post", "/user/information/get", users_id);
     return userInfo;
   }
 }
