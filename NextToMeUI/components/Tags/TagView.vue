@@ -35,11 +35,7 @@
           <div class="tag__content ml-2 mr-4" v-html="text"></div>
           <v-card-actions class="d-flex justify-space-between mt-2">
             <bomb :deleteTime="this.message.deleteAt" class="flex-grow-1" />
-            <!-- <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`"> -->
-            <nuxt-link class="tag-link" :to="`/tag?id=${this.message.id}`">
-              <comments :amount="message.commentsCount" />
-            </nuxt-link>
-            <!-- </nuxt-link> -->
+            <comments :amount="message.commentsCount" />
             <eye :views="message.views" />
           </v-card-actions>
         </div>
