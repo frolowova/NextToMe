@@ -1,6 +1,6 @@
 <template>
   <div class="card-wraper">
-    <v-card class="pa-2 my-2" color="card" background-color="cardBackground">
+    <v-card class="pa-2 my-2 rounded-xl" color="card" background-color="cardBackground">
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
