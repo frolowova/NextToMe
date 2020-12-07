@@ -1,16 +1,18 @@
 <template>
-  <v-img :src="howRed(time)" width="19px" height="19px"></v-img>
+  <div class="bomb-icon mr-4 d-flex">
+    <v-img :src="src" width="19px" height="19px" class="flex-grow-0"></v-img>
+    <p class="ml-2">{{ localTime }}</p>
+  </div>
 </template>
 
 <script>
 export default {
   props: {
-    time: String, 
+    deleteTime: String
   },
-  methods: {
-    howRed(timeOfDeath) {
-      const date =
-        Date.parse(this.time + "Z") - Date.parse(new Date());
+  computed: {
+    src() {
+      const date = Date.parse(this.deleteTime + "Z") - Date.parse(new Date());
       let leftHours = Math.floor(date / (1000 * 60 * 60));
       if (leftHours < 0) {
         return "";
@@ -28,6 +30,23 @@ export default {
         return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABEAAAATCAYAAAB2pebxAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAHFSURBVHgBfVTbVQIxEE2Ch1+1g7UC1woWSqACpABwOwA6WIEP/sAKxArACtwSsALXX17xTsgsQ2DNOSGzycydeycZtPpn9Hq9NpaBtTbSWuebzaY1nU7XoZ+pAkjTNEJwdjgcOuPxWMN+q9fry2u+lSD7/b6BZTGZTFb0DaAMQOtut5uIRI1KEMgYYCEpkbd5fJA879Pf7XYORKtLGXdg8YMaKGR2e9vt9oFqQWeQ94WtOdZPY0wDq9UyGBsvZCL4ToI4ysZk2BvCJL8U3wswOdWEioiDJYLoJm6xZQmAgGjSNwV6FsVoNEoBkAAooZoZX8QZgmKfVPvpaHg22gNH8H2nDQQPSZI7RLWfsc48AEVoL0Xa7ow+yMZs8q2xnDZn5UIzgDetl3T8OUrsy8u4wXzkjDwoLsjsQEWhYwlCTO5FcHngAc4YMhO6oRCkEBLKODYkQ1GfIgTJvU4eJZNAgiCm8jMQHAylDMHELeKtaLYx5xLEneKaqTsTddkGZXHFWKEZm6EcVavVWvD95tcp6sAAXJ8cfdQJEh1Bsiwr8ISfYL4KNlad3s8vAAbwaV77U7rWxRH6IkZA7DoUDMF0QYlUxfgDR5MjeT6/0lYAAAAASUVORK5CYII=";
       }
     },
-  },
+    localTime() {
+      const time = new Date(this.deleteTime + "Z") - Date.now();
+      const seconds = Math.floor(time / 1000);
+      if (seconds < 60) {
+        return `${seconds} секунд`;
+      }
+      const minutes = Math.floor(seconds / 60);
+      if (minutes < 60) {
+        return `${minutes} минут`;
+      }
+      const hours = Math.floor(minutes / 60);
+      if (hours < 24) {
+        return `${hours} часов`;
+      }
+      const days = Math.floor(hours / 24);
+      return `${days} дней`;
+    }
+  }
 };
 </script>
