@@ -43,21 +43,22 @@ namespace NextToMe.Services
             _logger = logger;
         }
 
-        public async Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500)
+        public async Task<List<MessageResponse>> GetMessages(GetMessageRequest request)
         {
+            var userLocation = new Point(request.CurrentLocation.Latitude, request.CurrentLocation.Longitude) { SRID = 4326 };
 
-            var userLocation = new Point(currentLocation.Latitude, currentLocation.Longitude) { SRID = 4326 };
-
-            List<MessageResponse> messages = _dbContext.Messages
-                .Where(x => x.Location.Distance(userLocation) <= gettingMessagesRadiusInMeters)
-                .OrderBy(x => x.CreatedAt)
-                .Skip(skip)
-                .Take(take)
+            List<MessageResponse> messages = 
+                ProcessFilters(
+                    _dbContext.Messages
+                    .Where(x => x.Location.Distance(userLocation) <= request.GettingMessagesRadiusInMeters),
+                    request.Filter
+                )
                 .Select(x => new MessageResponse()
                 {
                     DistanceToUser = x.Location.Distance(userLocation),
                     CreatedAt = x.CreatedAt,
                     From = x.User.Id,
+                    FromName = x.User.UserName,
                     Text = x.Text,
                     Location = new Location(x.Location.X, x.Location.Y),
                     DeleteAt = x.DeleteAt,
@@ -145,12 +146,35 @@ namespace NextToMe.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public Task<string> GetMessageImage(Guid messageImageId)
+        public async Task<Dictionary<Guid, string>> GetMessageImages(List<Guid> messageImageIds)
         {
-            return Task.FromResult(_dbContext.MessageImages
-                .Where(x => x.Id == messageImageId)
-                .Select(x => x.Image)
-                .First());
+            return await _dbContext.MessageImages
+                .Where(x => messageImageIds.Contains(x.Id))
+                .ToDictionaryAsync(x => x.Id, x => x.Image);
+        }
+
+        private IQueryable<Message> ProcessFilters(IQueryable<Message> collection, MessageFilter filter)
+        {
+            collection = collection.Where(x => x.CreatedAt > filter.Start && x.CreatedAt <= filter.End);
+            if (filter.OrderType == OrderType.Asc)
+            {
+                return filter.OrderBy switch
+                {
+                    OrderBy.CreatedDate => collection.OrderBy(x => x.CreatedAt),
+                    OrderBy.Views => collection.OrderBy(x => x.Views).ThenBy(x => x.CreatedAt),
+                    OrderBy.Comments => collection.OrderBy(x => x.Comments.Count).ThenBy(x => x.CreatedAt),
+                    OrderBy.Likes => collection.OrderBy(x => x.UserLikedMessages.Count).ThenBy(x => x.CreatedAt),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
+            }
+            return filter.OrderBy switch
+            {
+                OrderBy.CreatedDate => collection.OrderByDescending(x => x.CreatedAt),
+                OrderBy.Views => collection.OrderByDescending(x => x.Views).ThenByDescending(x => x.CreatedAt),
+                OrderBy.Comments => collection.OrderByDescending(x => x.Comments.Count).ThenByDescending(x => x.CreatedAt),
+                OrderBy.Likes => collection.OrderByDescending(x => x.UserLikedMessages.Count).ThenByDescending(x => x.CreatedAt),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
     }
 }

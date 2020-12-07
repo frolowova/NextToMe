@@ -9,9 +9,9 @@ namespace NextToMe.Services.ServiceInterfaces
     public interface IMessageService
     {
         public Task<MessageResponse> SendMessage(AddMessageRequest request);
-        public Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500);
+        public Task<List<MessageResponse>> GetMessages(GetMessageRequest request);
         public Task LikeMessage(Guid messageId);
         public Task RemoveLikeFromMessage(Guid messageId);
-        public Task<string> GetMessageImage(Guid messageImageId);
+        public Task<Dictionary<Guid, string>> GetMessageImages(List<Guid> messageImageIds);
     }
 }

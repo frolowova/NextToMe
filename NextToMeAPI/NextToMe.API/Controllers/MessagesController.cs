@@ -29,13 +29,13 @@ namespace NextToMe.API.Controllers
         }
 
         /// <summary>
-        /// Get Messages ordered by created date
+        /// Get Messages ordered with a filter
         /// </summary>
         [HttpPost]
         [Route("get")]
         public async Task<List<MessageResponse>> GetMessages(GetMessageRequest request)
         {
-            return await _messageService.GetMessages(request.Skip, request.Take, request.CurrentLocation, request.GettingMessagesRadiusInMeters);
+            return await _messageService.GetMessages(request);
         }
 
         [HttpPost]
@@ -53,10 +53,10 @@ namespace NextToMe.API.Controllers
         }
 
         [HttpPost]
-        [Route("image/get")]
-        public async Task<string> GetMessageImage(Guid messageImageId)
+        [Route("images/get")]
+        public async Task<Dictionary<Guid, string>> GetMessageImages(List<Guid> messageImageIds)
         {
-            return await _messageService.GetMessageImage(messageImageId);
+            return await _messageService.GetMessageImages(messageImageIds);
         }
     }
 }

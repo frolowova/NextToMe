@@ -11,11 +11,7 @@ namespace NextToMe.Common.DTOs
         [Required]
         public Location CurrentLocation { get; set; }
 
-        [Required] 
-        public int Skip { get; set; } = 0;
-
-        [Required] 
-        public int Take { get; set; } = int.MaxValue;
+        public MessageFilter Filter { get; set; } = new MessageFilter{Start = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1)), End = DateTime.UtcNow };
 
         [Required]
         public int GettingMessagesRadiusInMeters { get; set; } = 500;

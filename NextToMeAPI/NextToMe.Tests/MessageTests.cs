@@ -1,3 +1,4 @@
+using System;
 using NextToMe.API.Controllers;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Models;
@@ -59,63 +60,43 @@ namespace NextToMe.Tests
         }
 
         [Test]
-        public async Task SkipTest()
+        public async Task OrderByTest()
         {
             int messagesCount = 10;
-            int messagesToSkip = 3;
             MessagesController controller = GetMessagesController();
+            MessageCommentsController commentsController = GetMessageCommentsController();
             await SendMessagesWithNumbers(controller, messagesCount);
 
-            var messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation, Skip = messagesToSkip });
-            Assert.AreEqual(messagesCount - messagesToSkip, messages.Count);
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            Guid topCommentsMessageId = messages[3].Id;
+            Guid secondCommentsMessageId = messages[4].Id;
+            await commentsController.SendComment(new AddMessageCommentRequest { MessageId = topCommentsMessageId, Text = _defaultMessageText});
+            await commentsController.SendComment(new AddMessageCommentRequest { MessageId = topCommentsMessageId, Text = _defaultMessageText });
+            await commentsController.SendComment(new AddMessageCommentRequest { MessageId = secondCommentsMessageId, Text = _defaultMessageText });
+            messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation, Filter = new MessageFilter{ OrderBy = OrderBy.Comments, OrderType = OrderType.Desc }});
+            Assert.AreEqual(topCommentsMessageId, messages[0].Id);
+            Assert.AreEqual(secondCommentsMessageId, messages[1].Id);
         }
-
-        [Test]
-        public async Task TakeTest()
-        {
-            int messagesCount = 10;
-            int messagesToTake = 4;
-            MessagesController controller = GetMessagesController();
-            await SendMessagesWithNumbers(controller, messagesCount);
-
-            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation, Take = messagesToTake });
-            Assert.AreEqual(messagesToTake, messages.Count);
-        }
-
-        [Test]
-        public async Task SkipTakeTest()
-        {
-            int messagesCount = 10;
-            int messagesToSkip = 4;
-            int messagesToTake = 2;
-            MessagesController controller = GetMessagesController();
-            await SendMessagesWithNumbers(controller, messagesCount);
-
-            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation, Skip = messagesToSkip, Take = messagesToTake });
-            Assert.AreEqual(messagesToTake, messages.Count);
-            for (int i = 0; i < messagesToTake; ++i)
-            {
-                Assert.AreEqual((messagesToSkip + i).ToString(), messages[i].Text);
-            }
-        }
-
+        
         [Test]
         public async Task AddMessageWithPhotos()
         {
             MessagesController controller = GetMessagesController();
+            var imagesList = new List<string> {_image1, _image2};
             await controller.SendMessage(new AddMessageRequest
             {
                 Text = _defaultMessageText,
                 Location = _zeroLocation,
-                Photos = new List<string>() { _image1, _image2 }
+                Photos = imagesList
             });
             List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
-            string image1 = await controller.GetMessageImage(messages[0].Photos.First());
-            string image2 = await controller.GetMessageImage(messages[0].Photos.Last());
+            List<Guid> photoIds = messages[0].Photos.ToList();
+            Dictionary<Guid, string> images = await controller.GetMessageImages(photoIds);
 
             Assert.AreEqual(2, messages[0].Photos.Count());
-            Assert.AreEqual(_image1, image1);
-            Assert.AreEqual(_image2, image2);
+            Assert.Contains(_image1, imagesList);
+            Assert.Contains(_image2, imagesList);
+            Assert.AreNotEqual(_image2, _image1);
         }
 
         [Test]

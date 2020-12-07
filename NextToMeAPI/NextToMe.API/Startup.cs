@@ -20,6 +20,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace NextToMe.API
@@ -118,7 +119,11 @@ namespace NextToMe.API
             services.AddTransient<IUserInfoService, UserInfoService>();
             services.AddHostedService<MessageDeleteService>();
 
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                options.JsonSerializerOptions.Converters.Add(new JsonNonStringKeyDictionaryConverterFactory());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
