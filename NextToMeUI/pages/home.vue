@@ -1,29 +1,41 @@
 <template>
-  <div class="home-page mx-6 mt-4">
-    <v-select
-      v-model="select"
-      :items="items"
-      item-text="abbr"
-      item-value="state"
-      return-object
-      solo
-      single-line
-    ></v-select>
-    <div v-if="loading">
-      <skeletonTag v-for="i in 10" :key="i" />
-    </div>
-    <div v-else class="messages" @click="cardClick">
-      <h3 v-if="!messages.length" class="text-center">
-        К сожалению сейчас нет новых тэгов
-      </h3>
-      <tagView
-        v-for="message in messages"
-        :message="message"
-        :key="message.id"
-        :id="message.id"
-        :avatarLoading="avatarLoading"
-        class="mb-4 tag-view"
-      />
+  <div class="home-page">
+    <v-bottom-navigation
+      grow
+      horizontal
+      v-model="toggle_exclusive"
+      @change="onChangeList"
+    >
+      <v-btn large>ГЛАВНАЯ</v-btn>
+      <v-btn>ТОП-10</v-btn>
+    </v-bottom-navigation>
+    <div class="home-page__content mx-6 mt-4">
+      <v-select
+        v-model="select"
+        :items="items"
+        item-text="abbr"
+        item-value="state"
+        return-object
+        solo
+        single-line
+      ></v-select>
+      <div v-if="loading">
+        <skeletonTag v-for="i in 10" :key="i" />
+      </div>
+      <div v-else class="messages" @click="cardClick">
+        <h3 v-if="!messages.length" class="text-center">
+          К сожалению сейчас нет новых тэгов
+        </h3>
+        <tagView
+          v-for="message in messages"
+          :message="message"
+          :key="message.id"
+          :id="message.id"
+          :avatarLoading="avatarLoading"
+          :showPlace="toggle_exclusive == 1"
+          class="mb-4 tag-view"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -31,31 +43,37 @@
 <script>
 import tagView from "@/components/Tags/TagView.vue";
 import skeletonTag from "@/components/Tags/SkeletonTag.vue";
-import { GET_MESSAGES, LOAD_AVATARS } from "@/store/actions/messages";
+import {
+  GET_MESSAGES,
+  LOAD_AVATARS,
+  GET_TOP_MESSAGES
+} from "@/store/actions/messages";
+
 export default {
   components: {
     tagView,
-    skeletonTag,
+    skeletonTag
   },
   headerData: {
-    title: "Главная",
+    title: "Главная"
   },
   btnValue: {
-    value: "home",
+    value: "home"
   },
   data: () => ({
     loading: false,
     avatarLoading: false,
     select: {
       state: "Сначала самые просматриваемые",
-      abbr: "Самые просматриваемые",
+      abbr: "Самые просматриваемые"
     },
     items: [
       { state: "Сначала самые просматриваемые", abbr: "Самые просматриваемые" },
       { state: "Сначала менее просматриваемые", abbr: "Менее просматриваемые" },
       { state: "Сначала самые обсуждаемые", abbr: "Самые обсуждаемые" },
-      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" },
+      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" }
     ],
+    toggle_exclusive: 0
   }),
   computed: {
     messages() {
@@ -70,7 +88,7 @@ export default {
         case this.items[3].abbr:
           return messages.sort((a, b) => a.commentsCount - b.commentsCount);
       }
-    },
+    }
   },
   methods: {
     cardClick(e) {
@@ -79,21 +97,31 @@ export default {
         this.$router.push(`/tag?id=${parent.id}`);
       }
     },
+    onChangeList() {
+      this.loading = true;
+      this.avatarLoading = true;
+
+      this.$store
+        .dispatch(this.toggle_exclusive == 0 ? GET_MESSAGES : GET_TOP_MESSAGES)
+        .then(result => {
+          this.loading = false;
+          return this.$store.dispatch(LOAD_AVATARS);
+        })
+        .then(res => (this.avatarLoading = false))
+        .catch(err => {
+          this.loading = false;
+          this.avatarLoading = false;
+        });
+    }
   },
   mounted() {
-    this.loading = true;
-    this.avatarLoading = true;
-    this.$store
-      .dispatch(GET_MESSAGES)
-      .then((result) => {
-        this.loading = false;
-        return this.$store.dispatch(LOAD_AVATARS);
-      })
-      .then((res) => (this.avatarLoading = false))
-      .catch((err) => {
-        this.loading = false;
-        this.avatarLoading = false;
-      });
-  },
+    this.onChangeList();
+  }
 };
 </script>
+
+<style scoped>
+.home-page__header {
+  width: 100%;
+}
+</style>

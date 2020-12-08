@@ -1,9 +1,15 @@
 import MessageController from "@/api/MessageController";
 import UserController from "@/api/UserController";
-import { SEND_MESSAGE, GET_MESSAGES, LOAD_AVATARS } from "../actions/messages";
+import {
+  SEND_MESSAGE,
+  GET_MESSAGES,
+  LOAD_AVATARS,
+  GET_TOP_MESSAGES
+} from "../actions/messages";
 
 const state = () => ({
   messages: [],
+  topMessages: [],
   avatars: []
 });
 
@@ -31,6 +37,11 @@ const actions = {
     const avatars = await UserController.getUserInfo(users_id);
     commit(LOAD_AVATARS, avatars.data);
     return avatars;
+  },
+  [GET_TOP_MESSAGES]: async ({ commit }) => {
+    const messages = await MessageController.getTopMessages();
+    commit(GET_MESSAGES, messages.data);
+    return messages;
   }
 };
 
