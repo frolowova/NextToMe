@@ -30,7 +30,7 @@ namespace NextToMe.Services
         }
         public async Task ChangeUserInfo(ChangeUserInfoRequest request)
         {
-            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
 
             UserImage userImage = user.UserImage;
 
