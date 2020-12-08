@@ -9,7 +9,7 @@
       <text-message :message="tagInformation.text" />
     </div>
     <div>
-      <pictures-of-message :images="tagInformation.photos" />
+      <pictures-of-message  />
       <statistic-message
         :time="tagInformation.deleteAt"
         :view="tagInformation.views"
@@ -30,6 +30,9 @@ import MessageController from "@/api/MessageController";
 export default {
   headerData: {
     title: "",
+  },
+  btnValue: {
+    value: "",
   },
   components: {
     Bomb,
