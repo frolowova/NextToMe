@@ -21,25 +21,17 @@
         </div>
         <div class="tag__right d-flex flex-column flex-grow-1">
           <div class="tag__user mx-2 mb-2">
-            <div class="">
-              {{
-                `${
-                  avatar && avatar.userName ? avatar.userName : "Пользователь"
-                }`
-              }}
+            <div>
+              {{ message.fromName }}
             </div>
             <div class="grey--text">
-              {{ Math.floor(message.distanceToUser) }} м
+              {{ distnace }}
             </div>
           </div>
           <div class="tag__content ml-2 mr-4" v-html="text"></div>
           <v-card-actions class="d-flex justify-space-between mt-2">
             <bomb :deleteTime="this.message.deleteAt" class="flex-grow-1" />
-            <!-- <nuxt-link class="tag-link" :to="`/tag?id=${message.id}`"> -->
-            <nuxt-link class="tag-link" :to="`/tag?id=${this.message.id}`">
-              <comments :amount="message.commentsCount" />
-            </nuxt-link>
-            <!-- </nuxt-link> -->
+            <comments :amount="message.commentsCount" />
             <eye :views="message.views" />
           </v-card-actions>
         </div>
@@ -62,7 +54,8 @@ export default {
   },
   props: {
     message: Object,
-    avatarLoading: Boolean
+    avatarLoading: Boolean,
+    showPlace: Boolean
   },
   computed: {
     text() {
@@ -75,6 +68,11 @@ export default {
     },
     src() {
       return this.avatar ? this.avatar.imageBase64 : null;
+    },
+    distnace() {
+      return this.showPlace
+        ? this.message.place
+        : `${Math.floor(this.message.distanceToUser)} м`;
     }
   }
 };

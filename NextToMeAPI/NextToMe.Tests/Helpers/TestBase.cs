@@ -51,7 +51,7 @@ namespace NextToMe.Tests.Helpers
 
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
                 await userManager.CreateAsync(new User { UserName = TestUserName, Email = TestUserName });
-                TestUserId = userManager.FindByNameAsync(TestUserName).Result.Id;
+                TestUserId = userManager.FindByEmailAsync(TestUserName).Result.Id;
             }
         }
 

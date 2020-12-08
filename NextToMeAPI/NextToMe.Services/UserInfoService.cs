@@ -41,7 +41,7 @@ namespace NextToMe.Services
 
             if (request.UserName != null)
             {
-                user.UserName = request.UserName;
+                await _userManager.SetUserNameAsync(user, request.UserName);
             }
 
             await _dbContext.SaveChangesAsync();

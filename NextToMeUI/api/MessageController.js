@@ -46,6 +46,28 @@ class MessageController extends APIController {
   }
 
   /**  
+    @param {Number} skip - сколько пропустить сообщение  
+    @param {Number} take - сколько взять сообщений
+  */
+  async getTopMessages(skip = 0, take = 10) {
+    const { location } = await this.getLocationInfo();
+    const location_params = {
+      currentLocation: {
+        latitude: location.latitude,
+        longitude: location.longitude
+      },
+      skip,
+      take
+    };
+    const messages = await this.request(
+      "post",
+      "/messages/top",
+      location_params
+    );
+    return messages;
+  }
+  
+  /**  
     @param {String} message_id
   */
   async likeMessage(message_id) {
@@ -66,7 +88,7 @@ class MessageController extends APIController {
     );
     return unLikeStatus;
   }
-  
+
   /** 
   @param {String} message_id
   */
