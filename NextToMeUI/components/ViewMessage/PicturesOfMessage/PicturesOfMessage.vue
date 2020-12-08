@@ -102,7 +102,7 @@ export default {
     },
   },
   mounted() {
-    this.$store.dispatch(GET_IMAGES, this.$route.params.id);
+    this.$store.dispatch(GET_IMAGES, this.$route.query.id);
   },
 };
 </script>
