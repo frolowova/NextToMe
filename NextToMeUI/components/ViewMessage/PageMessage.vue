@@ -9,7 +9,7 @@
       <text-message :message="tagInformation.text" />
     </div>
     <div>
-      <pictures-of-message  />
+      <pictures-of-message  :images="images"/>
       <statistic-message
         :time="tagInformation.deleteAt"
         :view="tagInformation.views"
@@ -43,6 +43,7 @@ export default {
     StatisticMessage,
   },
   mounted() {
+    this.$store.dispatch(GET_IMAGES, this.$route.query.id);
     if (!this.$route.query.id) {
       this.$router.push("/home");
     } else {
@@ -60,6 +61,9 @@ export default {
       return this.$store.state.messages.avatars.find(
         (user) => user.userId === this.tagInformation.from
       );
+    },
+    images() {
+      return this.$store.state.currentTag.images;
     },
   },
 };
