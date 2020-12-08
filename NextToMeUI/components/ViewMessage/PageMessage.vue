@@ -31,6 +31,9 @@ export default {
   headerData: {
     title: "",
   },
+  btnValue: {
+    value: "",
+  },
   components: {
     Bomb,
     Eye,
