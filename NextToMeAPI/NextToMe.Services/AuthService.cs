@@ -295,7 +295,7 @@ namespace NextToMe.Services
         {
             var claims = new List<Claim>
                 {
-                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.UserName),
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, user.Email),
                     new Claim(ClaimsIdentity.DefaultRoleClaimType, string.Join(", ", await _userManager.GetRolesAsync(user))),
                 };
             ClaimsIdentity claimsIdentity =

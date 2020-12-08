@@ -35,6 +35,11 @@ export default {
     PicturesOfMessage,
     StatisticMessage,
   },
+  mounted() {
+    if (!this.$route.query.id) {
+      this.$router.push("/home");
+    }
+  },
   computed: {
     tagInformation() {
       return this.$store.state.messages.messages.find(
