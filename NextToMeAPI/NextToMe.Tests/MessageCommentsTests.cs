@@ -41,6 +41,30 @@ namespace NextToMe.Tests
         }
 
         [Test]
+        public async Task GetAllCommentsOfUserMessages()
+        {
+            MessagesController messagesController = GetMessagesController();
+            MessageCommentsController messageCommentsController = GetMessageCommentsController();
+
+            await messagesController.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = _zeroLocation
+            });
+            List<MessageResponse> messages = await messagesController.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            await messageCommentsController.SendComment(new AddMessageCommentRequest
+            {
+                Text = _defaultCommentsText,
+                MessageId = messages[0].Id
+            });
+
+            List<MessageCommentResponse> comments = await messageCommentsController.GetAllCommentsOfUserMessages();
+            Assert.AreEqual(1, comments.Count);
+            Assert.AreEqual(_defaultCommentsText, comments[0].Text);
+            Assert.AreEqual(messages[0].Id, comments[0].MessageId);
+        }
+
+        [Test]
         public async Task MessageCommentsOrderTest()
         {
             int messageCommentsCount = 10;
