@@ -83,7 +83,7 @@ class MessageController extends APIController {
    */
   async updateViews(message_id) {
     try {
-      const views = await this.request("post", "/api/messages/views", [
+      const views = await this.request("post", "/messages/views", [
         message_id
       ]);
       return views;
