@@ -21,12 +21,8 @@
         </div>
         <div class="tag__right d-flex flex-column flex-grow-1">
           <div class="tag__user mx-2 mb-2">
-            <div class="">
-              {{
-                `${
-                  avatar && avatar.userName ? avatar.userName : "Пользователь"
-                }`
-              }}
+            <div>
+              {{ message.fromName }}
             </div>
             <div class="grey--text">
               {{ Math.floor(message.distanceToUser) }} м
