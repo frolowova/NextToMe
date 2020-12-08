@@ -47,6 +47,16 @@ namespace NextToMe.Services
                 .ToList());
         }
 
+        public async Task<List<MessageCommentResponse>> GetAllCommentsOfUserMessages()
+        {
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            return await Task.FromResult(_dbContext.MessageComments
+                .Where(x => x.User.Id == user.Id)
+                .OrderBy(x => x.CreatedAt)
+                .ProjectTo<MessageCommentResponse>(_mapper.ConfigurationProvider)
+                .ToList());
+        }
+
         public async Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request)
         {
             User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
