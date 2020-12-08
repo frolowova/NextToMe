@@ -2,7 +2,7 @@
   <div class="footer-menu">
     <v-bottom-navigation
       color="primary"
-      v-model="value"
+      :v-model="value"
       class="footer-menu_btns"
     >
       <div class="footer-menu_container">
@@ -37,9 +37,15 @@ export default {
       type: Object,
     },
   },
-  data: () => ({ value: "0" }),
+  data: () => ({ value: "" }),
   mounted() {
     this.value = this.btnValue.value;
+  },
+  watch: {
+    value: function (value) {
+      console.log(this.value);
+      this.value = this.btnValue.value;
+    },
   },
 };
 </script>

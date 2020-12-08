@@ -95,7 +95,7 @@ export default {
           })
           .then((res) => {
             this.loading = false;
-            this.$router.push(`/tag?id=${res.data.id}`);
+            this.$router.push(`/home`);
           })
           .catch((err) => {
             this.loading = false;
