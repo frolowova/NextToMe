@@ -99,6 +99,20 @@ class MessageController extends APIController {
     );
     return images;
   }
+
+  /**
+      @param {String} message_id
+   */
+  async updateViews(message_id) {
+    try {
+      const views = await this.request("post", "/messages/views", [
+        message_id
+      ]);
+      return views;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 }
 
 export default new MessageController();
