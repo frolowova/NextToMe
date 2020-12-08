@@ -26,7 +26,11 @@ import TextMessage from "@/components/ViewMessage/TextMessage";
 import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
 import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
 import { GET_IMAGES } from "~/store/actions/currentTag";
+import MessageController from "@/api/MessageController";
 export default {
+  headerData: {
+    title: "",
+  },
   components: {
     Bomb,
     Eye,
@@ -38,7 +42,10 @@ export default {
   mounted() {
     if (!this.$route.query.id) {
       this.$router.push("/home");
-    }
+    } else {
+      MessageController.updateViews(this.$route.query.id);
+    } 
+    
   },
   computed: {
     tagInformation() {
