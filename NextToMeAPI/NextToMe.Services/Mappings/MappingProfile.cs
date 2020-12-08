@@ -16,6 +16,7 @@ namespace NextToMe.Services.Mappings
 
             CreateMap<Message, MessageResponse>()
                 .ForMember(x => x.From, opt => opt.MapFrom(y => y.User.Id))
+                .ForMember(x => x.FromName, opt => opt.MapFrom(y => y.User.UserName))
                 .ForMember(x => x.Location,
                     opt => opt.MapFrom(y => new Common.Models.Location(y.Location.X, y.Location.Y)))
                 .ForMember(x => x.LikesCount, opt => opt.MapFrom(y => y.UserLikedMessages.Count))
@@ -26,6 +27,7 @@ namespace NextToMe.Services.Mappings
 
             CreateMap<MessageComment, MessageCommentResponse>()
                 .ForMember(x => x.From, opt => opt.MapFrom(y => y.User.Id))
+                .ForMember(x => x.FromName, opt => opt.MapFrom(y => y.User.UserName))
                 .ReverseMap();
 
             CreateMap<User, LoginResponse>().ReverseMap();

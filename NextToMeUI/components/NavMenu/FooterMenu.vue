@@ -39,7 +39,7 @@ export default {
   },
   data: () => ({ value: "" }),
   mounted() {
-    this.value = this.$route.name;
+    this.value = this.btnValue.value;
   },
   watch: {
     value: function (value) {

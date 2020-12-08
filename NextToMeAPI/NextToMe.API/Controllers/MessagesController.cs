@@ -29,13 +29,30 @@ namespace NextToMe.API.Controllers
         }
 
         /// <summary>
-        /// Get Messages ordered by created date
+        /// Get Messages filtered by distance and ordered by created date
         /// </summary>
         [HttpPost]
         [Route("get")]
         public async Task<List<MessageResponse>> GetMessages(GetMessageRequest request)
         {
             return await _messageService.GetMessages(request.Skip, request.Take, request.CurrentLocation, request.GettingMessagesRadiusInMeters);
+        }
+
+        [HttpPost]
+        [Route("views")]
+        public async Task AddViewToMessage(List<Guid> messageIds)
+        {
+            await _messageService.AddViewToMessage(messageIds);
+        }
+
+        /// <summary>
+        /// Get Messages NOT filtered by distance and ordered by views count descending
+        /// </summary>
+        [HttpPost]
+        [Route("top")]
+        public async Task<List<MessageResponse>> GetTopMessages(GetTopMessagesRequest request)
+        {
+            return await _messageService.GetTopViewed(request);
         }
 
         [HttpPost]

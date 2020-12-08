@@ -237,7 +237,7 @@ namespace NextToMe.Services
                 throw new AuthException("Invalid token", "Can't get user name from claims");
             }
 
-            var user = await _userManager.FindByEmailAsync(nameClaim.Value);
+            var user = await _userManager.FindByNameAsync(nameClaim.Value);
             if (user == null)
             {
                 throw new AuthException("Invalid token", $"User with name {nameClaim.Value} not found");

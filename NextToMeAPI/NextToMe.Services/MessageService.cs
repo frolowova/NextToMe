@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using NextToMe.Services.Mappings;
 using Z.EntityFramework.Plus;
 using Location = NextToMe.Common.Models.Location;
 
@@ -45,44 +46,22 @@ namespace NextToMe.Services
 
         public async Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500)
         {
-
             var userLocation = new Point(currentLocation.Latitude, currentLocation.Longitude) { SRID = 4326 };
 
-            List<MessageResponse> messages = _dbContext.Messages
+            List<MessageResponse> messages = await _dbContext.Messages
                 .Where(x => x.Location.Distance(userLocation) <= gettingMessagesRadiusInMeters)
                 .OrderBy(x => x.CreatedAt)
                 .Skip(skip)
                 .Take(take)
-                .Select(x => new MessageResponse()
-                {
-                    DistanceToUser = x.Location.Distance(userLocation),
-                    CreatedAt = x.CreatedAt,
-                    From = x.User.Id,
-                    Text = x.Text,
-                    Location = new Location(x.Location.X, x.Location.Y),
-                    DeleteAt = x.DeleteAt,
-                    LikesCount = x.UserLikedMessages.Count,
-                    Id = x.Id,
-                    Place = x.Place,
-                    Views = x.Views,
-                    CommentsCount = x.Comments.Count,
-                    Photos = x.MessageImages.Select(image => image.Id)
-                })
-                .ToList();
-
-            List<Guid> messageIds = messages.Select(x => x.Id).ToList();
-
-            int updatedCount = await _dbContext.Messages
-                .Where(x => messageIds.Contains(x.Id))
-                .UpdateAsync(x => new Message { Views = x.Views + 1, DeleteAt = x.DeleteAt.Value.AddMinutes(_messageExtraLifeTimeMinutes) });
-            _logger.LogInformation($"Get Message: updated {updatedCount} messages");
-
+                .SelectWithLocation(userLocation)
+                .ToListAsync();
+            
             return messages;
         }
 
         public async Task<MessageResponse> SendMessage(AddMessageRequest request)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
             var newMessage = _mapper.Map<Message>(request);
             newMessage.UserId = user.Id;
             newMessage.CreatedAt = DateTime.UtcNow;
@@ -99,7 +78,7 @@ namespace NextToMe.Services
 
         public async Task LikeMessage(Guid messageId)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
             if (user.UserLikedMessages.Any(x => x.MessageId == messageId))
             {
                 throw new BadRequestException("The message has already been liked");
@@ -123,8 +102,8 @@ namespace NextToMe.Services
 
         public async Task RemoveLikeFromMessage(Guid messageId)
         {
-            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
-
+            User user = await _userManager.FindByNameAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            _logger.LogError(_contextAccessor.HttpContext.User.Identity.Name);
             if (user.UserLikedMessages.All(x => x.MessageId != messageId))
             {
                 throw new BadRequestException("The message has not been liked");
@@ -151,6 +130,28 @@ namespace NextToMe.Services
                 .Where(x => x.Id == messageImageId)
                 .Select(x => x.Image)
                 .First());
+        }
+
+        public async Task AddViewToMessage(List<Guid> messageIds)
+        {
+            int updatedCount = await _dbContext.Messages
+                .Where(x => messageIds.Contains(x.Id))
+                .UpdateAsync(x => new Message { Views = x.Views + 1, DeleteAt = x.DeleteAt.Value.AddMinutes(_messageExtraLifeTimeMinutes) });
+            _logger.LogInformation($"Get Message: updated {updatedCount} messages");
+        }
+
+        public async Task<List<MessageResponse>> GetTopViewed(GetTopMessagesRequest request)
+        {
+            var userLocation = new Point(request.CurrentLocation.Latitude, request.CurrentLocation.Longitude) { SRID = 4326 };
+
+            List<MessageResponse> messages = await _dbContext.Messages
+                .OrderByDescending(x => x.Views)
+                .Skip(request.Skip)
+                .Take(request.Take)
+                .SelectWithLocation(userLocation)
+                .ToListAsync();
+
+            return messages;
         }
     }
 }

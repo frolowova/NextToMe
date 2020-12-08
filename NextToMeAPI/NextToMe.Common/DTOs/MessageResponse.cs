@@ -18,6 +18,8 @@ namespace NextToMe.Common.DTOs
 
         public Guid From { get; set; }
 
+        public string FromName { get; set; }
+
         public int LikesCount { get; set; }
 
         public double DistanceToUser { get; set; }

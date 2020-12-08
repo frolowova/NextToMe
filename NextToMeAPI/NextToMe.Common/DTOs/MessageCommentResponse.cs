@@ -8,6 +8,8 @@ namespace NextToMe.Common.DTOs
     {
         public Guid From { get; set; }
 
+        public string FromName { get; set; }
+
         public DateTime CreatedAt { get; set; }
     }
 }

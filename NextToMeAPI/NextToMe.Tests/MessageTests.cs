@@ -1,3 +1,4 @@
+using System;
 using NextToMe.API.Controllers;
 using NextToMe.Common.DTOs;
 using NextToMe.Common.Models;
@@ -119,7 +120,6 @@ namespace NextToMe.Tests
         }
 
         [Test]
-
         public async Task LikeOneMessage()
         {
             MessagesController controller = GetMessagesController();
@@ -135,7 +135,6 @@ namespace NextToMe.Tests
         }
 
         [Test]
-
         public async Task LikeThenRemoveLikeFromMessage()
         {
             MessagesController controller = GetMessagesController();
@@ -149,6 +148,38 @@ namespace NextToMe.Tests
             await controller.RemoveLike(messages[0].Id);
             messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
             Assert.AreEqual(0, messages[0].LikesCount);
+        }
+
+        [Test]
+        public async Task ViewsTest()
+        {
+            int messagesCount = 10;
+            int messageToView = 4;
+            MessagesController controller = GetMessagesController();
+            await SendMessagesWithNumbers(controller, messagesCount);
+
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            await controller.AddViewToMessage(new List<Guid> { messages[messageToView].Id });
+            messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            Assert.AreEqual(1, messages[messageToView].Views);
+            Assert.AreEqual(0, messages[0].Views);
+        }
+
+        [Test]
+        public async Task TopViewsTest()
+        {
+            int messagesCount = 10;
+            MessagesController controller = GetMessagesController();
+            await SendMessagesWithNumbers(controller, messagesCount);
+
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            var topMessageToView = messages[4].Id;
+            var secondMessageToView = messages[7].Id;
+            await controller.AddViewToMessage(new List<Guid> { topMessageToView });
+            await controller.AddViewToMessage(new List<Guid> { topMessageToView, secondMessageToView });
+            messages = await controller.GetTopMessages(new GetTopMessagesRequest { CurrentLocation = _zeroLocation });
+            Assert.AreEqual(messages[0].Id, topMessageToView);
+            Assert.AreEqual(messages[1].Id, secondMessageToView);
         }
 
         private async Task SendMessagesWithNumbers(MessagesController controller, int count)
