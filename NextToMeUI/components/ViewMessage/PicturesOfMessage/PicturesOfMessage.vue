@@ -85,13 +85,8 @@ export default {
   data: () => ({
     isOpen: false,
   }),
-  // props: {
-  //   images: Array,
-  // },
-  computed: {
-    images() {
-      return this.$store.state.currentTag.images;
-    },
+  props: {
+    images: Array,
   },
   methods: {
     getLength(array) {
@@ -100,9 +95,6 @@ export default {
     setOpen(isOpen) {
       this.isOpen = isOpen;
     },
-  },
-  mounted() {
-    this.$store.dispatch(GET_IMAGES, this.$route.query.id);
   },
 };
 </script>
