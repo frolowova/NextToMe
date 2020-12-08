@@ -43,7 +43,10 @@ export default {
     StatisticMessage,
   },
   mounted() {
-    this.$store.dispatch(GET_IMAGES, this.$route.query.id);
+    let photos = this.tagInformation.photos[0];
+    if (photos !== undefined){
+      this.$store.dispatch(GET_IMAGES, photos);
+    }
     if (!this.$route.query.id) {
       this.$router.push("/home");
     } else {
