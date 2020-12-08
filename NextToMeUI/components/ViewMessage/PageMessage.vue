@@ -43,7 +43,7 @@ export default {
     StatisticMessage,
   },
   mounted() {
-    let photos = this.tagInformation.photos[0];
+    const photos = this.tagInformation.photos[0];
     if (photos !== undefined){
       this.$store.dispatch(GET_IMAGES, photos);
     }
