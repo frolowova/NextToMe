@@ -66,7 +66,7 @@ class MessageController extends APIController {
     );
     return unLikeStatus;
   }
-  
+
   /** 
   @param {String} message_id
   */
@@ -76,6 +76,20 @@ class MessageController extends APIController {
       `/messages/image/get?messageImageId=${message_id}`
     );
     return images;
+  }
+
+  /**
+      @param {String} message_id
+   */
+  async updateViews(message_id) {
+    try {
+      const views = await this.request("post", "/api/messages/views", [
+        message_id
+      ]);
+      return views;
+    } catch (e) {
+      console.log(e);
+    }
   }
 }
 
