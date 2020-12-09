@@ -9,7 +9,7 @@
       <text-message :message="tagInformation.text" />
     </div>
     <div>
-      <pictures-of-message :images="tagInformation.photos" />
+      <pictures-of-message  :images="images"/>
       <statistic-message
         :time="tagInformation.deleteAt"
         :view="tagInformation.views"
@@ -26,7 +26,14 @@ import TextMessage from "@/components/ViewMessage/TextMessage";
 import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
 import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
 import { GET_IMAGES } from "~/store/actions/currentTag";
+import MessageController from "@/api/MessageController";
 export default {
+  headerData: {
+    title: "",
+  },
+  btnValue: {
+    value: "",
+  },
   components: {
     Bomb,
     Eye,
@@ -34,6 +41,18 @@ export default {
     TextMessage,
     PicturesOfMessage,
     StatisticMessage,
+  },
+  mounted() {
+    const photos = this.tagInformation.photos[0];
+    if (photos !== undefined){
+      this.$store.dispatch(GET_IMAGES, photos);
+    }
+    if (!this.$route.query.id) {
+      this.$router.push("/home");
+    } else {
+      MessageController.updateViews(this.$route.query.id);
+    } 
+    
   },
   computed: {
     tagInformation() {
@@ -45,6 +64,9 @@ export default {
       return this.$store.state.messages.avatars.find(
         (user) => user.userId === this.tagInformation.from
       );
+    },
+    images() {
+      return this.$store.state.currentTag.images;
     },
   },
 };

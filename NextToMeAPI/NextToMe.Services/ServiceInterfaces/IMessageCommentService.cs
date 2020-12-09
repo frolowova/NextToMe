@@ -9,5 +9,6 @@ namespace NextToMe.Services.ServiceInterfaces
     {
         public Task<List<MessageCommentResponse>> GetComments(int skip, int take, Guid messageId);
         public Task<MessageCommentResponse> SendComment(AddMessageCommentRequest request);
+        public Task<List<MessageCommentResponse>> GetAllCommentsOfUserMessages();
     }
 }

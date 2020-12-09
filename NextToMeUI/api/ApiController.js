@@ -44,7 +44,7 @@ export default class APIController {
         localStorage.setItem("latitude", latitude);
         localStorage.setItem("longitude", longitude);
         const location = await axios.get(
-          `https://geocode-maps.yandex.ru/1.x/?apikey=${API_KEY_GEO}&format=json&geocode=${longitude},${latitude}&kind=metro&results=1`
+          `https://geocode-maps.yandex.ru/1.x/?apikey=${API_KEY_GEO}&format=json&geocode=${longitude},${latitude}&kind=locality&results=1`
         );
         localStorage.setItem(
           "currentPlace",

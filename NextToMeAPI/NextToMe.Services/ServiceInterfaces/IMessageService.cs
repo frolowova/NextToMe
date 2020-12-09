@@ -13,5 +13,9 @@ namespace NextToMe.Services.ServiceInterfaces
         public Task LikeMessage(Guid messageId);
         public Task RemoveLikeFromMessage(Guid messageId);
         public Task<string> GetMessageImage(Guid messageImageId);
+        public Task<List<Guid>> GetIdsOfUserMessages();
+        public Task<List<MessageResponse>> GetMessagesFromId(List<Guid> ids);
+        public Task AddViewToMessage(List<Guid> messageIds);
+        public Task<List<MessageResponse>> GetTopViewed(GetTopMessagesRequest request);
     }
 }

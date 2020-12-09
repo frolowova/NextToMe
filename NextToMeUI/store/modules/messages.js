@@ -1,10 +1,17 @@
 import MessageController from "@/api/MessageController";
 import UserController from "@/api/UserController";
-import { SEND_MESSAGE, GET_MESSAGES, LOAD_AVATARS } from "../actions/messages";
+import {
+  SEND_MESSAGE,
+  GET_MESSAGES,
+  LOAD_AVATARS,
+  GET_TOP_MESSAGES,
+  CHANGE_LIST_TITLE
+} from "../actions/messages";
 
 const state = () => ({
   messages: [],
-  avatars: []
+  avatars: [],
+  title: "Рядом"
 });
 
 const mutations = {
@@ -13,6 +20,9 @@ const mutations = {
   },
   [LOAD_AVATARS](state, avatars) {
     state.avatars = avatars;
+  },
+  [CHANGE_LIST_TITLE](state, title) {
+    state.title = title;
   }
 };
 
@@ -31,6 +41,14 @@ const actions = {
     const avatars = await UserController.getUserInfo(users_id);
     commit(LOAD_AVATARS, avatars.data);
     return avatars;
+  },
+  [GET_TOP_MESSAGES]: async ({ commit }) => {
+    const messages = await MessageController.getTopMessages();
+    commit(GET_MESSAGES, messages.data);
+    return messages;
+  },
+  [CHANGE_LIST_TITLE]: ({ commit }, title) => {
+    commit(CHANGE_LIST_TITLE, title);
   }
 };
 

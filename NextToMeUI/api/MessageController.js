@@ -46,6 +46,19 @@ class MessageController extends APIController {
   }
 
   /**  
+    @param {Number} skip - сколько пропустить сообщение  
+    @param {Number} take - сколько взять сообщений
+  */
+  async getTopMessages(skip = 0, take = 10) {
+    const top_params = {
+      skip,
+      take
+    };
+    const messages = await this.request("post", "/messages/top", top_params);
+    return messages;
+  }
+
+  /**  
     @param {String} message_id
   */
   async likeMessage(message_id) {
@@ -66,7 +79,7 @@ class MessageController extends APIController {
     );
     return unLikeStatus;
   }
-  
+
   /** 
   @param {String} message_id
   */
@@ -76,6 +89,33 @@ class MessageController extends APIController {
       `/messages/image/get?messageImageId=${message_id}`
     );
     return images;
+  }
+
+  async getIDsMessages() {
+    const ids = await this.request("post", "/messages/get/from/user");
+    return ids;
+  }
+
+  /** 
+  @param {Array} messages_ids
+  */
+  async getUserMessages(messages_ids) {
+    const messages = await this.request(
+      "post",
+      "/messages/get/from/user",
+      messages_ids
+    );
+    return messages;
+  }
+
+  /** 
+  @param {String} message_id
+  */
+  async updateViews(message_id) {
+    const viewStatus = await this.request("post", "/messages/views", [
+      message_id
+    ]);
+    return viewStatus;
   }
 }
 
