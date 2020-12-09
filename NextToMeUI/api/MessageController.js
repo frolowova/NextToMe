@@ -50,20 +50,11 @@ class MessageController extends APIController {
     @param {Number} take - сколько взять сообщений
   */
   async getTopMessages(skip = 0, take = 10) {
-    const { location } = await this.getLocationInfo();
-    const location_params = {
-      currentLocation: {
-        latitude: location.latitude,
-        longitude: location.longitude
-      },
+    const top_params = {
       skip,
       take
     };
-    const messages = await this.request(
-      "post",
-      "/messages/top",
-      location_params
-    );
+    const messages = await this.request("post", "/messages/top", top_params);
     return messages;
   }
 
@@ -120,7 +111,7 @@ class MessageController extends APIController {
   /** 
   @param {String} message_id
   */
-  async addView(message_id) {
+  async updateViews(message_id) {
     const viewStatus = await this.request("post", "/messages/views", [
       message_id
     ]);
