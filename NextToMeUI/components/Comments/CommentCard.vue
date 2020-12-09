@@ -9,9 +9,9 @@
           </v-avatar>
           <div class="mx-2">
             <div>
-              {{ `${
+              {{
               avatar.userName ? avatar.userName : "Пользователь"
-              }` }}
+              }}
             </div>
           </div>
         </div>
