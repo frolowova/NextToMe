@@ -66,7 +66,7 @@ class MessageController extends APIController {
     );
     return messages;
   }
-  
+
   /**  
     @param {String} message_id
   */
@@ -100,18 +100,31 @@ class MessageController extends APIController {
     return images;
   }
 
-  /**
-      @param {String} message_id
-   */
-  async updateViews(message_id) {
-    try {
-      const views = await this.request("post", "/messages/views", [
-        message_id
-      ]);
-      return views;
-    } catch (e) {
-      console.log(e);
-    }
+  async getIDsMessages() {
+    const ids = await this.request("post", "/messages/get/from/user");
+    return ids;
+  }
+
+  /** 
+  @param {Array} messages_ids
+  */
+  async getUserMessages(messages_ids) {
+    const messages = await this.request(
+      "post",
+      "/messages/get/from/user",
+      messages_ids
+    );
+    return messages;
+  }
+
+  /** 
+  @param {String} message_id
+  */
+  async addView(message_id) {
+    const viewStatus = await this.request("post", "/messages/views", [
+      message_id
+    ]);
+    return viewStatus;
   }
 }
 
