@@ -45,6 +45,36 @@ namespace NextToMe.Tests
         }
 
         [Test]
+        public async Task GetIdsOfUserMessages()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = _zeroLocation
+            });
+            List<Guid> messagesGuid = await controller.GetIdsOfUserMessages();
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
+            Assert.AreEqual(1, messagesGuid.Count);
+            Assert.AreEqual(_defaultMessageText, messages.First(x => x.Id == messagesGuid[0]).Text);
+        }
+
+        [Test]
+        public async Task GetMessagesFromIds()
+        {
+            MessagesController controller = GetMessagesController();
+            await controller.SendMessage(new AddMessageRequest
+            {
+                Text = _defaultMessageText,
+                Location = _zeroLocation
+            });
+            List<Guid> messagesGuid = await controller.GetIdsOfUserMessages();
+            List<MessageResponse> messages = await controller.GetMessagesFromId(messagesGuid);
+            Assert.AreEqual(1, messages.Count);
+            Assert.AreEqual(_defaultMessageText, messages[0].Text);
+        }
+
+        [Test]
         public async Task MessagesOrderTest()
         {
             int messagesCount = 10;

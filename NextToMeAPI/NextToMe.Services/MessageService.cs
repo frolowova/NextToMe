@@ -44,6 +44,36 @@ namespace NextToMe.Services
             _logger = logger;
         }
 
+        public async Task<List<Guid>> GetIdsOfUserMessages()
+        {
+            User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
+            return await Task.FromResult(_dbContext.Messages
+                .Where(x => x.User.Id == user.Id)
+                .Select(x => x.Id)
+                .ToList());
+        }
+
+        public Task<List<MessageResponse>> GetMessagesFromId(List<Guid> ids)
+        {
+            return Task.FromResult(_dbContext.Messages
+                .Where(x => ids.Contains(x.Id))
+                .OrderBy(x => x.CreatedAt)
+                .Select(x => new MessageResponse()
+                {
+                    CreatedAt = x.CreatedAt,
+                    From = x.User.Id,
+                    Text = x.Text,
+                    Location = new Location(x.Location.X, x.Location.Y),
+                    DeleteAt = x.DeleteAt,
+                    LikesCount = x.UserLikedMessages.Count,
+                    Id = x.Id,
+                    Place = x.Place,
+                    Views = x.Views,
+                    CommentsCount = x.Comments.Count,
+                    Photos = x.MessageImages.Select(image => image.Id)
+                })
+                .ToList());
+        }
         public async Task<List<MessageResponse>> GetMessages(int skip, int take, Location currentLocation, int gettingMessagesRadiusInMeters = 500)
         {
             var userLocation = new Point(currentLocation.Latitude, currentLocation.Longitude) { SRID = 4326 };
