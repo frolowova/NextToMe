@@ -17,7 +17,11 @@
 </template>
 
 <script>
-import { SEND_COMMENTS } from "@/store/actions/currentTag";
+import {
+  SEND_COMMENTS,
+  GET_COMMENTS,
+  LOAD_COMMENT_AVATARS
+} from "@/store/actions/currentTag";
 
 export default {
   data: () => ({
@@ -25,10 +29,17 @@ export default {
   }),
   methods: {
     sendComment() {
-      this.$store.dispatch(SEND_COMMENTS, {
-        text: this.commentText,
-        messageId: this.messageId
-      });
+      this.$store
+        .dispatch(SEND_COMMENTS, {
+          text: this.commentText,
+          messageId: this.messageId
+        })
+        .then(res => {
+          this.$store.dispatch(GET_COMMENTS, this.messageId).then(result => {
+            return this.$store.dispatch(LOAD_COMMENT_AVATARS);
+          });
+          this.commentText = "";
+        });
     }
   },
 
