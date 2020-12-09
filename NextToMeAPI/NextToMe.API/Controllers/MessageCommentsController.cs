@@ -34,5 +34,12 @@ namespace NextToMe.API.Controllers
         {
             return await _messageCommentService.GetComments(skip, take, messageId);
         }
+
+        [HttpGet]
+        [Route("get/from/user")]
+        public async Task<List<MessageCommentResponse>> GetAllCommentsOfUserMessages()
+        {
+            return await _messageCommentService.GetAllCommentsOfUserMessages();
+        }
     }
 }

@@ -66,5 +66,8 @@ export default {
   headerData: {
     title: "Уведомления",
   },
+  btnValue: {
+    value: "notifications",
+  },
 };
 </script>
