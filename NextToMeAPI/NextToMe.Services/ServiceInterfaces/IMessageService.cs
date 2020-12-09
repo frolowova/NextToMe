@@ -16,6 +16,6 @@ namespace NextToMe.Services.ServiceInterfaces
         public Task<List<Guid>> GetIdsOfUserMessages();
         public Task<List<MessageResponse>> GetMessagesFromId(List<Guid> ids);
         public Task AddViewToMessage(List<Guid> messageIds);
-        public Task<List<MessageResponse>> GetTopViewed(GetTopMessagesRequest request);
+        public Task<List<MessageResponse>> GetTopViewed(SkipTakeMessagesRequest request);
     }
 }

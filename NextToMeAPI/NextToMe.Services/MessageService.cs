@@ -67,6 +67,7 @@ namespace NextToMe.Services
                     DeleteAt = x.DeleteAt,
                     LikesCount = x.UserLikedMessages.Count,
                     Id = x.Id,
+                    FromName = x.User.UserName,
                     Place = x.Place,
                     Views = x.Views,
                     CommentsCount = x.Comments.Count,
@@ -170,15 +171,27 @@ namespace NextToMe.Services
             _logger.LogInformation($"Get Message: updated {updatedCount} messages");
         }
 
-        public async Task<List<MessageResponse>> GetTopViewed(GetTopMessagesRequest request)
+        public async Task<List<MessageResponse>> GetTopViewed(SkipTakeMessagesRequest request)
         {
-            var userLocation = new Point(request.CurrentLocation.Latitude, request.CurrentLocation.Longitude) { SRID = 4326 };
-
             List<MessageResponse> messages = await _dbContext.Messages
                 .OrderByDescending(x => x.Views)
                 .Skip(request.Skip)
                 .Take(request.Take)
-                .SelectWithLocation(userLocation)
+                .Select(x => new MessageResponse()
+                {
+                    CreatedAt = x.CreatedAt,
+                    From = x.User.Id,
+                    FromName = x.User.UserName,
+                    Text = x.Text,
+                    Location = new Location(x.Location.X, x.Location.Y),
+                    DeleteAt = x.DeleteAt,
+                    LikesCount = x.UserLikedMessages.Count,
+                    Id = x.Id,
+                    Place = x.Place,
+                    Views = x.Views,
+                    CommentsCount = x.Comments.Count,
+                    Photos = x.MessageImages.Select(image => image.Id)
+                })
                 .ToListAsync();
 
             return messages;

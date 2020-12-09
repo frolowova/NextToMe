@@ -30,7 +30,7 @@ namespace NextToMe.Tests
                 Text = _defaultMessageText,
                 Location = _zeroLocation
             });
-            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest{ CurrentLocation = _zeroLocation });
+            List<MessageResponse> messages = await controller.GetMessages(new GetMessageRequest { CurrentLocation = _zeroLocation });
             Assert.AreEqual(1, messages.Count);
             Assert.AreEqual(_defaultMessageText, messages[0].Text);
             Assert.AreEqual(TestUserId, messages[0].From);
@@ -207,7 +207,7 @@ namespace NextToMe.Tests
             var secondMessageToView = messages[7].Id;
             await controller.AddViewToMessage(new List<Guid> { topMessageToView });
             await controller.AddViewToMessage(new List<Guid> { topMessageToView, secondMessageToView });
-            messages = await controller.GetTopMessages(new GetTopMessagesRequest { CurrentLocation = _zeroLocation });
+            messages = await controller.GetTopViewedMessages(new SkipTakeMessagesRequest());
             Assert.AreEqual(messages[0].Id, topMessageToView);
             Assert.AreEqual(messages[1].Id, secondMessageToView);
         }

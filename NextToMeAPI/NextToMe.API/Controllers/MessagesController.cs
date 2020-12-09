@@ -50,7 +50,7 @@ namespace NextToMe.API.Controllers
         /// </summary>
         [HttpPost]
         [Route("top")]
-        public async Task<List<MessageResponse>> GetTopMessages(GetTopMessagesRequest request)
+        public async Task<List<MessageResponse>> GetTopViewedMessages(SkipTakeMessagesRequest request)
         {
             return await _messageService.GetTopViewed(request);
         }
