@@ -1,14 +1,9 @@
 <template>
   <div class="home-page">
-    <v-bottom-navigation
-      grow
-      horizontal
-      v-model="toggle_exclusive"
-      @change="onChangeList"
-    >
-      <v-btn large>ГЛАВНАЯ</v-btn>
-      <v-btn>ТОП-10</v-btn>
-    </v-bottom-navigation>
+    <v-tabs grow v-model="toggle_list" @change="onChangeList">
+      <v-tab>Рядом</v-tab>
+      <v-tab>ТОП-10</v-tab>
+    </v-tabs>
     <div class="home-page__content mx-6 mt-4">
       <v-select
         v-model="select"
@@ -32,7 +27,7 @@
           :key="message.id"
           :id="message.id"
           :avatarLoading="avatarLoading"
-          :showPlace="toggle_exclusive == 1"
+          :showPlace="toggle_list == 1"
           class="mb-4 tag-view"
         />
       </div>
@@ -46,7 +41,8 @@ import skeletonTag from "@/components/Tags/SkeletonTag.vue";
 import {
   GET_MESSAGES,
   LOAD_AVATARS,
-  GET_TOP_MESSAGES
+  GET_TOP_MESSAGES,
+  CHANGE_LIST_TITLE
 } from "@/store/actions/messages";
 
 export default {
@@ -73,7 +69,7 @@ export default {
       { state: "Сначала самые обсуждаемые", abbr: "Самые обсуждаемые" },
       { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" }
     ],
-    toggle_exclusive: 0
+    toggle_list: 0
   }),
   computed: {
     messages() {
@@ -100,9 +96,12 @@ export default {
     onChangeList() {
       this.loading = true;
       this.avatarLoading = true;
-
+      this.$store.dispatch(
+        CHANGE_LIST_TITLE,
+        this.toggle_list === 0 ? "Рядом" : "Топ"
+      );
       this.$store
-        .dispatch(this.toggle_exclusive == 0 ? GET_MESSAGES : GET_TOP_MESSAGES)
+        .dispatch(this.toggle_list === 0 ? GET_MESSAGES : GET_TOP_MESSAGES)
         .then(result => {
           this.loading = false;
           return this.$store.dispatch(LOAD_AVATARS);
