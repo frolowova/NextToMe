@@ -24,6 +24,7 @@ axiosModule.interceptors.response.use(
       .then(response => {
         localStorage.setItem("accessToken", response.data.accessToken);
         localStorage.setItem("refreshToken", response.data.refreshToken);
+        localStorage.setItem("nextId", response.data.id);
         axiosModule.defaults.headers["Authorization"] = `Bearer ${response.data.accessToken}`;
         error.response.config.headers[
           "Authorization"
@@ -34,6 +35,7 @@ axiosModule.interceptors.response.use(
         console.log(error);
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
+        localStorage.removeItem("nextId");
         delete axiosModule.defaults.headers["Authorization"];
         return Promise.reject(error.response.status);
       });

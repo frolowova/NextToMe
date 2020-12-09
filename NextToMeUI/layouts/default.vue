@@ -1,24 +1,8 @@
 <template>
-
   <v-app dark>
-    <v-toolbar class="header" height="56px">
-      <v-container style="max-width: 900px">
-        <v-toolbar-title v-if="$route.name === 'home'">
-          {{ page[0] }}
-        </v-toolbar-title>
-        <v-toolbar-title v-if="$route.name === 'notifications'">
-          {{ page[1] }}
-        </v-toolbar-title>
-        <v-toolbar-title v-if="$route.name === 'profile'">
-          {{ page[2] }}</v-toolbar-title
-        >
-        <v-toolbar-title v-if="$route.name === 'tag-create'">
-          {{ page[3] }}</v-toolbar-title
-        >
-      </v-container>
-    </v-toolbar>
+    <app-header :header-data="headerData" />
     <v-container
-      style="margin-bottom: 56px; margin-top: 56px; max-width: 900px"
+      style="margin-bottom: 56px; padding: 0; max-width: 900px"
     >
       <nuxt />
     </v-container>
@@ -27,17 +11,30 @@
 </template>
 <script>
 import FooterMenu from "@/components/NavMenu/FooterMenu";
+import AppHeader from "@/components/NavMenu/AppHeader";
 
 export default {
   components: {
     FooterMenu,
+    AppHeader,
+  },
+  mounted() {
+    setTimeout(() => {
+      this.$vuetify.theme.dark = this.$store.getters.darkTheme;
+    }, 0);
   },
 
-  data: () => ({
-    page: ["Главная", "Уведомления", "Профиль", "Тегнуть"],
-  }),
+  computed: {
+    headerData() {
+      return this.$route.matched.map((r) => {
+        return r.components.default.options.headerData;
+      })[0];
+    },
+  },
 };
 </script>
+
+
 <style scoped>
 .header {
   position: relative;
@@ -47,6 +44,13 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
+}
+
+.theme--dark.v-application {
+  background-color: var(--v-background-base, #292929) !important;
+}
+.theme--light.v-application {
+  background-color: var(--v-background-base, rgb(249, 249, 249)) !important;
 }
 </style>
 

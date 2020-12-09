@@ -10,25 +10,31 @@ import {
 } from "../actions/auth";
 
 const state = () => ({
-  username: null
+  username: null,
+  login: localStorage.getItem("login") || null
 });
 
 const mutations = {
-  [LOGIN_SUCCESS](state, data) {
-    localStorage.setItem("accessToken", data.accessToken);
-    localStorage.setItem("refreshToken", data.refreshToken);
-    state.username = data.username;
+  [LOGIN_SUCCESS](state, { response, login }) {
+    localStorage.setItem("accessToken", response.accessToken);
+    localStorage.setItem("refreshToken", response.refreshToken);
+    localStorage.setItem("nextId", response.id);
+    localStorage.setItem("login", login);
+    state.username = response.username;
   },
   [AUTH_LOGOUT]() {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("nextId");
+    localStorage.removeItem("login");
   }
 };
 
 const actions = {
   [AUTH_LOGIN]: async ({ commit }, user_info) => {
     const authResponse = await AuthController.login(user_info);
-    commit(LOGIN_SUCCESS, authResponse);
+    commit(LOGIN_SUCCESS, { response: authResponse, login: user_info.login });
+    return authResponse;
   },
   [AUTH_SIGNUP]: async ({ commit }, { name, email: login }) => {
     const signupStatus = await AuthController.signup({
@@ -44,14 +50,14 @@ const actions = {
     const confirmStatus = await AuthController.confirm(user_info);
     return confirmStatus;
   },
-  [RESET_PASSWORD_ATTEMPT]: async ({ commit }, {login}) => {
+  [RESET_PASSWORD_ATTEMPT]: async ({ commit }, { login }) => {
     const resetStatus = await AuthController.resetPassword({
       login,
       redirectUrl: "http://localhost:3000/NextToMeUI/dist/reset-confirm"
     });
     return resetStatus;
   },
-  [RESET_PASSWORD_CONFIRM]:  async ({ commit }, {code, password, userId}) => {
+  [RESET_PASSWORD_CONFIRM]: async ({ commit }, { code, password, userId }) => {
     const resetStatus = await AuthController.setNewPassword({
       code,
       NewPassword: password,

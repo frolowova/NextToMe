@@ -7,7 +7,7 @@
 
 <script>
 import confirmForm from "@/components/Auth/confirmForm";
-import { SIGNUP_CONFIRM, RESET_PASSWORD_CONFIRM } from "@/store/actions/auth";
+import { SIGNUP_CONFIRM } from "@/store/actions/auth";
 
 export default {
   middleware: ['notAuth'],

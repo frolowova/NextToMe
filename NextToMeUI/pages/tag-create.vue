@@ -8,7 +8,13 @@ import createTagForm from "@/components/Tags/CreateTagForm.vue";
 export default {
   middleware: ["auth"],
   components: {
-    createTagForm
-  }
+    createTagForm,
+  },
+  headerData: {
+    title: "Тегнуть",
+  },
+  btnValue: {
+    value: "tag-create",
+  },
 };
 </script>
