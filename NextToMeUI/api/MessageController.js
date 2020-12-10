@@ -81,12 +81,12 @@ class MessageController extends APIController {
   }
 
   /** 
-  @param {String} message_id
+  @param {String} image_id
   */
-  async getImages(message_id) {
+  async getImage(image_id) {
     const images = await this.request(
       "post",
-      `/messages/image/get?messageImageId=${message_id}`
+      `/messages/image/get?messageImageId=${image_id}`,
     );
     return images;
   }

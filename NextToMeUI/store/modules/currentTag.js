@@ -1,17 +1,14 @@
-import {
-  GET_COMMENTS,
-  SEND_COMMENTS,
-  GET_IMAGES,
-  LOAD_COMMENT_AVATARS
-} from "../actions/currentTag";
+import { GET_COMMENTS, SEND_COMMENTS, GET_IMAGES, LOAD_COMMENT_AVATARS, } from "../actions/currentTag";
 import CommentsController from "@/api/CommentsController";
 import UserController from "@/api/UserController";
 import MessageController from "@/api/MessageController";
 
+
 export const state = () => ({
   comments: [],
   images: [],
-  commentsAvatars: []
+  commentsAvatars: [],
+
 });
 export const mutations = {
   [GET_COMMENTS](state, comments) {
@@ -22,7 +19,10 @@ export const mutations = {
   },
   [LOAD_COMMENT_AVATARS](state, avatars) {
     state.commentsAvatars = avatars;
-  }
+  },
+
+
+
 };
 
 export const actions = {
@@ -37,8 +37,7 @@ export const actions = {
   },
   [GET_IMAGES]: async ({ commit }, messageImageId) => {
     const images = await MessageController.getImages(messageImageId);
-    console.log(images);
-    commit(GET_IMAGES, images.data);
+    commit(GET_IMAGES, [images.data]);
     return images;
   },
   [LOAD_COMMENT_AVATARS]: async ({ commit, state }) => {
@@ -46,7 +45,8 @@ export const actions = {
     const avatars = await UserController.getUserInfo(users_id);
     commit(LOAD_COMMENT_AVATARS, avatars.data);
     return avatars;
-  }
+  },
+
 };
 
 export const getters = {};
