@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using NextToMe.Common.DTOs;
-using NextToMe.Common.Exceptions;
 using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace NextToMe.Services
 {
@@ -46,8 +44,7 @@ namespace NextToMe.Services
 
             if (request.UserName != null)
             {
-                user.UserName = request.UserName;
-                await _userManager.UpdateAsync(user);
+                await _userManager.SetUserNameAsync(user, request.UserName);
             }
 
             await _dbContext.SaveChangesAsync();
