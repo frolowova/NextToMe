@@ -52,7 +52,7 @@
         </v-list-item>
       </div>
     </div>
-    <CreateComment :load="isLoading"></CreateComment>
+    <CreateComment :load="avatarLoading"></CreateComment>
   </div>
 </template>
 
