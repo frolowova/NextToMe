@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using NextToMe.Common.DTOs;
-using NextToMe.Common.Exceptions;
 using NextToMe.Database;
 using NextToMe.Database.Entities;
 using NextToMe.Services.ServiceInterfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace NextToMe.Services
 {
@@ -32,11 +30,16 @@ namespace NextToMe.Services
         {
             User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
 
-            UserImage userImage = user.UserImage;
-
             if (request.ImageBase64 != null)
             {
-                userImage.Image = request.ImageBase64;
+                if (user.UserImage == null)
+                {
+                    user.UserImage = new UserImage() { Image = request.ImageBase64, User = user };
+                }
+                else
+                {
+                    user.UserImage.Image = request.ImageBase64;
+                }
             }
 
             if (request.UserName != null)
