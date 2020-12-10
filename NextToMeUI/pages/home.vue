@@ -38,6 +38,7 @@
 <script>
 import tagView from "@/components/Tags/TagView.vue";
 import skeletonTag from "@/components/Tags/SkeletonTag.vue";
+import MessageController from "@/api/MessageController";
 import {
   GET_MESSAGES,
   LOAD_AVATARS,
