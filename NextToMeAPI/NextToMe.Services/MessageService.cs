@@ -23,6 +23,7 @@ namespace NextToMe.Services
     {
         private static readonly TimeSpan _messageDefaultLifetime = TimeSpan.FromDays(1);
         private const int _messageExtraLifeTimeMinutes = 10;
+        private const int _minimumViewsTopCount = 3;
 
         private readonly ApplicationDbContext _dbContext;
         private readonly IMapper _mapper;
@@ -174,6 +175,7 @@ namespace NextToMe.Services
         public async Task<List<MessageResponse>> GetTopViewed(SkipTakeMessagesRequest request)
         {
             List<MessageResponse> messages = await _dbContext.Messages
+                .Where(x => x.Views >= _minimumViewsTopCount)
                 .OrderByDescending(x => x.Views)
                 .Skip(request.Skip)
                 .Take(request.Take)
