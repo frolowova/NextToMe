@@ -2,8 +2,7 @@ import axios from "axios";
 export const BASE_URL = "https://nexttomeapi.azurewebsites.net/api";
 
 const axiosModule = axios.create({
-  baseURL: BASE_URL,
-  responseType: "json"
+  baseURL: BASE_URL
 });
 
 axiosModule.interceptors.response.use(
