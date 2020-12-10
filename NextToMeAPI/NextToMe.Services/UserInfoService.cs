@@ -32,16 +32,22 @@ namespace NextToMe.Services
         {
             User user = await _userManager.FindByEmailAsync(_contextAccessor.HttpContext.User.Identity.Name);
 
-            UserImage userImage = user.UserImage;
-
             if (request.ImageBase64 != null)
             {
-                userImage.Image = request.ImageBase64;
+                if (user.UserImage == null)
+                {
+                    user.UserImage = new UserImage() { Image = request.ImageBase64, User = user };
+                }
+                else
+                {
+                    user.UserImage.Image = request.ImageBase64;
+                }
             }
 
             if (request.UserName != null)
             {
-                await _userManager.SetUserNameAsync(user, request.UserName);
+                user.UserName = request.UserName;
+                await _userManager.UpdateAsync(user);
             }
 
             await _dbContext.SaveChangesAsync();
