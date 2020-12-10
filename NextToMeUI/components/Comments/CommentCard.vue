@@ -16,11 +16,9 @@
           <div class="mx-2">
             <div>
               {{
-                `${
-                  !avatarLoading && avatar.userName
+                  avatar && !avatarLoading && avatar.userName
                     ? avatar.userName
                     : "Пользователь"
-                }`
               }}
             </div>
           </div>
