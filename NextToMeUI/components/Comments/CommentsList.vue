@@ -32,24 +32,31 @@
         <p>Здесь пока нет комментариев. Будьте Первым!</p>
       </div>
       <div v-if="comments.length">
-        <v-list-item fluid v-for="(comment, i)  in comments" :key="i">
-          <CommentCard :commentData="comment" :index="i"></CommentCard>
-        </v-list-item>
+        <div v-if="isLoading">
+          <CommentLoading />
+        </div>
+        <div>
+          <v-list-item fluid v-for="(comment, i)  in comments" :key="i">
+            <CommentCard v-if="!isLoading" :commentData="comment" :index="i"></CommentCard>
+          </v-list-item>
+        </div>
       </div>
     </div>
-    <CreateComment></CreateComment>
+    <CreateComment :load="isLoading"></CreateComment>
   </div>
 </template>
 
 <script>
 import CommentCard from "@/components/Comments/CommentCard";
+import CommentLoading from "@/components/Comments/CommentLoading";
 import CreateComment from "@/components/Comments/CreateComment";
 import { GET_COMMENTS, LOAD_COMMENT_AVATARS } from "@/store/actions/currentTag";
 
 export default {
-  components: { CommentCard, CreateComment },
+  components: { CommentCard, CreateComment, CommentLoading },
   data: () => ({
-    pressShowComments: false
+    pressShowComments: false,
+    isLoading: false
   }),
 
   computed: {
@@ -70,7 +77,9 @@ export default {
   },
 
   mounted() {
+    this.isLoading = true;
     this.$store.dispatch(GET_COMMENTS, this.messageId).then(result => {
+      this.isLoading = false;
       return this.$store.dispatch(LOAD_COMMENT_AVATARS);
     });
   }

@@ -4,11 +4,11 @@
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
-            <v-icon v-if="!avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
+            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
             <v-img v-else :src="src"></v-img>
           </v-avatar>
           <div class="mx-2">
-            <div>
+            <div v-if="avatar">
               {{
               avatar.userName ? avatar.userName : "Пользователь"
               }}
