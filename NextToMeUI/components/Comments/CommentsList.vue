@@ -52,17 +52,18 @@
         </v-list-item>
       </div>
     </div>
-    <CreateComment></CreateComment>
+    <CreateComment :load="isLoading"></CreateComment>
   </div>
 </template>
 
 <script>
 import CommentCard from "@/components/Comments/CommentCard";
+import CommentLoading from "@/components/Comments/CommentLoading";
 import CreateComment from "@/components/Comments/CreateComment";
 import { GET_COMMENTS, LOAD_COMMENT_AVATARS } from "@/store/actions/currentTag";
 
 export default {
-  components: { CommentCard, CreateComment },
+  components: { CommentCard, CreateComment, CommentLoading },
   data: () => ({
     pressShowComments: false,
     avatarLoading: false
