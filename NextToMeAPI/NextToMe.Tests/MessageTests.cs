@@ -206,10 +206,11 @@ namespace NextToMe.Tests
             var topMessageToView = messages[4].Id;
             var secondMessageToView = messages[7].Id;
             await controller.AddViewToMessage(new List<Guid> { topMessageToView });
+            await controller.AddViewToMessage(new List<Guid> { topMessageToView });
             await controller.AddViewToMessage(new List<Guid> { topMessageToView, secondMessageToView });
             messages = await controller.GetTopViewedMessages(new SkipTakeMessagesRequest());
+            Assert.AreEqual(1, messages.Count);
             Assert.AreEqual(messages[0].Id, topMessageToView);
-            Assert.AreEqual(messages[1].Id, secondMessageToView);
         }
 
         private async Task SendMessagesWithNumbers(MessagesController controller, int count)
