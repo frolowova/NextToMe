@@ -6,11 +6,8 @@ using NextToMe.Common.Models;
 
 namespace NextToMe.Common.DTOs
 {
-    public class GetTopMessagesRequest
+    public class SkipTakeMessagesRequest
     {
-        [Required]
-        public Location CurrentLocation { get; set; }
-
         [Required] 
         public int Skip { get; set; } = 0;
 

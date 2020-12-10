@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-2 ma-2" position="absolute">
+  <div class="pa-2 ma-2" position="sticky" bottom="0">
     <v-textarea
       placeholder="Ваш комментарий"
       auto-grow
@@ -24,6 +24,9 @@ import {
 } from "@/store/actions/currentTag";
 
 export default {
+  props: {
+    load: Boolean
+  },
   data: () => ({
     commentText: ""
   }),
@@ -38,6 +41,7 @@ export default {
           this.$store.dispatch(GET_COMMENTS, this.messageId).then(result => {
             return this.$store.dispatch(LOAD_COMMENT_AVATARS);
           });
+
           this.commentText = "";
         });
     }

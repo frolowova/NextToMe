@@ -84,4 +84,8 @@ export default {
 .tag-link {
   text-decoration: none;
 }
+
+.cardBackground:hover {
+  cursor: pointer;
+}
 </style>
