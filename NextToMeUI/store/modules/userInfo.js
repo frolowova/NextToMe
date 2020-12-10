@@ -1,5 +1,5 @@
 import UserController from "@/api/UserController";
-import { SEND_USER_INFO, GET_USER_INFO, SEND_USER_PHOTO,} from "../actions/userInfo";
+import { SEND_USER_INFO, GET_USER_INFO} from "../actions/userInfo";
 import {AUTH_LOGOUT,} from "../actions/auth";
   
   const state = () => ({
@@ -11,7 +11,6 @@ import {AUTH_LOGOUT,} from "../actions/auth";
     },
 
     email: localStorage.getItem('login'),
-
     darkTheme: JSON.parse(localStorage.getItem('isDark') || false),
   });
   
@@ -21,6 +20,7 @@ import {AUTH_LOGOUT,} from "../actions/auth";
       state.userInfo = userInfo;
     },
     [SEND_USER_INFO](state, updUserInfo) {
+      console.log(updUserInfo);
       state.userInfo = updUserInfo;
     },
  
@@ -32,18 +32,16 @@ import {AUTH_LOGOUT,} from "../actions/auth";
   };
   
   const actions = {
-
     [GET_USER_INFO]: async ({ commit, state}) => {
-      
       const userInfo = await UserController.getUserInfo([state.id]);
       commit(GET_USER_INFO, userInfo.data[0]);
       // console.log(userInfo.data[0]);
     },
     
     [SEND_USER_INFO]: async ({ commit }, user_info) => {
-      console.log(user_info);
+      console.log("action send user");
       const updUserInfo = await UserController.sendUserInfo(user_info);
-      commit(SEND_USER_INFO, updUserInfo);
+      return updUserInfo;
     },
 
     [AUTH_LOGOUT]: async ({ commit }) => {

@@ -1,39 +1,40 @@
 <template>
-    <v-container>
-      <div class="d-flex justify-center mb-10">
-        <avatar :sizeC=200>
-        </avatar>
-        <v-btn
-          color="primary"
-          icon
-          v-show="loading"
-          @click.prevent="loadImage">
-          <v-icon>mdi-pencil-outline</v-icon>
-        </v-btn>
+  <v-container>
+    <div class="d-flex justify-center mb-10">
+      <avatar :sizeC=200>
+      </avatar>
 
-        <v-file-input
-          accept="image/x-png,image/jpeg,image/gif"
-          ref="fileInput"
-          multiple
-          v-show="false"
-          v-model="selectedImage"
-          @change="onChangeFile(), (loading = !loading), (hidden = !hidden)"
-        ></v-file-input>
+      <v-btn
+        color="primary"
+        icon
+        v-show="loading"
+        @click.prevent="loadImage">
+        <v-icon>mdi-pencil-outline</v-icon>
+      </v-btn>
 
-        <v-btn 
-          icon 
-          color="primary" 
-          v-show="hidden"
-          @click="updPhoto(), (hidden = !hidden), (loading = !loading)">
-          <v-icon>mdi-check</v-icon>
-        </v-btn>
-      </div>
-          
+      <v-file-input
+        accept="image/x-png,image/jpeg,image/gif"
+        ref="fileInput"
+        multiple
+        v-show="false"
+        v-model="selectedImage"
+        @change="onChangeFile(), (loading = !loading), (update = !update)"
+      ></v-file-input>
 
+      <v-btn 
+        icon 
+        color="primary" 
+        v-show="update"
+        @click="updPhoto(), (update = !update), (loading = !loading)">
+        <v-icon>mdi-check</v-icon>
+      </v-btn>
+    </div>
+        
     <h2 class="subtitle-1 primary--text pa-2">Настройки профиля</h2>
 
     <div class="d-flex align-start pa-2">
       <sub-title-text title="Имя"></sub-title-text>
+
       <v-text-field
         class="pa-0 ma-0"
         :label="userName"
@@ -44,11 +45,12 @@
         loading="0"
         @click="shown = !shown"
       ></v-text-field>
+
       <v-btn 
-        v-if="!shown" 
+        v-show="!shown" 
         icon 
         color="primary" 
-        @click="sendUserInfo">
+        @click="sendUserInfo(), (shown = true)">
         <v-icon>mdi-check</v-icon>
       </v-btn>
     </div>
@@ -64,25 +66,39 @@
     <h2 class="subtitle-1 primary--text pa-2">Общие настройки</h2>
 
     <div class="d-flex justify-space-between pa-2 pr-0">
-      <sub-title-text title="Вкл. push-уведомления"></sub-title-text>
+      <sub-title-text 
+        title="Вкл. push-уведомления"
+        v-show="!pushOn"
+      ></sub-title-text>
+      <sub-title-text 
+        title="Выкл. push-уведомления"
+        v-show="pushOn"
+      ></sub-title-text>
       <v-switch
         class="ma-0 pa-0"
-        v-model="btnSwitch"
+        v-model="btnSwitch1"
         color="primary"
         inset
+        @click="pushOn = !pushOn"
       ></v-switch>
     </div>
 
     <div class="d-flex justify-space-between pa-2 pr-0">
-      <sub-title-text title="Вкл. темную тему"></sub-title-text>
+      <sub-title-text 
+        title="Выкл. темную тему"
+      ></sub-title-text>
+      <!-- <sub-title-text 
+        title="Вкл. темную тему"
+      ></sub-title-text> -->
       <v-switch
         class="ma-0 pa-0"
         v-model="darkTheme"
         color="primary"
         inset
-        @click="changeTheme"
+        @click="changeTheme(), (btnSwitch2=!btnSwitch2)"
       ></v-switch>
     </div>
+    
     <div>
       <v-btn class="text-capitalize" text color="primary">
         <v-icon>mdi-pencil-outline</v-icon>
@@ -95,13 +111,12 @@
       </v-btn>
     </div>
   </v-container>
-
 </template>
 
 <script>
 import avatar from "@/components/ProfileSettings/Avatar";
 import SubTitleText from "@/components/ProfileSettings/SubTitleText";
-import { GET_USER_INFO, SEND_USER_INFO,SEND_USER_PHOTO } from "@/store/actions/userInfo";
+import { GET_USER_INFO, SEND_USER_INFO} from "@/store/actions/userInfo";
 import { AUTH_LOGOUT } from "@/store/actions/auth";
 import { mapGetters } from "vuex";
 
@@ -116,39 +131,35 @@ export default {
   },
 
   data: () => ({
-    title: " ",
-    btnSwitch: false,
-    newUserName: "",
+    loading: true,
+    update: false,
     shown: true,
+    title: " ",
+    newUserName: "",
+    pushOn: false,
+    btnSwitch1: false,
 
+    btnSwitch2: '',
     selectedImage: [],
     attachedImage: [],
-    hidden: false,
-    loading: true,
-
   }),
 
-  
   methods: {
+    getUserInfo() {
+      this.$store.dispatch(GET_USER_INFO);
+    },
     sendUserInfo() {
       this.$store.dispatch(SEND_USER_INFO, { userName: this.newUserName })
+      .then(res => 
+        this.$store.dispatch(GET_USER_INFO))
       .catch((err) => console.log(err));
     },
     updPhoto() {
       this.$store.dispatch(SEND_USER_INFO, { imageBase64: this.src})
+      .then(res => 
+        this.$store.dispatch(GET_USER_INFO))
       .catch((err) => console.log(err));
-      // console.log(this.src) 
     },
-    changeTheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem("isDark", this.$vuetify.theme.dark);
-    },
-    authLogOut() {
-      this.$store.dispatch(AUTH_LOGOUT, {})
-      .catch(err => console.log(err))
-      this.$router.push("/login")
-    },
-
     loadImage() {
       const fileInput = this.$refs.fileInput.$children[0].$el;
       fileInput.click();
@@ -202,10 +213,25 @@ export default {
         throw new Error("Compressed img error!");
       });
       img.src = base64;
-    }
+    },
+    changeTheme() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem("isDark", this.$vuetify.theme.dark);
+      // this.btnSwitch2 = this.$vuetify.theme.dark;
+      this.btnSwitch2 = JSON.parse(localStorage.getItem('isDark'));
+    },
+    authLogOut() {
+      this.$store.dispatch(AUTH_LOGOUT, {})
+      .catch(err => console.log(err))
+      this.$router.push("/login")
+    },
+  },
+
+  mounted() {
+    this.getUserInfo();
   },
   
-   computed: {
+  computed: {
      ...mapGetters(['userName','email', 'darkTheme']),
 
      src() {
@@ -217,7 +243,7 @@ export default {
       }
       return "";
     }
-   }           
+  }           
 }
 
 
