@@ -43,16 +43,22 @@ export default {
   methods: {
     prev() {
       if (this.currentSlide == 0) {
-        this.$router.push("/home");
-        localStorage.setItem('firstSeenSlider', this.$store.state.auth.username)
+        this.$router.push("/permissions");
+        localStorage.setItem(
+          "firstSeenSlider",
+          this.$store.state.auth.username
+        );
         return;
       }
       this.currentSlide--;
     },
     next() {
       if (this.currentSlide == this.slides.length - 1) {
-        this.$router.push("/home");
-        localStorage.setItem('firstSeenSlider', this.$store.state.auth.username)
+        this.$router.push("/permissions");
+        localStorage.setItem(
+          "firstSeenSlider",
+          this.$store.state.auth.username
+        );
         return;
       }
       this.currentSlide++;
