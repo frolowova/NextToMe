@@ -4,13 +4,14 @@ import {
   SEND_MESSAGE,
   GET_MESSAGES,
   LOAD_AVATARS,
-  GET_TOP_MESSAGES
+  GET_TOP_MESSAGES,
+  CHANGE_LIST_TITLE
 } from "../actions/messages";
 
 const state = () => ({
   messages: [],
-  topMessages: [],
-  avatars: []
+  avatars: [],
+  title: "Рядом"
 });
 
 const mutations = {
@@ -19,6 +20,9 @@ const mutations = {
   },
   [LOAD_AVATARS](state, avatars) {
     state.avatars = avatars;
+  },
+  [CHANGE_LIST_TITLE](state, title) {
+    state.title = title;
   }
 };
 
@@ -42,6 +46,9 @@ const actions = {
     const messages = await MessageController.getTopMessages();
     commit(GET_MESSAGES, messages.data);
     return messages;
+  },
+  [CHANGE_LIST_TITLE]: ({ commit }, title) => {
+    commit(CHANGE_LIST_TITLE, title);
   }
 };
 

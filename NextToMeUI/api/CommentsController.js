@@ -29,6 +29,14 @@ class CommentsController extends APIController {
     );
     return comments;
   }
+
+  async getUserComments() {
+    const comments = await this.request(
+      "get",
+      "/api/message/comments/get/from/user"
+    );
+    return comments;
+  }
 }
 
 export default new CommentsController();

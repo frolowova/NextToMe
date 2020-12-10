@@ -1,22 +1,25 @@
 <template>
   <div class="card-wraper">
-    <v-card class="pa-2 my-2" color="cardBackground" outlined>
+    <v-card class="pa-2 my-2 rounded-xl" color="card" background-color="cardBackground">
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
-            <img alt="Avatar" :src="commentData.src" />
+            <v-icon v-if="!avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
+            <v-img v-else :src="src"></v-img>
           </v-avatar>
           <div class="mx-2">
-            <div>{{ commentData.from }}</div>
+            <div>
+              {{ `${
+              avatar.userName ? avatar.userName : "Пользователь"
+              }` }}
+            </div>
           </div>
         </div>
         <v-btn icon>
           <v-icon>mdi-dots-vertical</v-icon>
         </v-btn>
       </div>
-      <v-card-text class="pa-2 white--text text-body-1">{{
-        commentData.text
-      }}</v-card-text>
+      <v-card-text class="pa-2 text-body-1" v-html="text"></v-card-text>
 
       <v-container class="mt-0 pt-2" justify="start">
         <span class="text--secondary">{{ this.time }}</span>
@@ -30,16 +33,19 @@ export default {
   props: {
     commentData: Object,
     index: Number,
+    avatarLoading: Boolean
   },
 
   data: () => ({
-    lifeTime: "",
+    lifeTime: ""
   }),
 
   methods: {
     showTime() {
       let currentDateInMs = new Date().getTime();
-      let dateFromServerInMs = new Date(this.commentData.createdAt).getTime();
+      let dateFromServerInMs = new Date(
+        this.commentData.createdAt + "Z"
+      ).getTime();
 
       let timeLifeInMin = Math.round(
         (currentDateInMs - dateFromServerInMs) / 60000
@@ -47,6 +53,7 @@ export default {
 
       return this.formatTime(timeLifeInMin);
     },
+
     formatTime(minutes) {
       let inHours = Math.round(minutes / 60);
       let inDays = Math.round(minutes / 1440);
@@ -79,7 +86,7 @@ export default {
             : 2
         ]
       );
-    },
+    }
   },
   mounted() {
     setInterval(() => {
@@ -88,11 +95,24 @@ export default {
   },
 
   computed: {
+    text() {
+      return this.commentData.text.split("\n").join("<br>");
+    },
     time() {
       if (this.lifeTime) return this.lifeTime;
       return this.showTime();
     },
-  },
+
+    avatar() {
+      return this.$store.state.currentTag.commentsAvatars.find(
+        el => el.userId === this.commentData.from
+      );
+    },
+
+    src() {
+      return this.avatar ? this.avatar.imageBase64 : null;
+    }
+  }
 };
 </script>
 

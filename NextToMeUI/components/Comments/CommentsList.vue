@@ -1,34 +1,38 @@
 <template>
   <div>
-    <div class="comments-conteiner">
-      <div class="up-bar px-4">
-        <div>
-          {{countComments}}
-          <span v-if="countComments ==0 || countComments>=5">комментариев</span>
-          <span v-if="countComments ==1">комментарий</span>
-          <span v-if="countComments>1 && countComments<=4">комментария</span>
-        </div>
-        <v-btn
-          class="text-none"
-          small
-          text
-          v-if="pressShowComments"
-          @click=" (pressShowComments=!pressShowComments)"
-        >Скрыть</v-btn>
-        <v-btn
-          class="text-none"
-          small
-          text
-          :disabled="!comments.length"
-          v-if="!pressShowComments"
-          @click=" (pressShowComments=!pressShowComments)"
-        >Показать все</v-btn>
+    <div class="up-bar px-4 d-flex justify-space-between" width="100%" position="sticky">
+      <div>
+        {{countComments}}
+        <span
+          v-if="countComments % 10 == 1 && countComments % 100 != 11"
+        >КОММЕНТАРИЙ</span>
+        <span
+          v-else-if="countComments % 10 >= 2 && countComments % 10 <= 4 && (countComments % 100 < 10 || countComments % 100 >= 20)"
+        >КОММЕНТАРИЯ</span>
+        <span v-else>КОММЕНТАРИЕВ</span>
       </div>
+      <v-btn
+        class="text-none"
+        small
+        text
+        v-if="pressShowComments"
+        @click=" (pressShowComments=!pressShowComments)"
+      >Скрыть</v-btn>
+      <v-btn
+        class="text-none"
+        small
+        text
+        :disabled="!comments.length"
+        v-if="!pressShowComments"
+        @click=" (pressShowComments=!pressShowComments)"
+      >Показать все</v-btn>
+    </div>
+    <div class="comments-conteiner">
       <div class="d-flex align-top justify-center pt-4" v-if="!comments.length">
         <p>Здесь пока нет комментариев. Будьте Первым!</p>
       </div>
       <div v-if="comments.length">
-        <v-list-item fluid v-for="(comment, i)  in comments" :key="comment.messageId">
+        <v-list-item fluid v-for="(comment, i)  in comments" :key="i">
           <CommentCard :commentData="comment" :index="i"></CommentCard>
         </v-list-item>
       </div>
@@ -40,7 +44,7 @@
 <script>
 import CommentCard from "@/components/Comments/CommentCard";
 import CreateComment from "@/components/Comments/CreateComment";
-import { GET_COMMENTS } from "@/store/actions/currentTag";
+import { GET_COMMENTS, LOAD_COMMENT_AVATARS } from "@/store/actions/currentTag";
 
 export default {
   components: { CommentCard, CreateComment },
@@ -50,7 +54,7 @@ export default {
 
   computed: {
     comments() {
-      let comments = this.$store.state.comments.comments;
+      let comments = this.$store.state.currentTag.comments;
 
       return this.pressShowComments || comments.length == 0
         ? comments
@@ -58,7 +62,7 @@ export default {
     },
 
     countComments() {
-      return this.$store.state.comments.comments.length;
+      return this.$store.state.currentTag.comments.length;
     },
     messageId() {
       return this.$route.query.id;
@@ -66,7 +70,9 @@ export default {
   },
 
   mounted() {
-    this.$store.dispatch(GET_COMMENTS, this.messageId);
+    this.$store.dispatch(GET_COMMENTS, this.messageId).then(result => {
+      return this.$store.dispatch(LOAD_COMMENT_AVATARS);
+    });
   }
 };
 </script>
@@ -78,15 +84,10 @@ export default {
 }
 
 .comments-conteiner {
-  max-height: 40vh;
+  max-height: 55vh;
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
   position: relative;
-}
-.up-bar {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
 }
 </style>

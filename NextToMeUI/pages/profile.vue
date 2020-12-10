@@ -20,7 +20,7 @@
 
 <script>
 import avatar from "@/components/ProfileSettings/Avatar";
-import { GET_USER_INFO } from "@/store/actions/userInfo";
+import { GET_USER_INFO, SEND_USER_INFO } from "@/store/actions/userInfo";
 import { mapGetters } from "vuex";
 export default {
   components: { avatar },
@@ -42,6 +42,6 @@ export default {
   mounted() {
     this.getUserInfo();
   },
-  computed: mapGetters(["userName"]),
+  computed: mapGetters(['userName']),
 };
 </script>
