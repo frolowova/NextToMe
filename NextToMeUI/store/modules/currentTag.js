@@ -36,8 +36,8 @@ export const actions = {
     return newComment;
   },
   [GET_IMAGES]: async ({ commit }, messageImageId) => {
-    const images = await MessageController.getImages(messageImageId);
-    commit(GET_IMAGES, images.data);
+    const images = await MessageController.getImage(messageImageId);
+    commit(GET_IMAGES, [images.data]);
     return images;
   },
   [LOAD_COMMENT_AVATARS]: async ({ commit, state }) => {
