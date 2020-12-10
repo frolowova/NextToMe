@@ -1,6 +1,6 @@
 <template>
   <div class="bomb-icon mr-4 d-flex">
-    <v-img :src="src" width="17px" height="18.5px" class="flex-grow-0"></v-img>
+    <v-img :src="src" width="18px" height="20px" class="flex-grow-0"></v-img>
     <p class="ml-2">{{ localTime }}</p>
   </div>
 </template>
