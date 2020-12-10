@@ -1,5 +1,9 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
+    <v-tabs flex justify-space-between>
+      <v-tab>Предыдущее</v-tab>
+      <v-tab>Следующее</v-tab>
+    </v-tabs>
     <div class="mx-4 pt-6">
       <header-message
         :username="userInfo.userName"
@@ -28,12 +32,6 @@ import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
 import { GET_IMAGES } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 export default {
-  headerData: {
-    title: "",
-  },
-  btnValue: {
-    value: "",
-  },
   components: {
     Bomb,
     Eye,
@@ -43,9 +41,8 @@ export default {
     StatisticMessage,
   },
   mounted() {
-    const photos = this.tagInformation.photos[0];
-    if (photos !== undefined){
-      this.$store.dispatch(GET_IMAGES, photos);
+    if (this.tagInformation.photos[0]) {
+       this.$store.dispatch(GET_IMAGES, this.tagInformation.photos[0]);
     }
     if (!this.$route.query.id) {
       this.$router.push("/home");
