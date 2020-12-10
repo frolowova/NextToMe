@@ -6,7 +6,7 @@
 import createTagForm from "@/components/Tags/CreateTagForm.vue";
 
 export default {
-  middleware: ["auth"],
+  middleware: ["auth", "geoAlreadyGranted"],
   components: {
     createTagForm,
   },

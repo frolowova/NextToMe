@@ -1,16 +1,26 @@
 <template>
   <div class="card-wraper">
-    <v-card class="pa-2 my-2 rounded-xl" color="card" background-color="cardBackground">
+    <v-card
+      class="pa-2 my-2 rounded-xl"
+      color="card"
+      background-color="cardBackground"
+    >
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
-            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
+            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64"
+              >mdi-account-circle</v-icon
+            >
             <v-img v-else :src="src"></v-img>
           </v-avatar>
           <div class="mx-2">
-            <div v-if="avatar">
+            <div>
               {{
-              avatar.userName ? avatar.userName : "Пользователь"
+                `${
+                  !avatarLoading && avatar.userName
+                    ? avatar.userName
+                    : "Пользователь"
+                }`
               }}
             </div>
           </div>

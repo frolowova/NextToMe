@@ -46,6 +46,7 @@ import {
 } from "@/store/actions/messages";
 
 export default {
+  middleware: ["auth", "geoAlreadyGranted"],
   components: {
     tagView,
     skeletonTag
