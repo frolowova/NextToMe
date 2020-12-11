@@ -1,14 +1,14 @@
 <template>
-  <v-list-item class="d-flex flex-wrap px-0">
+  <v-list-item class="d-flex flex-wrap justify-space-between px-0">
     <v-img
-      class="mx-1 my-1"
-      max-width="50%"
+      class="my-1 mx-0"
+      max-width="49.5%"
       max-height="250px"
       :src="arraySrc[0]"
     />
     <v-img
-      class="mx-1 my-1"
-      max-width="50%"
+      class="my-1 mx-0"
+      max-width="50.1%"
       max-height="250px"
       :src="arraySrc[1]"
     />
