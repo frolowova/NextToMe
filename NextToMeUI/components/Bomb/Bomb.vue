@@ -29,7 +29,6 @@ export default {
     src() {
       const date = Date.parse(this.deleteTime + "Z") - Date.parse(new Date());
       let leftHours = Math.floor(date / (1000 * 60 * 60));
-      console.log(leftHours)
       if (leftHours < 0) {
         return "";
       } else if ((leftHours >= 0) & (leftHours < 1)) {

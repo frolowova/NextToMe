@@ -5,7 +5,8 @@ import {
   GET_MESSAGES,
   LOAD_AVATARS,
   GET_TOP_MESSAGES,
-  CHANGE_LIST_TITLE
+  CHANGE_LIST_TITLE,
+  SET_SORTED_MESSAGES
 } from "../actions/messages";
 
 const state = () => ({
@@ -23,6 +24,9 @@ const mutations = {
   },
   [CHANGE_LIST_TITLE](state, title) {
     state.title = title;
+  },
+  [SET_SORTED_MESSAGES](state, messages) {
+    state.messages = messages
   }
 };
 
@@ -49,6 +53,9 @@ const actions = {
   },
   [CHANGE_LIST_TITLE]: ({ commit }, title) => {
     commit(CHANGE_LIST_TITLE, title);
+  },
+  [SET_SORTED_MESSAGES]: ({ commit }, params) => {
+    commit(SET_SORTED_MESSAGES, params);
   }
 };
 
