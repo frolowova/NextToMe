@@ -1,8 +1,8 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
-    <v-tabs flex justify-space-between>
-      <v-tab>Предыдущее</v-tab>
-      <v-tab>Следующее</v-tab>
+    <v-tabs grow>
+      <v-tab v-if="index !== 0" @click="toPrevTag">Предыдущее</v-tab>
+      <v-tab v-if="index !== lastIndex - 1" @click="toNextTag">Следующее</v-tab>
     </v-tabs>
     <div class="mx-4 pt-6">
       <header-message
@@ -40,17 +40,38 @@ export default {
     PicturesOfMessage,
     StatisticMessage,
   },
+  methods: {
+    toPrevTag() {
+      const id = this.$store.state.messages.messages[this.index - 1].id;
+      this.$router.push({ path: this.$route.path, query: { id } });
+      this.$store.dispatch(RESET_IMAGES);
+      this.isMountedOrUpdate(id, this.index - 1);
+    },
+    toNextTag() {
+      const id = this.$store.state.messages.messages[this.index + 1].id;
+      this.$router.push(`tag?id=${id}`);
+      this.$store.dispatch(RESET_IMAGES);
+      this.isMountedOrUpdate(id, this.index + 1);
+    },
+    isMountedOrUpdate(id = null, index = false) {
+      if (index) {
+        this.$store.state.messages.messages[index].photos.forEach((item) => {
+          this.$store.dispatch(GET_IMAGES, item);
+        });
+      } else {
+        this.tagInformation.photos.forEach((item) => {
+          this.$store.dispatch(GET_IMAGES, item);
+        });
+      }
+      if (!id) {
+        this.$router.push("/home");
+      } else {
+        MessageController.updateViews(id);
+      }
+    },
+  },
   mounted() {
-    if (this.tagInformation.photos.length > 0) {
-      this.tagInformation.photos.forEach((item) => {
-        this.$store.dispatch(GET_IMAGES, item);
-      });
-    }
-    if (!this.$route.query.id) {
-      this.$router.push("/home");
-    } else {
-      MessageController.updateViews(this.$route.query.id);
-    }
+    this.isMountedOrUpdate(this.tagInformation.id);
   },
   destroyed() {
     this.$store.dispatch(RESET_IMAGES);
@@ -65,6 +86,14 @@ export default {
       return this.$store.state.messages.avatars.find(
         (user) => user.userId === this.tagInformation.from
       );
+    },
+    index() {
+      return this.$store.state.messages.messages.findIndex(
+        (message) => message.id === this.$route.query.id
+      );
+    },
+    lastIndex() {
+      return this.$store.state.messages.messages.length;
     },
     images() {
       return this.$store.state.currentTag.images;
