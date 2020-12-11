@@ -31,6 +31,8 @@ import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/Pictur
 import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
 import { GET_IMAGES, RESET_IMAGES } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
+import axios from "axios";
+
 export default {
   components: {
     Bomb,
@@ -40,6 +42,9 @@ export default {
     PicturesOfMessage,
     StatisticMessage,
   },
+  data: () => ({
+    source: axios.CancelToken.source()
+  }),
   methods: {
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
