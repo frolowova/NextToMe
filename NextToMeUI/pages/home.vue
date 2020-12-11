@@ -1,8 +1,8 @@
 <template>
   <div class="home-page">
     <v-tabs grow v-model="toggle_list" @change="onChangeList">
-      <v-tab>Рядом</v-tab>
-      <v-tab>ТОП-10</v-tab>
+      <v-tab :disabled="avatarLoading">Рядом</v-tab>
+      <v-tab :disabled="avatarLoading">ТОП-10</v-tab>
     </v-tabs>
     <div class="home-page__content mx-6 mt-4">
       <v-select
@@ -13,6 +13,7 @@
         return-object
         solo
         single-line
+        @change="onSortChange"
       ></v-select>
       <div v-if="loading">
         <skeletonTag v-for="i in 10" :key="i" />
@@ -43,7 +44,8 @@ import {
   GET_MESSAGES,
   LOAD_AVATARS,
   GET_TOP_MESSAGES,
-  CHANGE_LIST_TITLE
+  CHANGE_LIST_TITLE,
+  SET_SORTED_MESSAGES
 } from "@/store/actions/messages";
 
 export default {
@@ -75,20 +77,28 @@ export default {
   }),
   computed: {
     messages() {
-      const messages = [...this.$store.state.messages.messages];
-      switch (this.select.abbr) {
-        case this.items[0].abbr:
-          return messages.sort((a, b) => b.views - a.views);
-        case this.items[1].abbr:
-          return messages.sort((a, b) => a.views - b.views);
-        case this.items[2].abbr:
-          return messages.sort((a, b) => b.commentsCount - a.commentsCount);
-        case this.items[3].abbr:
-          return messages.sort((a, b) => a.commentsCount - b.commentsCount);
-      }
+      return this.$store.state.messages.messages;
     }
   },
   methods: {
+    onSortChange() {
+      const messages = [...this.messages];
+      switch (this.select.abbr) {
+        case this.items[0].abbr:
+          messages.sort((a, b) => b.views - a.views);
+          break;
+        case this.items[1].abbr:
+          messages.sort((a, b) => a.views - b.views);
+          break;
+        case this.items[2].abbr:
+          messages.sort((a, b) => b.commentsCount - a.commentsCount);
+          break;
+        case this.items[3].abbr:
+          messages.sort((a, b) => a.commentsCount - b.commentsCount);
+          break;
+      }
+      this.$store.dispatch(SET_SORTED_MESSAGES, messages);
+    },
     cardClick(e) {
       const parent = e.target.closest(".tag-view");
       if (parent) {
@@ -110,8 +120,8 @@ export default {
         })
         .then(res => (this.avatarLoading = false))
         .catch(err => {
-          this.loading = false;
           this.avatarLoading = false;
+          this.loading = false;
         });
     }
   },
