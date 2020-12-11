@@ -30,25 +30,36 @@ export const mutations = {
 };
 
 export const actions = {
-  [GET_COMMENTS]: async ({ commit }, messageId) => {
+  [GET_COMMENTS]: async ({
+    commit
+  }, messageId) => {
     const comments = await CommentsController.getComments(messageId);
     commit(GET_COMMENTS, comments.data);
     return comments;
   },
-  [SEND_COMMENTS]: async ({ commit }, comment_info) => {
+  [SEND_COMMENTS]: async ({
+    commit
+  }, comment_info) => {
     const newComment = await CommentsController.sendComment(comment_info);
     return newComment;
   },
-  [GET_IMAGES]: async ({ commit }, messageImageId) => {
+  [GET_IMAGES]: async ({
+    commit
+  }, messageImageId) => {
     const images = await MessageController.getImage(messageImageId);
     commit(GET_IMAGES, images.data);
     return images;
   },
-  [RESET_IMAGES]: ({ commit }) => {
+  [RESET_IMAGES]: ({
+    commit
+  }) => {
     commit(RESET_IMAGES);
     return null;
   },
-  [LOAD_COMMENT_AVATARS]: async ({ commit, state }) => {
+  [LOAD_COMMENT_AVATARS]: async ({
+    commit,
+    state
+  }) => {
     const users_id = state.comments.map(comment => comment.from);
     const avatars = await UserController.getUserInfo(users_id);
     commit(LOAD_COMMENT_AVATARS, avatars.data);

@@ -12,7 +12,10 @@ class MessageController extends APIController {
   */
   async sendMessage(message_info) {
     const location = await this.getLocationInfo();
-    message_info = { ...message_info, ...location };
+    message_info = {
+      ...message_info,
+      ...location
+    };
     const createdMessage = await this.request(
       "post",
       "/messages/send",
@@ -27,7 +30,9 @@ class MessageController extends APIController {
     @param {Number} gettingMessagesRadiusInMeters - радиус
   */
   async getMessages(skip = 0, take = 10, gettingMessagesRadiusInMeters = 1000) {
-    const { location } = await this.getLocationInfo();
+    const {
+      location
+    } = await this.getLocationInfo();
     const location_params = {
       currentLocation: {
         latitude: location.latitude,
@@ -118,5 +123,7 @@ class MessageController extends APIController {
     return viewStatus;
   }
 }
+
+
 
 export default new MessageController();

@@ -5,7 +5,8 @@ import {
   GET_MESSAGES,
   LOAD_AVATARS,
   GET_TOP_MESSAGES,
-  CHANGE_LIST_TITLE
+  CHANGE_LIST_TITLE,
+  GET_MY_MESSAGES
 } from "../actions/messages";
 
 const state = () => ({
@@ -23,31 +24,51 @@ const mutations = {
   },
   [CHANGE_LIST_TITLE](state, title) {
     state.title = title;
+  },
+  [GET_MY_MESSAGES](state, messages) {
+    state.message = messages;
   }
 };
 
 const actions = {
-  [GET_MESSAGES]: async ({ commit }) => {
+  [GET_MESSAGES]: async ({
+    commit
+  }) => {
     const messages = await MessageController.getMessages(0, 100);
     commit(GET_MESSAGES, messages.data);
     return messages;
   },
-  [SEND_MESSAGE]: async ({ commit }, message_info) => {
+  [GET_MY_MESSAGES]: ({
+    commit
+  }, messages) => {
+    commit(GET_MESSAGES, messages);
+    return null;
+  },
+  [SEND_MESSAGE]: async ({
+    commit
+  }, message_info) => {
     const createdMessage = await MessageController.sendMessage(message_info);
     return createdMessage;
   },
-  [LOAD_AVATARS]: async ({ commit, state }) => {
+  [LOAD_AVATARS]: async ({
+    commit,
+    state
+  }) => {
     const users_id = state.messages.map(message => message.from);
     const avatars = await UserController.getUserInfo(users_id);
     commit(LOAD_AVATARS, avatars.data);
     return avatars;
   },
-  [GET_TOP_MESSAGES]: async ({ commit }) => {
+  [GET_TOP_MESSAGES]: async ({
+    commit
+  }) => {
     const messages = await MessageController.getTopMessages();
     commit(GET_MESSAGES, messages.data);
     return messages;
   },
-  [CHANGE_LIST_TITLE]: ({ commit }, title) => {
+  [CHANGE_LIST_TITLE]: ({
+    commit
+  }, title) => {
     commit(CHANGE_LIST_TITLE, title);
   }
 };

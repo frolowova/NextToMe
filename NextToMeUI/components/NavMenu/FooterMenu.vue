@@ -43,7 +43,6 @@ export default {
   },
   watch: {
     value: function (value) {
-      console.log(this.value);
       this.value = this.btnValue.value;
     },
   },
