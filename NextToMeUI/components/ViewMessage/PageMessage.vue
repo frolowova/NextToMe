@@ -1,8 +1,19 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
     <v-tabs grow>
-      <v-tab v-if="index !== 0" @click="toPrevTag">Предыдущее</v-tab>
-      <v-tab v-if="index !== lastIndex - 1" @click="toNextTag">Следующее</v-tab>
+      <v-tab v-if="index === 0 || timeout === true" disabled>Предыдущее</v-tab>
+      <v-tab v-if="index !== 0 && timeout === false" @click="toPrevTag"
+        >Предыдущее</v-tab
+      >
+      <!--  -->
+      <v-tab v-if="index === lastIndex - 1 || timeout === true" disabled
+        >Следующее</v-tab
+      >
+      <v-tab
+        v-if="index !== lastIndex - 1 && timeout === false"
+        @click="toNextTag"
+        >Следующее</v-tab
+      >
     </v-tabs>
     <div class="mx-4 pt-6">
       <header-message
@@ -31,6 +42,7 @@ import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/Pictur
 import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
 import { GET_IMAGES, RESET_IMAGES } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
+
 export default {
   components: {
     Bomb,
@@ -40,7 +52,16 @@ export default {
     PicturesOfMessage,
     StatisticMessage,
   },
+  data: () => ({
+    timeout: false,
+  }),
   methods: {
+    timeoutForTab() {
+      this.timeout = true;
+      setTimeout(() => {
+        this.timeout = false;
+      }, 2000);
+    },
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
@@ -49,7 +70,7 @@ export default {
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
-      this.$router.push(`tag?id=${id}`);
+      this.$router.push({ path: this.$route.path, query: { id } });
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index + 1);
     },
@@ -68,6 +89,7 @@ export default {
       } else {
         MessageController.updateViews(id);
       }
+      this.timeoutForTab();
     },
   },
   mounted() {
