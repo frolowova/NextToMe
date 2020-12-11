@@ -25,7 +25,6 @@ export default {
 </script>
 
 <style scoped>
-
 .slider-item {
   height: 100%;
 }

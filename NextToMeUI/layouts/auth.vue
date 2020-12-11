@@ -27,7 +27,7 @@ export default {
         return "Регистрация";
       }
     }
-  }
+  },
 };
 </script>
 
@@ -71,7 +71,6 @@ export default {
   padding: 1rem;
   position: relative;
 }
-
 
 @media only screen and (max-height: 550px) {
   .background-container {

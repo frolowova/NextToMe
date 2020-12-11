@@ -30,7 +30,7 @@
         <v-btn
           block
           color="primary"
-          elevation="2"
+          elevation="0"
           x-large
           outlined
           class="mb-6 rounded-lg"
