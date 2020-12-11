@@ -34,25 +34,28 @@
         text
         :disabled="!comments.length"
         v-if="!pressShowComments"
-        @click="pressShowComments = !pressShowComments"
+        @click=" pressShowComments = !pressShowComments"
         >Показать все</v-btn
       >
     </div>
-    <div class="comments-conteiner">
+    <div  class="comments-conteiner" ref="listComment"  >
       <div class="d-flex align-top justify-center pt-4" v-if="!comments.length">
         <p>Здесь пока нет комментариев. Будьте Первым!</p>
       </div>
       <div v-if="comments.length">
-        <v-list-item fluid v-for="(comment, i) in comments" :key="i">
+         <div v-if="skeletonLoad">
+          <CommentLoading />
+        </div>
+        <v-list-item fluid v-for="(comment, i) in comments" :key="i" >
           <CommentCard
+            v-if="!skeletonLoad"
             :commentData="comment"
             :avatarLoading="avatarLoading"
-            :index="i"
           ></CommentCard>
         </v-list-item>
       </div>
     </div>
-    <CreateComment :load="avatarLoading"></CreateComment>
+    <CreateComment :load="avatarLoading" @sendComment = "scrollDown"></CreateComment>
   </div>
 </template>
 
@@ -66,8 +69,19 @@ export default {
   components: { CommentCard, CreateComment, CommentLoading },
   data: () => ({
     pressShowComments: false,
-    avatarLoading: false
+    avatarLoading: false,
+    skeletonLoad: false,
   }),
+
+  methods: {
+   
+    scrollDown() { 
+      setTimeout(() => {
+        let list = this.$refs.listComment;
+        list.scrollTop = list.scrollHeight;
+      }, 0); 
+    }
+  },
 
   computed: {
     comments() {
@@ -83,18 +97,24 @@ export default {
     },
     messageId() {
       return this.$route.query.id;
-    }
+    },
+     
   },
 
   mounted() {
+    this.skeletonLoad = true;
     this.avatarLoading = true;
     this.$store
       .dispatch(GET_COMMENTS, this.messageId)
       .then(result => {
+        this.skeletonLoad = false;
         return this.$store.dispatch(LOAD_COMMENT_AVATARS);
       })
       .then(res => (this.avatarLoading = false));
-  }
+      
+     
+  },
+ 
 };
 </script>
 

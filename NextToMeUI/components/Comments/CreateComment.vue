@@ -1,22 +1,27 @@
 <template>
-  <div class="pa-2 ma-2" position="sticky" bottom="0">
     <v-textarea
       placeholder="Ваш комментарий"
       auto-grow
       solo
       rows="1"
       row-height="15"
+       :loading="loading"
+      :disabled="loading"
       :append-icon="commentText.length > 0 ? 'mdi-send-circle' : ''"
       v-model="commentText"
       background-color="cardBackground"
       color="accent"
-      @click:append="sendComment"
+      @click:append="sendComment(), loader = 'loading'"
       @keyup.esc="commentText = ''"
-    ></v-textarea>
+    >
+    </v-textarea>
+   
   </div>
 </template>
 
 <script>
+
+
 import {
   SEND_COMMENTS,
   GET_COMMENTS,
@@ -24,11 +29,10 @@ import {
 } from "@/store/actions/currentTag";
 
 export default {
-  props: {
-    load: Boolean
-  },
   data: () => ({
-    commentText: ""
+    commentText: "",
+    loader: null,
+    loading: false,
   }),
   methods: {
     sendComment() {
@@ -38,7 +42,9 @@ export default {
           messageId: this.messageId
         })
         .then(res => {
-          this.$store.dispatch(GET_COMMENTS, this.messageId).then(result => {
+          this.$store.dispatch(GET_COMMENTS, this.messageId)
+          .then(result => {
+            this.$emit('sendComment');
             return this.$store.dispatch(LOAD_COMMENT_AVATARS);
           });
 
@@ -51,7 +57,16 @@ export default {
     messageId() {
       return this.$route.query.id;
     }
-  }
+  },
+   watch: {
+      loader () {
+        const l = this.loader
+        this[l] = !this[l]
+
+        setTimeout(() => (this[l] = false), 2500)
+        this.loader = null
+      },
+    },
 };
 </script>
 
