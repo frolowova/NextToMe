@@ -100,7 +100,10 @@
     </div>
     
     <div>
-      <v-btn class="text-capitalize" text color="primary">
+      <v-btn 
+        class="text-capitalize" 
+        text color="primary"
+        @click="changePass">
         <v-icon>mdi-pencil-outline</v-icon>
         Изменить пароль
       </v-btn>
@@ -218,7 +221,10 @@ export default {
       this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
       localStorage.setItem("isDark", this.$vuetify.theme.dark);
       // this.btnSwitch2 = this.$vuetify.theme.dark;
-      this.btnSwitch2 = JSON.parse(localStorage.getItem('isDark'));
+      // this.btnSwitch2 = JSON.parse(localStorage.getItem('isDark'));
+    },
+    changePass(){
+      this.$router.push("/reset")
     },
     authLogOut() {
       this.$store.dispatch(AUTH_LOGOUT, {})
@@ -234,6 +240,7 @@ export default {
   computed: {
      ...mapGetters(['userName','email', 'darkTheme']),
 
+    
      src() {
       const lastSrc = this.attachedImage.map(img => img.url);
       if(lastSrc.length === 1) {
