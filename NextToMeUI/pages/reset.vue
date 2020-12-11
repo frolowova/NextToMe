@@ -28,7 +28,6 @@ export default {
   text-align: center;
   font-family: Roboto;
   letter-spacing: 0.5px;
-  color: #ffffff;
   opacity: 0.8;
 }
 </style>

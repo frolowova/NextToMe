@@ -30,7 +30,6 @@ export default {
 .login-page__link {
   text-decoration: none;
   text-transform: uppercase;
-  color: #ffffff;
   text-align: center;
   display: block;
 }
@@ -45,7 +44,6 @@ export default {
   text-align: center;
   font-family: Roboto;
   letter-spacing: 0.5px;
-  color: #ffffff;
   opacity: 0.8;
 }
 </style>

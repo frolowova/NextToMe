@@ -77,8 +77,4 @@ export default {
     max-height: 250px;
   }
 }
-
-.v-btn .v-btn__content .v-icon {
-  color: red;
-}
 </style>

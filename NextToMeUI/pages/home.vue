@@ -1,8 +1,8 @@
 <template>
   <div class="home-page">
     <v-tabs grow v-model="toggle_list" @change="onChangeList">
-      <v-tab>Рядом</v-tab>
-      <v-tab>ТОП-10</v-tab>
+      <v-tab :disabled="avatarLoading">Рядом</v-tab>
+      <v-tab :disabled="avatarLoading">ТОП-10</v-tab>
     </v-tabs>
     <div class="home-page__content mx-6 mt-4">
       <v-select
@@ -110,8 +110,8 @@ export default {
         })
         .then(res => (this.avatarLoading = false))
         .catch(err => {
-          this.loading = false;
           this.avatarLoading = false;
+          this.loading = false;
         });
     }
   },
