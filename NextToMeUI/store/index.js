@@ -9,7 +9,6 @@ const createStore = () => {
     namespaced: true,
     modules: {
       auth,
-
       messages,
       userInfo,
       currentTag

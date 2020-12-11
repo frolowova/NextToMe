@@ -68,6 +68,7 @@ export default {
             this.$router.push("/about");
           })
           .catch(err => {
+            console.log(err);
             if (err == 401) {
               this.error = "Неверный логин или пароль";
             } else {
