@@ -45,7 +45,7 @@ export default {
         return `${hours} часов`;
       }
       const days = Math.floor(hours / 24);
-      return `${days} дней`;
+      return `${days} день`;
     }
   }
 };
