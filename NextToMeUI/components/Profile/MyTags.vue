@@ -21,7 +21,7 @@ import tagView from "@/components/Tags/TagView.vue";
 import {
   GET_MESSAGES,
   LOAD_AVATARS,
-  GET_MY_MESSAGES,
+  SET_SORTED_MESSAGES,
 } from "@/store/actions/messages";
 import UserController from "~/api/UserController";
 
@@ -64,7 +64,7 @@ export default {
     await response.data.forEach(async (id) => {
       const tag = await UserController.getMyTag(id);
       this.tags.push(tag);
-      this.$store.dispatch(GET_MY_MESSAGES, this.tags);
+      this.$store.dispatch(SET_SORTED_MESSAGES, this.tags);
     });
   },
 };
