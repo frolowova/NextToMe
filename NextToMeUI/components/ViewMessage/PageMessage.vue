@@ -53,6 +53,7 @@ import {
   RESET_IMAGES,
   GET_COMMENTS,
   LOAD_COMMENT_AVATARS,
+  RESET_COMMENTS,
 } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 
@@ -130,6 +131,7 @@ export default {
   },
   destroyed() {
     this.$store.dispatch(RESET_IMAGES);
+    this.$store.dispatch(RESET_COMMENTS);
   },
   computed: {
     tagInformation() {
