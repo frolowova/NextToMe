@@ -1,7 +1,7 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
     <v-toolbar color="header" elevation="0">
-      <v-row align="center" justify="space-between" class="pl-3 pr-3">
+      <v-row align="center" justify="space-between">
         <v-btn
           text
           class="white--text font-weight-light"
