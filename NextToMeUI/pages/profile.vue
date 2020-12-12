@@ -14,34 +14,31 @@
         </v-btn>
       </div>
     </div>
+    <my-tags />
   </v-container>
 </template>
-
 
 <script>
 import avatar from "@/components/ProfileSettings/Avatar";
 import { GET_USER_INFO, SEND_USER_INFO } from "@/store/actions/userInfo";
 import { mapGetters } from "vuex";
+import MyTags from "@/components/Profile/MyTags";
 export default {
-  components: { avatar },
+  components: {
+    avatar,
+    MyTags,
+  },
   headerData: {
     title: "Мой профиль",
   },
   btnValue: {
     value: "profile",
   },
-  data: () => ({}),
+
   methods: {
     settingsGo() {
       this.$router.push("/settings");
     },
-    getUserInfo() {
-      this.$store.dispatch(GET_USER_INFO);
-    },
   },
-  mounted() {
-    this.getUserInfo();
-  },
-  computed: mapGetters(['userName']),
 };
 </script>
