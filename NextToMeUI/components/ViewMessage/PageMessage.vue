@@ -52,6 +52,7 @@ import {
   GET_IMAGES,
   RESET_IMAGES,
   GET_COMMENTS,
+  LOAD_COMMENT_AVATARS,
 } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 
@@ -66,6 +67,8 @@ export default {
   },
   data: () => ({
     timeout: false,
+    avatarLoading: false,
+    skeletonLoad: false,
   }),
   methods: {
     timeoutForTab() {
@@ -76,6 +79,8 @@ export default {
     },
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
+      this.skeletonLoad = true;
+      this.avatarLoading = true;
       this.$router.push({ path: this.$route.path, query: { id } });
       this.$store
         .dispatch(GET_COMMENTS, id)
@@ -89,6 +94,8 @@ export default {
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
+      this.skeletonLoad = true;
+      this.avatarLoading = true;
       this.$router.push({ path: this.$route.path, query: { id } });
       this.$store
         .dispatch(GET_COMMENTS, id)
