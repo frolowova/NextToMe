@@ -1,17 +1,17 @@
 <template>
   <div class="card-wraper">
-    <v-card class="pa-2 my-2 rounded-xl" color="card" background-color="cardBackground">
+    <v-card class="pa-2 my-2 rounded-xl" color="cardBackground">
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
-            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
+            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64"
+              >mdi-account-circle</v-icon
+            >
             <v-img v-else :src="src"></v-img>
           </v-avatar>
           <div class="mx-2">
             <div v-if="avatar">
-              {{
-              avatar.userName ? avatar.userName : "Пользователь"
-              }}
+              {{ avatar.userName ? avatar.userName : "Пользователь" }}
             </div>
           </div>
         </div>
@@ -33,11 +33,11 @@ export default {
   props: {
     commentData: Object,
     index: Number,
-    avatarLoading: Boolean
+    avatarLoading: Boolean,
   },
 
   data: () => ({
-    lifeTime: ""
+    lifeTime: "",
   }),
 
   methods: {
@@ -86,7 +86,7 @@ export default {
             : 2
         ]
       );
-    }
+    },
   },
   mounted() {
     setInterval(() => {
@@ -105,14 +105,14 @@ export default {
 
     avatar() {
       return this.$store.state.currentTag.commentsAvatars.find(
-        el => el.userId === this.commentData.from
+        (el) => el.userId === this.commentData.from
       );
     },
 
     src() {
       return this.avatar ? this.avatar.imageBase64 : null;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -122,6 +122,6 @@ export default {
 }
 
 .text--disabled {
-   font-size: 0.9em;
+  font-size: 0.9em;
 }
 </style>
