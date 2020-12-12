@@ -1,7 +1,7 @@
 <template>
   <v-app dark>
-    <app-header :header-data="headerData" />
     <v-container style="margin-bottom: 56px; padding: 0; max-width: 900px">
+      <app-header :header-data="headerData" />
       <nuxt />
     </v-container>
     <footer-menu :btnValue="btnValue" />
@@ -14,7 +14,7 @@ import AppHeader from "@/components/NavMenu/AppHeader";
 export default {
   components: {
     FooterMenu,
-    AppHeader
+    AppHeader,
   },
   mounted() {
     setTimeout(() => {
@@ -26,16 +26,16 @@ export default {
       if (this.$route.path === "/tag") {
         return { title: this.$store.state.messages.title };
       }
-      return this.$route.matched.map(r => {
+      return this.$route.matched.map((r) => {
         return r.components.default.options.headerData;
       })[0];
     },
     btnValue() {
-      return this.$route.matched.map(r => {
+      return this.$route.matched.map((r) => {
         return r.components.default.options.btnValue;
       })[0];
-    }
-  }
+    },
+  },
 };
 </script>
 

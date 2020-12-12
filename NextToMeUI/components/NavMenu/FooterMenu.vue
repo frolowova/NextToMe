@@ -51,7 +51,7 @@ export default {
 
 <style scoped lang="scss">
 .footer-menu {
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
   z-index: 2;
   position: relative;
   display: flex;
