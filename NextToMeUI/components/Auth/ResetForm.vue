@@ -16,12 +16,13 @@
         v-model="login"
         label="E-mail"
         type="text"
-        :rules="[rules.required]"
+        :rules="[rules.required, rules.email]"
       ></v-text-field>
     </v-container>
     <v-btn
       :loading="loading"
-      :disabled="loading"
+      :disabled="loading || !valid"
+      elevation="0"
       type="submit"
       color="primary"
       x-large
@@ -42,9 +43,10 @@ export default {
     login: "",
     rules: {
       required: v => !!v || "Обязательное поле",
-      min: v => v.length >= 6 || "Пароль должен содержать > 6 символов",
-      password: v =>
-        /((?=.*\d)(?=.*[A-Z]).{6,6})/.test(v) || "Невалидный пароль"
+      email: value =>
+        !value ||
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+        "Невалидный e-mail"
     },
     errorMessage: null,
     successMessage: null,

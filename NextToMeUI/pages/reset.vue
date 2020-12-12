@@ -2,7 +2,7 @@
   <div class="reset-page">
     <span class="reset__descr">Логин для восстановления</span>
     <resetForm class="mb-6" />
-    <v-btn nuxt to="/login" block elevation="2" x-large outlined>Назад</v-btn>
+    <v-btn nuxt to="/login" block elevation="0" x-large outlined>Назад</v-btn>
   </div>
 </template>
 
