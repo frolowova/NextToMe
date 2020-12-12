@@ -1,5 +1,5 @@
 <template>
-  <div class="bomb-icon mr-4 d-flex">
+  <div class="bomb-icon mr-2 d-flex">
     <svg
       width="20"
       height="20"
@@ -21,8 +21,8 @@ export default {
   props: {
     views: {
       type: [String, Number],
-      default: 0
-    }
-  }
+      default: 0,
+    },
+  },
 };
 </script>

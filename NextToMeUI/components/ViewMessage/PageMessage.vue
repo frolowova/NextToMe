@@ -1,22 +1,27 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
-    <v-tabs grow>
-      <v-tab left v-if="index === 0 || timeout === true" disabled
-        >Предыдущий</v-tab
-      >
-      <v-tab rigth v-if="index !== 0 && timeout === false" @click="toPrevTag"
-        >Предыдущий</v-tab
-      >
-      <!--  -->
-      <v-tab v-if="index === lastIndex - 1 || timeout === true" disabled
-        >Следующий</v-tab
-      >
-      <v-tab
-        v-if="index !== lastIndex - 1 && timeout === false"
-        @click="toNextTag"
-        >Следующий</v-tab
-      >
-    </v-tabs>
+    <v-toolbar color="header" elevation="0">
+      <v-row align="center" justify="space-between" class="pl-3 pr-3">
+        <v-btn
+          text
+          class="white--text font-weight-light"
+          @click="toPrevTag"
+          :disabled="index === 0 || timeout === true"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+          Предыдущий
+        </v-btn>
+        <v-btn
+          text
+          class="white--text font-weight-light"
+          @click="toNextTag"
+          :disabled="index === lastIndex - 1 || timeout === true"
+        >
+          Следующий
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
+      </v-row>
+    </v-toolbar>
 
     <div class="mx-4 pt-6">
       <header-message
@@ -72,14 +77,26 @@ export default {
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
-      this.$store.dispatch(GET_COMMENTS, id);
+      this.$store
+        .dispatch(GET_COMMENTS, id)
+        .then((result) => {
+          this.skeletonLoad = false;
+          return this.$store.dispatch(LOAD_COMMENT_AVATARS);
+        })
+        .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index - 1);
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
-      this.$store.dispatch(GET_COMMENTS, id);
+      this.$store
+        .dispatch(GET_COMMENTS, id)
+        .then((result) => {
+          this.skeletonLoad = false;
+          return this.$store.dispatch(LOAD_COMMENT_AVATARS);
+        })
+        .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index + 1);
     },

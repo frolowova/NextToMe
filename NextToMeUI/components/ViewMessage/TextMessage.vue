@@ -19,8 +19,7 @@ export default {
 
 <style scoped>
 .tag-message {
-  margin-right: 1rem;
-  overflow-x: auto;
+  overflow-wrap: break-word;
 }
 ::-webkit-scrollbar {
   width: 5px;
