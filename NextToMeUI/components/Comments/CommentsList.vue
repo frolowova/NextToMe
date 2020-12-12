@@ -135,7 +135,7 @@ export default {
 }
 
 .comments-conteiner {
-  max-height: 55vh;
+  max-height: 62vh;
   overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
