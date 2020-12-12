@@ -76,12 +76,14 @@ export default {
   methods: {
    
     scrollDown() { 
+      
       setTimeout(() => {
         let list = this.$refs.listComment;
         list.scrollTop = list.scrollHeight;
       }, 0); 
     },
     showComments() {
+      
       setTimeout(() => {
         let list = this.$refs.listComment;
         let top = window.scrollY + list.getBoundingClientRect().y;

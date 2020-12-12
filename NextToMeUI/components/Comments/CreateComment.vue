@@ -1,4 +1,5 @@
 <template>
+     <div class="pa-2 mx-1" position="sticky">
     <v-textarea
       placeholder="Ваш комментарий"
       auto-grow
@@ -73,4 +74,7 @@ export default {
 
 
 <style lang="scss" scoped>
+.create {
+  width: 98%;
+}
 </style>
