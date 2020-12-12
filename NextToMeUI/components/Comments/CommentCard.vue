@@ -1,24 +1,16 @@
 <template>
   <div class="card-wraper">
-    <v-card
-      class="pa-2 my-2 rounded-xl"
-      color="card"
-      background-color="cardBackground"
-    >
+    <v-card class="pa-2 my-2 rounded-xl" color="card" background-color="cardBackground">
       <div class="d-flex align-top justify-space-between">
         <div class="d-flex align-center">
           <v-avatar size="40px">
-            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64"
-              >mdi-account-circle</v-icon
-            >
+            <v-icon v-if="avatar && !avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
             <v-img v-else :src="src"></v-img>
           </v-avatar>
           <div class="mx-2">
-            <div>
+            <div v-if="avatar">
               {{
-                  avatar && !avatarLoading && avatar.userName
-                    ? avatar.userName
-                    : "Пользователь"
+              avatar.userName ? avatar.userName : "Пользователь"
               }}
             </div>
           </div>
@@ -30,7 +22,7 @@
       <v-card-text class="pa-2 text-body-1" v-html="text"></v-card-text>
 
       <v-container class="mt-0 pt-2" justify="start">
-        <span class="text--secondary">{{ this.time }}</span>
+        <span class="text--disabled">{{ this.time }}</span>
       </v-container>
     </v-card>
   </div>
@@ -127,5 +119,9 @@ export default {
 <style lang="scss" scoped>
 .card-wraper {
   width: 100%;
+}
+
+.text--disabled {
+   font-size: 0.9em;
 }
 </style>
