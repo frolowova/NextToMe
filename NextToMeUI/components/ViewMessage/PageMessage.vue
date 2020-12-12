@@ -15,13 +15,13 @@
         >Следующее</v-tab
       >
     </v-tabs>
-    <div class="mx-4 pt-6">
+    <div class="mx-4 pt-6" >
       <header-message
         :username="userInfo.userName"
         :position="tagInformation.distanceToUser"
         :src="userInfo.imageBase64"
       />
-      <text-message :message="tagInformation.text" />
+      <text-message  :message="tagInformation.text" />
     </div>
     <div>
       <pictures-of-message :images="images" />
@@ -40,7 +40,7 @@ import HeaderMessage from "@/components/ViewMessage/HeaderMessage";
 import TextMessage from "@/components/ViewMessage/TextMessage";
 import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
 import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
-import { GET_IMAGES, RESET_IMAGES } from "~/store/actions/currentTag";
+import { GET_IMAGES, RESET_IMAGES, GET_COMMENTS } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 
 export default {
@@ -65,12 +65,14 @@ export default {
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
+       this.$store.dispatch(GET_COMMENTS, id)
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index - 1);
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
+      this.$store.dispatch(GET_COMMENTS, id)
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index + 1);
     },
@@ -123,3 +125,4 @@ export default {
   },
 };
 </script> 
+

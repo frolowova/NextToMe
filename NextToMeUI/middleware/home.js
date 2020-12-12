@@ -1,3 +1,7 @@
 export default function({ redirect }) {
-  redirect("/home");
+  if (!localStorage.getItem('accessToken')) {
+    redirect('/login')
+  } else {
+    redirect('/home')
+  }
 }
