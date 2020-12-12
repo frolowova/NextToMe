@@ -1,8 +1,15 @@
 <template>
   <div class="home-page">
-    <v-tabs grow v-model="toggle_list" @change="onChangeList">
-      <v-tab :disabled="avatarLoading">Рядом</v-tab>
-      <v-tab :disabled="avatarLoading">ТОП-10</v-tab>
+    <v-tabs
+      grow
+      v-model="toggle_list"
+      @change="onChangeList"
+      background-color="header"
+      slider-color="accent"
+      slider-size="3"
+    >
+      <v-tab :disabled="avatarLoading" class="white--text">Рядом</v-tab>
+      <v-tab :disabled="avatarLoading" class="white--text">ТОП-10</v-tab>
     </v-tabs>
     <div class="home-page__content mx-6 mt-4">
       <v-select
@@ -45,40 +52,40 @@ import {
   LOAD_AVATARS,
   GET_TOP_MESSAGES,
   CHANGE_LIST_TITLE,
-  SET_SORTED_MESSAGES
+  SET_SORTED_MESSAGES,
 } from "@/store/actions/messages";
 
 export default {
   middleware: ["auth", "geoAlreadyGranted"],
   components: {
     tagView,
-    skeletonTag
+    skeletonTag,
   },
   headerData: {
-    title: "Главная"
+    title: "Главная",
   },
   btnValue: {
-    value: "home"
+    value: "home",
   },
   data: () => ({
     loading: false,
     avatarLoading: false,
     select: {
       state: "Сначала самые просматриваемые",
-      abbr: "Самые просматриваемые"
+      abbr: "Самые просматриваемые",
     },
     items: [
       { state: "Сначала самые просматриваемые", abbr: "Самые просматриваемые" },
       { state: "Сначала менее просматриваемые", abbr: "Менее просматриваемые" },
       { state: "Сначала самые обсуждаемые", abbr: "Самые обсуждаемые" },
-      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" }
+      { state: "Сначала менее обсуждаемые", abbr: "Менее обсуждаемые" },
     ],
-    toggle_list: 0
+    toggle_list: 0,
   }),
   computed: {
     messages() {
       return this.$store.state.messages.messages;
-    }
+    },
   },
   methods: {
     onSortChange() {
@@ -114,20 +121,20 @@ export default {
       );
       this.$store
         .dispatch(this.toggle_list === 0 ? GET_MESSAGES : GET_TOP_MESSAGES)
-        .then(result => {
+        .then((result) => {
           this.loading = false;
           return this.$store.dispatch(LOAD_AVATARS);
         })
-        .then(res => (this.avatarLoading = false))
-        .catch(err => {
+        .then((res) => (this.avatarLoading = false))
+        .catch((err) => {
           this.avatarLoading = false;
           this.loading = false;
         });
-    }
+    },
   },
   mounted() {
     this.onChangeList();
-  }
+  },
 };
 </script>
 
