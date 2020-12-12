@@ -1,6 +1,6 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
-    <v-tabs class="button-nuv">
+    <v-tabs grow class="button-nuv">
       <v-tab left v-if="index === 0 || timeout === true" disabled
         >Предыдущий</v-tab
       >
