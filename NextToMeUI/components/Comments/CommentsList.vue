@@ -34,7 +34,7 @@
         text
         :disabled="!comments.length"
         v-if="!pressShowComments"
-        @click=" pressShowComments = !pressShowComments"
+        @click="showComments(), pressShowComments = !pressShowComments"
         >Показать все</v-btn
       >
     </div>
@@ -80,7 +80,15 @@ export default {
         let list = this.$refs.listComment;
         list.scrollTop = list.scrollHeight;
       }, 0); 
-    }
+    },
+    showComments() {
+      setTimeout(() => {
+        let list = this.$refs.listComment;
+        let top = window.scrollY + list.getBoundingClientRect().y;
+        window.scrollTo(0, top);
+      }, 0); 
+
+    },
   },
 
   computed: {
