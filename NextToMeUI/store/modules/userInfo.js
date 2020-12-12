@@ -41,11 +41,9 @@ const actions = {
   [GET_USER_INFO]: async ({ commit, state }) => {
     const userInfo = await UserController.getUserInfo([state.id]);
     commit("GET_USER_INFO", userInfo.data[0]);
-    // console.log(userInfo.data[0]);
   },
 
   [SEND_USER_INFO]: async ({ commit }, user_info) => {
-    console.log("action send user");
     const updUserInfo = await UserController.sendUserInfo(user_info);
     return updUserInfo;
   },
