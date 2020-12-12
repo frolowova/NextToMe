@@ -2,7 +2,7 @@
   <div class="signup-page">
     <span class="auth__descr">Регистрация</span>
     <signupForm class="mb-6" />
-    <v-btn nuxt to="/login" block elevation="2" x-large outlined class="mb-4"
+    <v-btn nuxt to="/login" block elevation="0" x-large outlined class="mb-4"
       >Войти</v-btn
     >
   </div>
