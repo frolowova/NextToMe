@@ -5,7 +5,6 @@
         <avatar :sizeC="100"></avatar>
         <div>
           <p class="ps-4 text--secondary">{{ userName }}</p>
-          <p class="ps-4 body-2 text--secondary">Tags N</p>
         </div>
       </div>
       <div>
@@ -40,5 +39,9 @@ export default {
       this.$router.push("/settings");
     },
   },
+  mounted() {
+    this.$store.dispatch(GET_USER_INFO);
+  },
+  computed: mapGetters(["userName"]),
 };
 </script>
