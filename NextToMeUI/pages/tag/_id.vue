@@ -1,7 +1,7 @@
 <template>
   <div>
-    <page-message />
-    <CommentsList></CommentsList>
+    <page-message></page-message>
+    <comments-list></comments-list>
   </div>
 </template>
 
@@ -19,7 +19,6 @@ export default {
     CommentsList,
     PageMessage,
   },
-  mounted() {
-  },
+  mounted() {},
 };
 </script> 

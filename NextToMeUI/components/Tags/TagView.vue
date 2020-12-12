@@ -75,10 +75,14 @@ export default {
 
 <style scoped>
 .tag__content {
+  max-width: 90%;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+.tag__right {
+  max-width: 90%;
 }
 
 .tag-link {

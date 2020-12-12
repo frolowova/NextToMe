@@ -2,7 +2,7 @@
   <div class="login-page">
     <span class="auth__descr">Вход</span>
     <loginForm class="mb-6" />
-    <v-btn nuxt to="/signup" block elevation="2" x-large outlined class="mb-4"
+    <v-btn nuxt to="/signup" block elevation="0" x-large outlined class="mb-4"
       >Зарегистрироваться</v-btn
     >
     <nuxt-link class="login-page__link" to="/reset">Забыли пароль</nuxt-link>
@@ -30,7 +30,6 @@ export default {
 .login-page__link {
   text-decoration: none;
   text-transform: uppercase;
-  color: #ffffff;
   text-align: center;
   display: block;
 }
@@ -45,7 +44,6 @@ export default {
   text-align: center;
   font-family: Roboto;
   letter-spacing: 0.5px;
-  color: #ffffff;
   opacity: 0.8;
 }
 </style>

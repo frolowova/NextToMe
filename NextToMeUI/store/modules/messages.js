@@ -25,10 +25,8 @@ const mutations = {
   [CHANGE_LIST_TITLE](state, title) {
     state.title = title;
   },
-
   [SET_SORTED_MESSAGES](state, messages) {
     state.messages = messages
-
   }
 };
 
@@ -68,9 +66,7 @@ const actions = {
   }, title) => {
     commit(CHANGE_LIST_TITLE, title);
   },
-  [SET_SORTED_MESSAGES]: ({
-    commit
-  }, params) => {
+  [SET_SORTED_MESSAGES]: ({ commit }, params) => {
     commit(SET_SORTED_MESSAGES, params);
   }
 };

@@ -21,7 +21,8 @@
     </v-container>
     <v-btn
       :loading="loading"
-      :disabled="loading"
+      :disabled="loading || !valid"
+      elevation="0"
       type="submit"
       color="primary"
       x-large

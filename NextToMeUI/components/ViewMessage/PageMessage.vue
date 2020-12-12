@@ -1,20 +1,28 @@
 <template >
   <div v-if="tagInformation" class="cardBackground mb-6">
-    <v-tabs grow>
-      <v-tab v-if="index === 0 || timeout === true" disabled>Предыдущее</v-tab>
-      <v-tab v-if="index !== 0 && timeout === false" @click="toPrevTag"
-        >Предыдущее</v-tab
-      >
-      <!--  -->
-      <v-tab v-if="index === lastIndex - 1 || timeout === true" disabled
-        >Следующее</v-tab
-      >
-      <v-tab
-        v-if="index !== lastIndex - 1 && timeout === false"
-        @click="toNextTag"
-        >Следующее</v-tab
-      >
-    </v-tabs>
+    <v-toolbar color="header" elevation="0">
+      <v-row align="center" justify="space-between" class="pl-3 pr-3">
+        <v-btn
+          text
+          class="white--text font-weight-light"
+          @click="toPrevTag"
+          :disabled="index === 0 || timeout === true"
+        >
+          <v-icon>mdi-chevron-left</v-icon>
+          Предыдущий
+        </v-btn>
+        <v-btn
+          text
+          class="white--text font-weight-light"
+          @click="toNextTag"
+          :disabled="index === lastIndex - 1 || timeout === true"
+        >
+          Следующий
+          <v-icon>mdi-chevron-right</v-icon>
+        </v-btn>
+      </v-row>
+    </v-toolbar>
+
     <div class="mx-4 pt-6">
       <header-message
         :username="userInfo.userName"
@@ -40,7 +48,11 @@ import HeaderMessage from "@/components/ViewMessage/HeaderMessage";
 import TextMessage from "@/components/ViewMessage/TextMessage";
 import PicturesOfMessage from "@/components/ViewMessage/PicturesOfMessage/PicturesOfMessage";
 import StatisticMessage from "@/components/ViewMessage/StatisticMessage";
-import { GET_IMAGES, RESET_IMAGES } from "~/store/actions/currentTag";
+import {
+  GET_IMAGES,
+  RESET_IMAGES,
+  GET_COMMENTS,
+} from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 
 export default {
@@ -65,12 +77,26 @@ export default {
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
+      this.$store
+        .dispatch(GET_COMMENTS, id)
+        .then((result) => {
+          this.skeletonLoad = false;
+          return this.$store.dispatch(LOAD_COMMENT_AVATARS);
+        })
+        .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index - 1);
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
+      this.$store
+        .dispatch(GET_COMMENTS, id)
+        .then((result) => {
+          this.skeletonLoad = false;
+          return this.$store.dispatch(LOAD_COMMENT_AVATARS);
+        })
+        .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index + 1);
     },
@@ -123,3 +149,11 @@ export default {
   },
 };
 </script> 
+
+<style lang="stylus" scoped lang="scss">
+.button-nuv {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+</style>

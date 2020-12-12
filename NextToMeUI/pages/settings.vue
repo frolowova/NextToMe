@@ -30,7 +30,7 @@
       </v-btn>
     </div>
         
-    <h2 class="subtitle-1 primary--text pa-2">Настройки профиля</h2>
+    <h2 class="subtitle-1 primary--text pa-2 body-2">Настройки профиля</h2>
 
     <div class="d-flex align-start pa-2">
       <sub-title-text title="Имя"></sub-title-text>
@@ -63,44 +63,37 @@
 
     <v-divider></v-divider>
 
-    <h2 class="subtitle-1 primary--text pa-2">Общие настройки</h2>
+    <h2 class="subtitle-1 primary--text pa-2 body-2">Общие настройки</h2>
 
     <div class="d-flex justify-space-between pa-2 pr-0">
       <sub-title-text 
         title="Вкл. push-уведомления"
-        v-show="!pushOn"
-      ></sub-title-text>
-      <sub-title-text 
-        title="Выкл. push-уведомления"
-        v-show="pushOn"
       ></sub-title-text>
       <v-switch
         class="ma-0 pa-0"
-        v-model="btnSwitch1"
         color="primary"
         inset
-        @click="pushOn = !pushOn"
+        disabled
       ></v-switch>
     </div>
 
     <div class="d-flex justify-space-between pa-2 pr-0">
       <sub-title-text 
-        title="Выкл. темную тему"
-      ></sub-title-text>
-      <!-- <sub-title-text 
         title="Вкл. темную тему"
-      ></sub-title-text> -->
+      ></sub-title-text>
       <v-switch
         class="ma-0 pa-0"
         v-model="darkTheme"
         color="primary"
         inset
-        @click="changeTheme(), (btnSwitch2=!btnSwitch2)"
       ></v-switch>
     </div>
     
     <div>
-      <v-btn class="text-capitalize" text color="primary">
+      <v-btn 
+        class="text-capitalize body-1" 
+        text color="primary"
+        @click="changePass">
         <v-icon>mdi-pencil-outline</v-icon>
         Изменить пароль
       </v-btn>
@@ -136,12 +129,9 @@ export default {
     shown: true,
     title: " ",
     newUserName: "",
-    pushOn: false,
-    btnSwitch1: false,
-
-    btnSwitch2: '',
     selectedImage: [],
     attachedImage: [],
+    isDarkTheme: JSON.parse(localStorage.getItem('isDark') || false),
   }),
 
   methods: {
@@ -214,11 +204,8 @@ export default {
       });
       img.src = base64;
     },
-    changeTheme() {
-      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
-      localStorage.setItem("isDark", this.$vuetify.theme.dark);
-      // this.btnSwitch2 = this.$vuetify.theme.dark;
-      this.btnSwitch2 = JSON.parse(localStorage.getItem('isDark'));
+    changePass(){
+      this.$router.push("/reset")
     },
     authLogOut() {
       this.$store.dispatch(AUTH_LOGOUT, {})
@@ -232,8 +219,16 @@ export default {
   },
   
   computed: {
-     ...mapGetters(['userName','email', 'darkTheme']),
-
+    ...mapGetters(['userName','email']),
+    darkTheme: {
+      get () {
+      return this.isDarkTheme
+      },
+      set (value) {
+        this.$vuetify.theme.dark = value;
+        localStorage.setItem("isDark", this.$vuetify.theme.dark);
+      }
+    },
      src() {
       const lastSrc = this.attachedImage.map(img => img.url);
       if(lastSrc.length === 1) {

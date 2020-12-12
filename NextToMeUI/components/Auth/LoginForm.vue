@@ -10,18 +10,19 @@
       <v-text-field
         v-model="user.login"
         label="E-mail"
-        :rules="loginRules"
+        :rules="[rules.required, rules.email]"
       ></v-text-field>
       <v-text-field
         v-model="user.password"
         label="Пароль"
-        :rules="passwordRules"
+        :rules="[rules.required]"
         type="password"
       ></v-text-field>
     </v-container>
     <v-btn
       :loading="loading"
-      :disabled="loading"
+      :disabled="loading || !valid"
+      elevation="0"
       type="submit"
       color="primary"
       x-large
@@ -43,8 +44,13 @@ export default {
       login: "",
       password: ""
     },
-    passwordRules: [p => !!p || "Обязательное поле"],
-    loginRules: [l => !!l || "Обязательное поле"],
+    rules: {
+      required: v => !!v || "Обязательное поле",
+      email: value =>
+        !value ||
+        /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
+        "Невалидный e-mail"
+    },
     error: null,
     loading: false
   }),
@@ -68,6 +74,7 @@ export default {
             this.$router.push("/about");
           })
           .catch(err => {
+            console.log(err);
             if (err == 401) {
               this.error = "Неверный логин или пароль";
             } else {
