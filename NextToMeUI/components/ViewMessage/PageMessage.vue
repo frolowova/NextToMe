@@ -65,12 +65,14 @@ export default {
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
+       this.$store.dispatch(GET_COMMENTS, this.messageId)
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index - 1);
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
       this.$router.push({ path: this.$route.path, query: { id } });
+      this.$store.dispatch(GET_COMMENTS, this.messageId)
       this.$store.dispatch(RESET_IMAGES);
       this.isMountedOrUpdate(id, this.index + 1);
     },
