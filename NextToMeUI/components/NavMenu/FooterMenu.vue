@@ -52,7 +52,7 @@ export default {
 <style scoped lang="scss">
 .footer-menu {
   box-shadow: 0 0 7px rgba(0, 0, 0, 0.3);
-  z-index: 2;
+  z-index: 100;
   position: relative;
   display: flex;
   overflow: hidden;
@@ -70,6 +70,10 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+}
+.footer-menu_container .btn {
+  height: 100%;
 }
 @media screen and (max-width: 350px) {
   span {
