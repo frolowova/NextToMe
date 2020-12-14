@@ -3,8 +3,10 @@ import {
   SEND_COMMENTS,
   GET_IMAGES,
   LOAD_COMMENT_AVATARS,
-  RESET_IMAGES
-} from "../actions/currentTag";
+  RESET_IMAGES,
+  RESET_COMMENTS
+}
+  from "../actions/currentTag";
 import CommentsController from "@/api/CommentsController";
 import UserController from "@/api/UserController";
 import MessageController from "@/api/MessageController";
@@ -26,6 +28,9 @@ export const mutations = {
   },
   [LOAD_COMMENT_AVATARS](state, avatars) {
     state.commentsAvatars = avatars;
+  },
+  [RESET_COMMENTS](state) {
+    state.comments = [];
   }
 };
 
@@ -64,7 +69,13 @@ export const actions = {
     const avatars = await UserController.getUserInfo(users_id);
     commit(LOAD_COMMENT_AVATARS, avatars.data);
     return avatars;
-  }
+  },
+  [RESET_COMMENTS]: ({
+    commit
+  }) => {
+    commit(RESET_COMMENTS);
+    return null;
+  },
 };
 
 export const getters = {};

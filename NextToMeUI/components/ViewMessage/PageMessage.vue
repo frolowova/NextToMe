@@ -53,6 +53,7 @@ import {
   RESET_IMAGES,
   GET_COMMENTS,
   LOAD_COMMENT_AVATARS,
+  RESET_COMMENTS,
 } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 
@@ -90,7 +91,8 @@ export default {
         })
         .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
-      this.isMountedOrUpdate(id, this.index - 1);
+      const indexLoading = this.index - 1;
+      this.isMountedOrUpdate(id, indexLoading);
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
@@ -105,10 +107,11 @@ export default {
         })
         .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
-      this.isMountedOrUpdate(id, this.index + 1);
+      const indexLoading = this.index + 1;
+      this.isMountedOrUpdate(id, indexLoading);
     },
     isMountedOrUpdate(id = null, index = false) {
-      if (index) {
+      if (index !== false) {
         this.$store.state.messages.messages[index].photos.forEach((item) => {
           this.$store.dispatch(GET_IMAGES, item);
         });
@@ -130,6 +133,7 @@ export default {
   },
   destroyed() {
     this.$store.dispatch(RESET_IMAGES);
+    this.$store.dispatch(RESET_COMMENTS);
   },
   computed: {
     tagInformation() {
