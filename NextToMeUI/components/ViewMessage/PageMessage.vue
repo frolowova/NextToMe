@@ -76,7 +76,7 @@ export default {
       this.timeout = true;
       setTimeout(() => {
         this.timeout = false;
-      }, 2000);
+      }, 1500);
     },
     toPrevTag() {
       const id = this.$store.state.messages.messages[this.index - 1].id;
@@ -91,6 +91,7 @@ export default {
         })
         .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
+      this.$store.dispatch(RESET_COMMENTS);
       const indexLoading = this.index - 1;
       this.isMountedOrUpdate(id, indexLoading);
     },
@@ -107,6 +108,7 @@ export default {
         })
         .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
+      this.$store.dispatch(RESET_COMMENTS);
       const indexLoading = this.index + 1;
       this.isMountedOrUpdate(id, indexLoading);
     },
@@ -135,6 +137,7 @@ export default {
     this.$store.dispatch(RESET_IMAGES);
     this.$store.dispatch(RESET_COMMENTS);
   },
+
   computed: {
     tagInformation() {
       return this.$store.state.messages.messages.find(

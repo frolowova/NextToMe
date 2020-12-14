@@ -50,7 +50,7 @@ export default {
   axios: {},
 
   pwa: {
-    source: '@/static/icon.png',
+    // source: '@/static/icon.png',
     manifest: {
       lang: 'ru',
     }
