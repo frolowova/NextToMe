@@ -40,7 +40,7 @@ const actions = {
   [AUTH_SIGNUP]: async ({ commit }, { name, email: login }) => {
     const signupStatus = await AuthController.signup({
       login,
-      redirectUrl: "http://localhost:3000/NextToMeUI/dist/auth-confirm"
+      redirectUrl: "http://nexttome.ru/auth-confirm"
     });
     return signupStatus;
   },
@@ -54,7 +54,7 @@ const actions = {
   [RESET_PASSWORD_ATTEMPT]: async ({ commit }, { login }) => {
     const resetStatus = await AuthController.resetPassword({
       login,
-      redirectUrl: "http://localhost:3000/NextToMeUI/dist/reset-confirm"
+      redirectUrl: "http://nexttome.ru/reset-confirm"
     });
     return resetStatus;
   },
