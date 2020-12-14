@@ -4,11 +4,16 @@
       <div class="tag d-flex">
         <div class="tag__left">
           <v-avatar size="40px">
-            <v-icon v-if="!avatarLoading && !avatar.imageBase64">mdi-account-circle</v-icon>
+            <v-icon v-if="!avatarLoading && !avatar.imageBase64"
+              >mdi-account-circle</v-icon
+            >
             <v-img v-else :src="src">
               <template v-slot:placeholder>
                 <v-row class="fill-height ma-0" align="center" justify="center">
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                  <v-progress-circular
+                    indeterminate
+                    color="grey lighten-5"
+                  ></v-progress-circular>
                 </v-row>
               </template>
             </v-img>
@@ -52,6 +57,21 @@ export default {
     avatarLoading: Boolean,
     showPlace: Boolean
   },
+  methods: {
+    declOfNum(n, titles) {
+      return (
+        n +
+        " " +
+        titles[
+          n % 10 == 1 && n % 100 != 11
+            ? 0
+            : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)
+            ? 1
+            : 2
+        ]
+      );
+    }
+  },
   computed: {
     text() {
       return this.message.text.split("\n").join("<br>");
@@ -67,7 +87,11 @@ export default {
     distnace() {
       return this.showPlace
         ? this.message.place
-        : `${Math.floor(this.message.distanceToUser)} м`;
+        : `${this.declOfNum(Math.floor(this.message.distanceToUser), [
+            "метр",
+            "метра",
+            "метров"
+          ])}`;
     }
   }
 };
