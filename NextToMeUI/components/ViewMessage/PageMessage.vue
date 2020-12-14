@@ -90,7 +90,8 @@ export default {
         })
         .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
-      this.isMountedOrUpdate(id, this.index - 1);
+      const indexLoading = this.index - 1;
+      this.isMountedOrUpdate(id, indexLoading);
     },
     toNextTag() {
       const id = this.$store.state.messages.messages[this.index + 1].id;
@@ -105,10 +106,11 @@ export default {
         })
         .then((res) => (this.avatarLoading = false));
       this.$store.dispatch(RESET_IMAGES);
-      this.isMountedOrUpdate(id, this.index + 1);
+      const indexLoading = this.index + 1;
+      this.isMountedOrUpdate(id, indexLoading);
     },
     isMountedOrUpdate(id = null, index = false) {
-      if (index) {
+      if (index !== false) {
         this.$store.state.messages.messages[index].photos.forEach((item) => {
           this.$store.dispatch(GET_IMAGES, item);
         });
