@@ -49,6 +49,13 @@ export default {
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
 
+  pwa: {
+    source: '@/static/icon.png',
+    manifest: {
+      lang: 'ru',
+    }
+  },
+
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
@@ -81,5 +88,6 @@ export default {
 
   router: {
     base: '/NextToMeUI/dist/'
+    // base: '/next-to-me-page'
   }
 }
