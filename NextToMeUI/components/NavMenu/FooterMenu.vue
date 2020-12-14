@@ -68,12 +68,10 @@ export default {
 .footer-menu_container {
   max-width: 900px;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-}
-.footer-menu_container .btn {
-  height: 100%;
 }
 @media screen and (max-width: 350px) {
   span {
