@@ -2,7 +2,7 @@ import UserController from "@/api/UserController";
 import {
   SEND_USER_INFO,
   GET_USER_INFO,
-  SET_USER_ID
+  SET_AUTH_DATA
 } from "../actions/userInfo";
 import { AUTH_LOGOUT } from "../actions/auth";
 
@@ -32,8 +32,9 @@ const mutations = {
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("nextId");
   },
-  [SET_USER_ID](state, id) {
+  [SET_AUTH_DATA](state, { id, login }) {
     state.id = id;
+    state.login = login;
   }
 };
 
@@ -51,8 +52,8 @@ const actions = {
   [AUTH_LOGOUT]: async ({ commit }) => {
     return commit(AUTH_LOGOUT);
   },
-  [SET_USER_ID]: ({ commit }, id) => {
-    commit(SET_USER_ID, id);
+  [SET_AUTH_DATA]: ({ commit }, id) => {
+    commit(SET_AUTH_DATA, id);
   }
 };
 

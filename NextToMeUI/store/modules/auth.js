@@ -8,7 +8,7 @@ import {
   RESET_PASSWORD_ATTEMPT,
   RESET_PASSWORD_CONFIRM
 } from "../actions/auth";
-import { SET_USER_ID } from "@/store/actions/userInfo";
+import { SET_AUTH_DATA } from "@/store/actions/userInfo";
 const state = () => ({
   username: null,
   login: localStorage.getItem("login") || null
@@ -34,7 +34,11 @@ const actions = {
   [AUTH_LOGIN]: async ({ commit, dispatch }, user_info) => {
     const authResponse = await AuthController.login(user_info);
     commit(LOGIN_SUCCESS, { response: authResponse, login: user_info.login });
-    dispatch(SET_USER_ID, authResponse.id, { root: true });
+    dispatch(
+      SET_AUTH_DATA,
+      { id: authResponse.id, login: user_info.login },
+      { root: true }
+    );
     return authResponse;
   },
   [AUTH_SIGNUP]: async ({ commit }, { name, email: login }) => {
