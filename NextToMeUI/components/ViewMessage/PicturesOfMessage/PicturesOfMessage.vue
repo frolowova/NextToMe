@@ -40,8 +40,6 @@
         <one-column :arraySrc="[images[0]]" />
         <three-column
           :arraySrc="[images[1], images[2], images[3]]"
-          :isOpen="isOpen"
-          @setOpen="setOpen"
           :picNotShown="getLength(images) - 4"
         />
       </div>
@@ -82,9 +80,6 @@ export default {
     ThreeColumn,
     OneColumn,
   },
-  data: () => ({
-    isOpen: false,
-  }),
   props: {
     images: Array,
   },
@@ -92,8 +87,10 @@ export default {
     getLength(array) {
       return array.length;
     },
-    setOpen(isOpen) {
-      this.isOpen = isOpen;
+  },
+  computed: {
+    isOpen() {
+      return this.$store.state.currentTag.isOpen;
     },
   },
 };

@@ -12,11 +12,7 @@
       max-height="250px"
       :src="arraySrc[1]"
     />
-    <div
-      v-if="!isOpen & (isOpen !== undefined)"
-      class="show-all"
-      @click="setOpen"
-    >
+    <div v-if="!isOpen" class="show-all" @click="show()">
       <div class="show-all__info">
         <p>{{ picNotShown }}</p>
         <p>Показать все</p>
@@ -35,16 +31,20 @@
 </template>
 
 <script>
+import { BTN_SHOW_PICTURE } from "~/store/actions/currentTag";
 export default {
-  name: "setOpen",
   props: {
     arraySrc: Array,
-    isOpen: Boolean | undefined,
     picNotShown: Number,
   },
+  computed: {
+    isOpen() {
+      return this.$store.state.currentTag.isOpen;
+    },
+  },
   methods: {
-    setOpen() {
-      this.$emit("setOpen", true);
+    show() {
+      this.$store.dispatch(BTN_SHOW_PICTURE, true);
     },
   },
 };
@@ -83,15 +83,15 @@ export default {
   }
 }
 
-@media screen and (max-width: 480px){
-  .show-all{
-   &__info {
-     & p{ 
-       font-size: 8px;
-       line-height: 10px;
-       margin-bottom: 0px;
-     }
-   }
+@media screen and (max-width: 480px) {
+  .show-all {
+    &__info {
+      & p {
+        font-size: 8px;
+        line-height: 10px;
+        margin-bottom: 0px;
+      }
+    }
   }
 }
 </style>

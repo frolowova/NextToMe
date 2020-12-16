@@ -4,9 +4,10 @@ import {
   GET_IMAGES,
   LOAD_COMMENT_AVATARS,
   RESET_IMAGES,
-  RESET_COMMENTS
+  RESET_COMMENTS,
+  BTN_SHOW_PICTURE
 }
-  from "../actions/currentTag";
+from "../actions/currentTag";
 import CommentsController from "@/api/CommentsController";
 import UserController from "@/api/UserController";
 import MessageController from "@/api/MessageController";
@@ -14,7 +15,8 @@ import MessageController from "@/api/MessageController";
 export const state = () => ({
   comments: [],
   images: [],
-  commentsAvatars: []
+  commentsAvatars: [],
+  isOpen: false,
 });
 export const mutations = {
   [GET_COMMENTS](state, comments) {
@@ -31,6 +33,9 @@ export const mutations = {
   },
   [RESET_COMMENTS](state) {
     state.comments = [];
+  },
+  [BTN_SHOW_PICTURE](state, status) {
+    state.isOpen = status;
   }
 };
 
@@ -75,6 +80,13 @@ export const actions = {
   }) => {
     commit(RESET_COMMENTS);
     return null;
+  },
+  [BTN_SHOW_PICTURE]: ({
+    commit
+  }) => {
+    commit(BTN_SHOW_PICTURE, status);
+    return null;
+
   },
 };
 
