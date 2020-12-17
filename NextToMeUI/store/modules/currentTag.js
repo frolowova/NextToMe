@@ -7,7 +7,7 @@ import {
   RESET_COMMENTS,
   BTN_SHOW_PICTURE
 }
-from "../actions/currentTag";
+  from "../actions/currentTag";
 import CommentsController from "@/api/CommentsController";
 import UserController from "@/api/UserController";
 import MessageController from "@/api/MessageController";
@@ -81,9 +81,7 @@ export const actions = {
     commit(RESET_COMMENTS);
     return null;
   },
-  [BTN_SHOW_PICTURE]: ({
-    commit
-  }) => {
+  [BTN_SHOW_PICTURE]: ({ commit }, status) => {
     commit(BTN_SHOW_PICTURE, status);
     return null;
 
