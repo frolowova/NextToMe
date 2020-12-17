@@ -26,7 +26,13 @@ export default {
       } else {
         return "Регистрация";
       }
-    }
+    },
+  },
+  mounted() {
+    setTimeout(() => {
+      this.$vuetify.theme.dark =
+        JSON.parse(localStorage.getItem("isDark")) || false;
+    }, 0);
   },
 };
 </script>

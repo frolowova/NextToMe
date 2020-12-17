@@ -18,7 +18,8 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.$vuetify.theme.dark = this.$store.getters.darkTheme;
+      this.$vuetify.theme.dark =
+        JSON.parse(localStorage.getItem("isDark")) || false;
     }, 0);
   },
   computed: {
