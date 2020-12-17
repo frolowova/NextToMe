@@ -28,6 +28,7 @@
         :username="userInfo.userName"
         :position="tagInformation.distanceToUser"
         :src="userInfo.imageBase64"
+        :place="tagInformation.place"
       />
       <text-message :message="tagInformation.text" />
     </div>
@@ -54,6 +55,7 @@ import {
   GET_COMMENTS,
   LOAD_COMMENT_AVATARS,
   RESET_COMMENTS,
+  BTN_SHOW_PICTURE,
 } from "~/store/actions/currentTag";
 import MessageController from "@/api/MessageController";
 
@@ -128,6 +130,7 @@ export default {
         MessageController.updateViews(id);
       }
       this.timeoutForTab();
+      this.$store.dispatch(BTN_SHOW_PICTURE, false);
     },
   },
   mounted() {
