@@ -71,7 +71,11 @@ const actions = {
   }
 };
 
-const getters = {};
+const getters = {
+  countMessages: state => {
+    return state?.messages?.length || 0;
+  },
+};
 
 export default {
   state,

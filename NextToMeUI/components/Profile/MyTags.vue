@@ -1,9 +1,13 @@
 <template>
   <div class="profile__content" style="margin-top: 20px">
     <div v class="messages" @click="cardClick">
-      <h3 v-if="!messages.length" class="text-center">
-        К сожалению у Вас нет тэгов
-      </h3>
+      <div v-if="!messages.length">
+        <h3 v-if="!messages.length" class="text-center mb-8">
+          У вас пока нет тэгов
+        </h3>
+        <ntm-button title="Разместить тег" @click.prevent="goCreateTag" />
+      </div>
+
       <tagView
         v-for="message in messages"
         :message="message"
@@ -18,6 +22,7 @@
 
 <script>
 import tagView from "@/components/Tags/TagView.vue";
+import NTMButton from "@/components/Common/NTMButton.vue";
 import {
   GET_MESSAGES,
   LOAD_AVATARS,
@@ -28,6 +33,7 @@ import UserController from "~/api/UserController";
 export default {
   components: {
     tagView,
+    NTMButton,
   },
   data: () => ({
     tags: [],
@@ -56,6 +62,9 @@ export default {
           return this.$store.dispatch(LOAD_AVATARS);
         })
         .then((res) => (this.avatarLoading = false));
+    },
+    goCreateTag() {
+      this.$router.push("/tag-create");
     },
   },
   async mounted() {

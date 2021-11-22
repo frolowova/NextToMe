@@ -26,9 +26,14 @@
         <skeletonTag v-for="i in 10" :key="i" />
       </div>
       <div v-else class="messages" @click="cardClick">
-        <h3 v-if="!messages.length" class="text-center">
-          К сожалению сейчас нет новых тэгов
-        </h3>
+        <!-- Если нет тегов, то показываем этот блок с призывом -->
+        <div v-if="!messages.length">
+          <h3 class="text-center mb-8">
+            Разместите тег (сообщение) и его увидят люди рядом с вами
+          </h3>
+          <ntm-button title="Разместить тег" @click.prevent="goCreateTag" />
+        </div>
+
         <tagView
           v-for="message in messages"
           :message="message"
@@ -46,7 +51,7 @@
 <script>
 import tagView from "@/components/Tags/TagView.vue";
 import skeletonTag from "@/components/Tags/SkeletonTag.vue";
-import MessageController from "@/api/MessageController";
+import NTMButton from "@/components/Common/NTMButton.vue";
 import {
   GET_MESSAGES,
   LOAD_AVATARS,
@@ -60,6 +65,7 @@ export default {
   components: {
     tagView,
     skeletonTag,
+    NTMButton,
   },
   headerData: {
     title: "Главная",
@@ -88,6 +94,9 @@ export default {
     },
   },
   methods: {
+    goCreateTag() {
+      this.$router.push("/tag-create");
+    },
     onSortChange() {
       const messages = [...this.messages];
       switch (this.select.abbr) {

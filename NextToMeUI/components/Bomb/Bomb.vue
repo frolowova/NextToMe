@@ -6,25 +6,13 @@
 </template>
 
 <script>
+import declOfNum from "@/helpers/declOfNum";
+
 export default {
   props: {
-    deleteTime: String
+    deleteTime: String,
   },
-  methods: {
-    declOfNum(n, titles) {
-      return (
-        n +
-        " " +
-        titles[
-          n % 10 == 1 && n % 100 != 11
-            ? 0
-            : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)
-            ? 1
-            : 2
-        ]
-      );
-    }
-  },
+
   computed: {
     src() {
       const date = Date.parse(this.deleteTime + "Z") - Date.parse(new Date());
@@ -49,19 +37,19 @@ export default {
       const time = new Date(this.deleteTime + "Z") - Date.now();
       const seconds = Math.floor(time / 1000);
       if (seconds < 60) {
-        return this.declOfNum(seconds, ["секунду", "секунды", "секунд"]);
+        return declOfNum(seconds, ["секунду", "секунды", "секунд"]);
       }
       const minutes = Math.floor(seconds / 60);
       if (minutes < 60) {
-        return this.declOfNum(minutes, ["минуту", "минуты", "минут"]);
+        return declOfNum(minutes, ["минуту", "минуты", "минут"]);
       }
       const hours = Math.floor(minutes / 60);
       if (hours < 24) {
-        return this.declOfNum(hours, ["час", "часа", "часов"]);
+        return declOfNum(hours, ["час", "часа", "часов"]);
       }
       const days = Math.floor(hours / 24);
-      return this.declOfNum(days, ["день", "дня", "дней"]);
-    }
-  }
+      return declOfNum(days, ["день", "дня", "дней"]);
+    },
+  },
 };
 </script>

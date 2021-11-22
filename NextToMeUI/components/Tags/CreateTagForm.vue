@@ -11,13 +11,16 @@
         :rules="[rules.required]"
         placeholder="Текст тега"
         autofocus
-      ></v-textarea>
+      />
+
       <div class="images-block">
         <tagImages :arrayOfPic="arrayOfPic" @remove-image="removeImage" />
       </div>
+
       <v-alert dense text type="error" v-if="errorMessage">{{
         errorMessage
       }}</v-alert>
+
       <div class="input-file-btn">
         <v-file-input
           accept="image/x-png,image/jpeg,image/gif"
@@ -26,41 +29,41 @@
           v-show="false"
           v-model="selectedFiles"
           @change="onChangeFile"
-        ></v-file-input>
-        <v-btn
-          block
-          color="primary"
-          elevation="0"
-          x-large
+        />
+        <ntm-button
+          title="Добавить изображение"
           outlined
-          class="mb-6 rounded-lg"
           :disabled="loading"
-          @click.prevent="loadImage"
-          >Добавить изображение</v-btn
-        >
+          class="mb-6"
+          @click.prevent="loadImageClickHandler"
+        />
       </div>
-      <v-btn
-        class="rounded-lg"
-        block
-        color="primary"
-        elevation="2"
-        x-large
-        @click.prevent="createTag"
+
+      <ntm-button
+        title="Разместить"
         :disabled="loading || !tagText.length"
         :loading="loading"
-        >Разместить</v-btn
-      >
+        class="mb-6"
+        @click.prevent="createTag"
+      />
     </v-form>
   </div>
 </template>
 
 <script>
+import loadAndPreviewImages from "@/mixins/loadAndPreviewImages";
+
 import tagImages from "@/components/Tags/TagImages.vue";
 import { SEND_MESSAGE } from "@/store/actions/messages";
+import NTMButton from "@/components/Common/NTMButton.vue";
+
 export default {
   components: {
     tagImages,
+    NTMButton,
   },
+  mixins: [loadAndPreviewImages],
+
   data: () => ({
     valid: true,
     loading: false,
@@ -72,6 +75,7 @@ export default {
     },
     errorMessage: "",
   }),
+
   computed: {
     totalFiles() {
       return this.selectedFiles.length + this.attachedFiles.length;
@@ -80,6 +84,7 @@ export default {
       return this.attachedFiles.map((img) => img.url);
     },
   },
+
   methods: {
     validate() {
       this.$refs.form.validate();
@@ -109,7 +114,7 @@ export default {
     removeImage(index) {
       this.attachedFiles = this.attachedFiles.filter((item, i) => i !== index);
     },
-    loadImage() {
+    loadImageClickHandler() {
       const fileInput = this.$refs.fileInput.$children[0].$el;
       fileInput.click();
     },
@@ -124,53 +129,10 @@ export default {
       }
       const selectedFiles = Array.from(this.selectedFiles);
       this.selectedFiles = [];
-      selectedFiles.forEach((file) => {
-        if (file.type !== "image/jpeg") {
-          return;
-        }
-        const reader = new FileReader();
-        reader.addEventListener("load", ({ target: { result } }) => {
-          this.compressImage(result, file);
-        });
-        reader.readAsDataURL(file);
+      this.loadAndPreviewImages(selectedFiles, {
+        width: 1200,
+        height: 900,
       });
-    },
-    compressImage(base64, file) {
-      const canvas = document.createElement("canvas");
-      const img = document.createElement("img");
-
-      img.addEventListener("load", () => {
-        let width = img.width;
-        let height = img.height;
-        const MAX_WIDTH = 1200;
-        const MAX_HEIGHT = 900;
-
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height = Math.round((height *= MAX_WIDTH / width));
-            width = MAX_WIDTH;
-          }
-        } else {
-          if (height > MAX_HEIGHT) {
-            width = Math.round((width *= MAX_HEIGHT / height));
-            height = MAX_HEIGHT;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0, width, height);
-        const compressedData = canvas.toDataURL("image/jpeg", 0.8);
-        this.attachedFiles.push({
-          url: compressedData,
-          file: file,
-        });
-      });
-      img.addEventListener("error", () => {
-        throw new Error("Compressed img error!");
-      });
-      img.src = base64;
     },
   },
 };

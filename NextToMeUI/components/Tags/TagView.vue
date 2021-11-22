@@ -44,41 +44,28 @@
 import bomb from "@/components/Bomb/Bomb";
 import eye from "@/components/ViewMessage/Eye";
 import comments from "@/components/ViewMessage/Comments";
-import imageView from "./Image.vue";
+
+import declOfNum from "@/helpers/declOfNum";
 
 export default {
   components: {
     bomb,
     eye,
-    comments
+    comments,
   },
   props: {
     message: Object,
     avatarLoading: Boolean,
-    showPlace: Boolean
+    showPlace: Boolean,
   },
-  methods: {
-    declOfNum(n, titles) {
-      return (
-        n +
-        " " +
-        titles[
-          n % 10 == 1 && n % 100 != 11
-            ? 0
-            : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)
-            ? 1
-            : 2
-        ]
-      );
-    }
-  },
+
   computed: {
     text() {
       return this.message.text.split("\n").join("<br>");
     },
     avatar() {
       return this.$store.state.messages.avatars.find(
-        el => el.userId === this.message.from
+        (el) => el.userId === this.message.from
       );
     },
     src() {
@@ -87,13 +74,13 @@ export default {
     distnace() {
       return this.showPlace
         ? this.message.place
-        : `${this.declOfNum(Math.floor(this.message.distanceToUser), [
+        : `${declOfNum(Math.floor(this.message.distanceToUser), [
             "метр",
             "метра",
-            "метров"
+            "метров",
           ])}`;
-    }
-  }
+    },
+  },
 };
 </script>
 

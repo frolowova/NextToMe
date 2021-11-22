@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import declOfNum from "@/helpers/declOfNum";
+
 export default {
   props: {
     commentData: Object,
@@ -39,6 +41,32 @@ export default {
   data: () => ({
     lifeTime: "",
   }),
+
+  computed: {
+    text() {
+      return this.commentData.text.split("\n").join("<br>");
+    },
+    time() {
+      if (this.lifeTime) return this.lifeTime;
+      return this.showTime();
+    },
+
+    avatar() {
+      return this.$store.state.currentTag.commentsAvatars.find(
+        (el) => el.userId === this.commentData.from
+      );
+    },
+
+    src() {
+      return this.avatar ? this.avatar.imageBase64 : null;
+    },
+  },
+
+  mounted() {
+    setInterval(() => {
+      this.lifeTime = this.showTime();
+    }, 60000);
+  },
 
   methods: {
     showTime() {
@@ -62,55 +90,16 @@ export default {
       if (minutes === 0) {
         timeForm = "только что";
       } else if (minutes < 60) {
-        timeForm =
-          this.declOfNum(minutes, ["минуту", "минуты", "минут"]) + " назад";
+        timeForm = declOfNum(minutes, ["минуту", "минуты", "минут"]) + " назад";
       } else if (minutes > 60 && minutes < 1440) {
-        timeForm = this.declOfNum(inHours, ["час", "часа", "часов"]) + " назад";
+        timeForm = declOfNum(inHours, ["час", "часа", "часов"]) + " назад";
         return timeForm;
       } else if (minutes > 1440 && minutes < 2880) {
-        timeForm = this.declOfNum(inDays, ["день", "дня", "дней"]) + " назад";
+        timeForm = declOfNum(inDays, ["день", "дня", "дней"]) + " назад";
       } else if (minutes > 2880) {
         timeForm = "более двух дней" + " назад";
       }
       return timeForm;
-    },
-    declOfNum(n, titles) {
-      return (
-        n +
-        " " +
-        titles[
-          n % 10 == 1 && n % 100 != 11
-            ? 0
-            : n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 10 || n % 100 >= 20)
-            ? 1
-            : 2
-        ]
-      );
-    },
-  },
-  mounted() {
-    setInterval(() => {
-      this.lifeTime = this.showTime();
-    }, 60000);
-  },
-
-  computed: {
-    text() {
-      return this.commentData.text.split("\n").join("<br>");
-    },
-    time() {
-      if (this.lifeTime) return this.lifeTime;
-      return this.showTime();
-    },
-
-    avatar() {
-      return this.$store.state.currentTag.commentsAvatars.find(
-        (el) => el.userId === this.commentData.from
-      );
-    },
-
-    src() {
-      return this.avatar ? this.avatar.imageBase64 : null;
     },
   },
 };

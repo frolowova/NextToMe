@@ -4,11 +4,14 @@
       <div class="d-flex align-center">
         <avatar :sizeC="100"></avatar>
         <div>
-          <p class="ps-4 text--secondary">{{ userName }}</p>
+          <p class="user-name ps-4 text--secondary">{{ userName }}</p>
+          <p v-if="countMessages > 0" class="user-name ps-4 text--secondary">
+            {{ strCountMessages }}
+          </p>
         </div>
       </div>
       <div>
-        <v-btn icon @click="settingsGo" color="secondary">
+        <v-btn icon @click="settingsGo" class="text--secondary">
           <v-icon>mdi-tune-variant</v-icon>
         </v-btn>
       </div>
@@ -18,10 +21,13 @@
 </template>
 
 <script>
-import avatar from "@/components/ProfileSettings/Avatar";
-import { GET_USER_INFO, SEND_USER_INFO } from "@/store/actions/userInfo";
 import { mapGetters } from "vuex";
+import { GET_USER_INFO } from "@/store/actions/userInfo";
 import MyTags from "@/components/Profile/MyTags";
+import avatar from "@/components/ProfileSettings/Avatar";
+
+import declOfNum from "@/helpers/declOfNum";
+
 export default {
   components: {
     avatar,
@@ -34,14 +40,27 @@ export default {
     value: "profile",
   },
 
+  mounted() {
+    this.$store.dispatch(GET_USER_INFO);
+  },
+
+  computed: {
+    ...mapGetters(["userName", "countMessages"]),
+    strCountMessages() {
+      return declOfNum(this.countMessages, ["тег", "тега", "тегов"]);
+    },
+  },
+
   methods: {
     settingsGo() {
       this.$router.push("/settings");
     },
   },
-  mounted() {
-    this.$store.dispatch(GET_USER_INFO);
-  },
-  computed: mapGetters(["userName"]),
 };
 </script>
+
+<style lang="scss" scoped>
+.user-name {
+  margin-bottom: 0;
+}
+</style>
